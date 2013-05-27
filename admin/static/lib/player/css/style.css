@@ -1,0 +1,286 @@
+.ttw-video-player {
+    width: 554px;
+    height: 310px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.ttw-video-player .player {
+    width: 554px;
+    height: 33px;
+
+}
+
+/* This is where the video shows up */
+.ttw-video-player .jPlayer-container {
+    background: #000;
+    width: 554px;
+    height: 312px;
+}
+
+/* THis is the video poster */
+.ttw-video-player .jPlayer-container img{
+    display:none !important;
+}
+
+/** Player **/
+.ttw-video-player .player-controls {
+    background: #3a3a3a url(../images/player-bg.jpg) repeat-x 0 0 scroll;
+    height: 33px;
+    width: 100%;
+    border-top: 1px solid #000;
+    border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    -webkit-border-radius: 0 0 4px 4px;
+    position: relative;
+    z-index: 1;
+    position: relative;
+
+}
+
+.ttw-video-player .player-controls > div {
+    float: left;
+}
+
+.ttw-video-player .button {
+    width: 32px;
+    height: 33px;
+    cursor: pointer;
+}
+
+.ttw-video-player .button:hover, .ttw-video-player .button.pressed {
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, .4);
+    -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, .4);
+    -moz-box-shadow: inset 0 0 10px rgba(0, 0, 0, .4);
+}
+
+.ttw-video-player .player-controls .separator {
+    width: 2px;
+    height: 33px;
+    float: left;
+    background: transparent url(../images/button-separator.jpg) no-repeat 0 0 scroll;
+}
+
+.ttw-video-player .player-controls > .separator:hover {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+.ttw-video-player .play {
+    background: transparent url(../images/play-button.png) no-repeat center center scroll;
+}
+
+.ttw-video-player .pause {
+    display: none;
+    background: transparent url(../images/pause-button.png) no-repeat center center scroll;
+}
+
+.ttw-video-player .playlist-button {
+    background: transparent url(../images/playlist-button.png) no-repeat center center scroll;
+}
+
+.ttw-video-player .hd-button {
+    background: transparent url(../images/hd-button.png) no-repeat center center scroll;
+}
+
+.ttw-video-player .progress-wrapper {
+    width: 221px;
+    padding: 0 10px
+}
+
+.ttw-video-player .progress-bg {
+    background: #2a2a2a url(../images/progress-bg.jpg) repeat-x 0 0 scroll;
+    height: 12px;
+    padding: 1px;
+    margin: 9px 0;
+    width: 100%;
+}
+
+.ttw-video-player .progress {
+    height: 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    background: #2a2a2a;
+}
+
+.ttw-video-player .elapsed {
+    background: transparent url(../images/progress-elapsed-bg.jpg) repeat-x 0 0 scroll;
+    height: 11px;
+}
+
+.ttw-video-player .volume-wrapper {
+    width: 61px;
+    padding: 0 10px 0 35px;
+    background: transparent url(../images/volume-icon.png) no-repeat 10px center scroll;
+}
+
+.ttw-video-player .volume {
+    height: 12px;
+    padding: 1px;
+    margin: 9px 0;
+    background: #2a2a2a url(../images/progress-bg.jpg) repeat-x 0 0 scroll;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.ttw-video-player .volume-value {
+    background: transparent url(../images/progress-elapsed-bg.jpg) repeat-x 0 0 scroll;
+    height: 11px;
+}
+
+.ttw-video-player .heart-button {
+    background: transparent url(../images/heart-button.png) no-repeat center center scroll;
+}
+
+.ttw-video-player .heart-count {
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .2);
+    line-height: 21px;
+    font-size: 11px;
+    background: transparent url(../images/heart-count.png) no-repeat center center scroll;
+    position: absolute;
+    top: -9px;
+    right: 92px;
+    display: none;
+}
+
+.ttw-video-player .settings-button {
+    background: transparent url(../images/settings-button.png) no-repeat center center scroll;
+}
+
+.ttw-video-player .fullscreen-button {
+    background: transparent url(../images/fullscreen-button.png) no-repeat center center scroll;
+}
+
+.ttw-video-player .unused-controls {
+    display: none !important;
+}
+
+/** Playlist **/
+.ttw-video-player .playlist {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 190px;
+    opacity: 0; /** DO not use display none otherwise tiny scrollbar will not initialize **/
+    clear: both;
+    z-index: 0;
+}
+
+.clear {
+    clear: both;
+}
+
+.ttw-video-player .playlist .viewport {
+    width: 180px;
+    height: 312px;
+    background: transparent url(../images/playlist-bg.png) repeat 0 0 scroll;
+    overflow: hidden;
+    position: relative;
+    float: left;
+}
+
+.ttw-video-player .scroll-content {
+    list-style: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.ttw-video-player .thumb .end,
+.ttw-video-player .thumb {
+    background: #3b3b3b url(../images/scroll-thumb.png) no-repeat 0 0 scroll;
+}
+
+.ttw-video-player .scrollbar {
+    position: relative;
+    float: left;
+    width: 10px;
+
+}
+
+.ttw-video-player .track {
+    background-color: rgba(0, 0, 0, .9);
+    height: 100%;
+    width: 10px;
+    position: relative
+}
+
+.ttw-video-player .thumb {
+    width: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    position: absolute; /** IMPORTANT - Tiny scrollbar will not work without this **/
+    top: 0;
+}
+
+.ttw-video-player .thumb .end {
+    overflow: hidden;
+    height: 0;
+    width: 10px;
+}
+
+.ttw-video-player .playlist ol {
+    list-style: none;
+    margin: 0;
+}
+
+.ttw-video-player .playlist li {
+    width: 150px;
+    height: 84px;
+    border: 5px solid #080706;
+    margin: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    text-align:center;
+}
+
+.ttw-video-player .playlist li:after {
+    content: '';
+    position: absolute;
+    height: 46px;
+    width: 46px;
+    top: 50%;
+    left: 50%;
+    margin-top: -23px;
+    margin-left: -23px;
+    background: transparent url(../images/playlist-play-icon.png) no-repeat 0 0 scroll;
+    opacity: .9;
+}
+
+.ttw-video-player .playlist li:hover:after {
+    opacity: 1;
+}
+
+.ttw-video-player li.playing {
+
+}
+
+/** Transitions **/
+.ttw-video-player .playlist li:after,
+.ttw-video-player .button {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+/* http://perishablepress.com/press/2009/12/06/new-clearfix-hack */
+.ttw-video-player .player:after {
+    clear: both;
+    content: ' ';
+    display: block;
+    font-size: 0;
+    line-height: 0;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+
+

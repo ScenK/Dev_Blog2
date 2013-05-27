@@ -1,0 +1,32 @@
+{% extends 'admin/base.html' %}
+{% block title %}日志归档{% endblock %}
+{% block content %}
+<!--Table Styling-->
+<table class="display" id="example">
+<thead>
+    <tr>
+        <th class="th_chexbox"><input type="checkbox" name="set" /></th>
+        <th class="th_title">标题</th>
+        <th class="th_status">评论</th>
+        <th class="th_date">文章简介</th>
+        <th class="th_author">发表时间</th>
+        <th class="th_chexbox"> </th>
+    </tr>
+</thead>
+<tbody>
+    {% for i in diaries %}
+    <tr class="item">
+        <td><input type="checkbox" name="id[]" value="1" /></td>
+        <td class="subject"><a href="#">{{ i.title }}</a></td>
+        <td><span class="published">313</span></td>
+        <td>{{ i.summary|safe }}</td>
+        <td class="name">{{ i.publish_time }}</td>
+        
+        <td class="action"><a href="#"><img src="../static/images/del.png" alt="delete"></a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+<div class="clear"> </div>
+<!--Table Styling end-->
+{% endblock %}

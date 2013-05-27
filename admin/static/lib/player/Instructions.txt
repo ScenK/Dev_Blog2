@@ -1,0 +1,112 @@
+
+*************************
+*************************
+
+IMPORTANT: Due to limited resources, I am unable to offer support for the free items on codebasehero.com.
+
+However, all premium files purchased from http://codecanyon.net/user/23andwalnut/portfolio are eligible for support.
+
+Thanks,
+Saleem
+
+*************************
+*************************
+
+1. Include jQuery in your page.
+
+3. Include jPlayer in your page
+
+2. Include the plugin javascript and css file.
+
+3. Build your playlist. The playlist uses the same format s jPlayer  A sample playlist item:
+
+   {
+		m4a:'video/1.m4a',
+		ogv:'video/1.ogv',
+   }
+
+   A sample playlist:
+
+   var playlist = [
+       {
+            m4a:'video/1.m4a',
+            ogv:'video/1.ogv',
+       },
+       {
+            m4a:'video/1.m4a',
+            ogv:'video/1.ogv',
+       }
+   ];
+
+4. Initialize the plugin:
+   $('body').ttwVideoPlayer(myPlaylist, {options});
+
+   You can specify the following options:
+
+   defaultOptions = {
+            autoplay:false,
+            buttons:['playlist', 'hd', 'heart', 'settings' 'fullscreen'],
+            width: "554px",
+            height: "312px",
+            hdPlaylist:[],
+            autoHidePlaylist:true,
+            autoHidePlaylistDelay:3000,
+            playlistButtonCallback:function(){
+                fires when the playlist button is clicked
+            },
+            hdButtonCallback:function(){
+                fires when the HD button is clicked
+            },
+            heartButtonCallback:function(){
+                fires when the heart button is clicked
+            },
+            settingsButtonCallback:function(){
+                fires when the settings button is clicked
+            },
+            fullscreenButtonCallback:function(){
+                fires when the fullscreen button is clicked
+            },
+            allowHeartIncrement:function(){
+                //use this to determine if the heart count should be updated. If you only want to limit a user to
+                //one click, you would enforce that requirement here. This function should always return true or false
+                return true;
+            }
+            jPlayer:{}, //these are the jPlayer options. Use the structure defined on the jPlayer site, or leave off to use defaults
+        };
+
+5. You can use the following API methods after the player has been initiated
+
+    $player =  $('body').ttwVideoPlayer(myPlaylist, {options});
+
+    //set the heart count
+    $player.data('ttwVideoPlayer').heartCount = 1;
+
+    //update the heart bubble to the count you just set
+    $player.ttwVideoPlayer('updateHeartCount');
+
+
+TROUBLESHOOTING:
+1. If you have issues, set the debug option to true. Reload the page
+
+2.  Check to make sure the console displays the messages
+i. ["VIDEO PLAYER: Media Box Started"]
+ii. ["VIDEO PLAYER: jPlayer Ready"]
+
+3. If you do not see the first message, the plugin wasn’t initialized. Please make sure you have loaded all the dependencies.
+
+4. If you do not see the second message, there was an issue with jPlayer initialization. The most likely cause is an
+incorrect path to jplayer.js or an incorrect path to swf. Remember, the plugin expects a specific directory structure.
+If you change the default location of these files, you must update the paths to these files in the options object.
+
+5. You can turn on jPlayer debuggin options by setting the following options for the plugin. Once you add these options, reload the page
+        {
+            jPlayer:{
+                errorAlerts:true,
+                warningAlerts:true
+            },
+        };
+
+
+
+IMPORTANT NOTE ABOUT hdPlaylist OPTION
+This is an additional playlist array with hd versions of the videos. This video must have the same indexes as the playlist array. For example, if the user is currently viewing the first video (ie playlist[0]), when the hd button is clicked, the plugin will load hdPlaylist[0]

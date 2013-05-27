@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} - {{ config['MAIN_TITLE'] }}</title>
+    <link rel="shortcut icon" href="{{ url_for('admin.static', filename='images/favicon.ico') }}" />
+    <link rel=stylesheet type=text/css href="{{ url_for('admin.static', filename='css/style.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('admin.static', filename='css/chosen.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('admin.static', filename='css/tables.css') }}">
+  </head>
+  <body>
+    {% include 'admin/Element/header.html' %}
+    <section id="middle">
+      <div id="container-main">
+        <div id="container">
+          <div id="content">
+            <div class="speedbar">
+              <div class="speedbar-nav"> <a href="#">Backend System Beta 2.0</a> &rsaquo; <a href="#">{{ self.title() }}</a></div>
+              <div class="search">
+                <form>
+                  <input type="text">
+                </form>
+              </div>
+              </div>
+              <!--Statistic-->
+              <div class="grid-1">
+                <div class="title-grid">{{ self.title() }}</div>
+                <div class="content-gird">
+                  {% block content %}
+                  {% endblock %}
+                </div>
+                <div class="clear"></div>
+              </div>
+          </div><!-- #content-->
+        </div><!-- #container-->
+        {% include 'admin/Element/sidebar.html' %}
+      </div><!-- #container main-->
+      {% include 'admin/Element/footer.html' %}
+    </section><!-- #middle-->
+  <div class="clear"></div>
+  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery-1.7.1.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery.dataTables.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/autoresize.jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/chosen.jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('admin.static', filename='js/backend.js') }}"></script>
+  </body>
+</html>

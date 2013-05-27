@@ -1,0 +1,5 @@
+flask
+flask_debugtoolbar
+mongoengine
+flask-mongoengine
+flask-login

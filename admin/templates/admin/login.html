@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>登陆 - Sea_Kudo的博客</title>
+  <meta name="description" content="">
+  <link rel="shortcut icon" href="{{ url_for('admin.static', filename='images/favicon.ico') }}" />
+  <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/validationEngine.jquery.css') }}" type="text/css" media="screen"  />
+  <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/login.css') }}" type="text/css" media="screen"  />
+
+  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery-1.7.1.min.js') }}"></script>
+  <script src="{{ url_for('admin.static', filename='lib/jquery.validationEngine.js') }}" type="text/javascript" charset="utf-8"></script>
+  <script src="{{ url_for('admin.static', filename='lib/jquery.validationEngine-en.js') }}" type="text/javascript" charset="utf-8"></script>
+  <script>
+    jQuery(document).ready(function(){
+        // binds form submission and fields to the validation engine
+        jQuery("#form-login").validationEngine();
+    });
+  </script>
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  {% endwith %}
+  {% if error %}
+  <div class="alerts">
+    <div class="alert red hideit"><p><span class="red-icon"></span>错误: {{ error }}</p></div>
+  </div>
+  {% endif %}
+  <section id="form">
+    <form id="form-login" action=""  class="formular" method="post">
+      <div id="content-header">
+        <p id="logo">Admin Panel Login</p>
+        <p>To log into the admin panel, type your password and log.</a></p>
+      </div>
+      <div id="content">
+        <input type="text" name="username" id="req" class="validate[required] text-input" placeholder="Username"><br><br>
+        <input type="text" name="password" id="pass" class="validate[required] text-input" placeholder="Password"><br><br>
+        <div class="buttons">
+          <input type="submit" class="button-a gray" value="Forgot your password?">
+          <input type="submit"  name="go"  class="button-a purle" value="LOG IN">
+        </div>
+      </div>
+    </form>
+  </section>
+</body>
+</html>

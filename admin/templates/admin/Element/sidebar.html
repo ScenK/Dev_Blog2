@@ -1,0 +1,32 @@
+<aside id="sideLeft">
+    <span class="categories">仪表盘</span>
+    <ul class="menu">
+        <li class="expand">
+        <a href="#"><span>文章</span><span class="num">5</span></a>
+        <ul class="acitem">
+          <li><a href="{{ url_for('admin.diary_list') }}"><span class="dashboard icon">所有文章</span></a></li>
+            <li><a href="{{ url_for('admin.diary_add') }}"><span class="charts icon">写文章</span></a></li>
+        </ul>
+        </li>
+        <li>
+          <a href="#"><span>评论</span><span class="num">5</span></a>
+        </li>
+        <li>
+        <a href="#"><span>相册</span><span class="num">6</span></a>
+        <ul class="acitem">
+            <li><a href="/widgets.html"><span class="gallery-pic icon">所有相册</span></a></li>
+        </ul>
+        </li>
+        <li>
+          <a href="#"><span>分类管理</span><span class="num">6</span></a>
+        </li>
+        <li>
+        <a href="#"><span>页面管理</span><span class="num">3</span></a>
+        <ul class="acitem">
+            <li><a href="/404.html"><span class="errors icon">Error 404</span></a></li>
+            <li><a href="/500.html"><span class="errors icon">Error 500</span></a></li>
+            <li><a href="/503.html"><span class="errors icon">Error 503</span></a></li>
+        </ul>
+        </li>
+    </ul>
+</aside><!-- #sideLeft -->

@@ -1,0 +1,392 @@
+/* Table */
+
+	.display  {
+		background-color:#ffffff;
+		border:0px; /*  */
+		border-spacing:0px;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		
+	}
+.display thead tr th {
+		height:27px;
+		text-align:left;
+		color:#807f7f;
+		background: #fafafa; /* Old browsers */
+		background: -moz-linear-gradient(top, #fafafa 0%, #eaeaea 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fafafa), color-stop(100%,#eaeaea)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, #fafafa 0%,#eaeaea 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, #fafafa 0%,#eaeaea 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top, #fafafa 0%,#eaeaea 100%); /* IE10+ */
+		background: linear-gradient(top, #fafafa 0%,#eaeaea 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */
+	}
+	
+.display tbody tr {
+		background-color:#fcfcfc;
+	}
+	
+.displaytbody tr:hover {
+		background-color:#f5f5f5;
+	}
+	
+.display tbody tr td {
+		height:27px;
+		border-bottom:1px solid #e3e3e3;
+		border-right:1px solid #e3e3e3;
+		padding-left:10px;
+		color:#807f7f;
+		
+	}
+	
+.subject a{
+	color:#807f7f;
+	text-decoration:underline;
+}
+
+.subject a:hover{
+	text-decoration:none;
+}.
+
+.dataTables_wrapper {
+	position: relative;
+	clear: both;
+	zoom: 1; /* Feeling sorry for IE */
+}
+
+.dataTables_processing {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 250px;
+	height: 30px;
+	margin-left: -125px;
+	margin-top: -15px;
+	padding: 14px 0 2px 0;
+	border: 1px solid #ddd;
+	text-align: center;
+	color: #999;
+	font-size: 14px;
+	background-color: white;
+}
+
+.dataTables_length {
+	width: 40%;
+	float: left;
+}
+
+.dataTables_filter {
+	width: 50%;
+	float: right;
+	text-align: right;
+}
+
+.dataTables_info {
+	width:200px;
+	float: left;
+}
+
+.dataTables_paginate {
+	width: 55px;
+	* width: 55px;
+	float: right;
+	text-align: right;
+}
+
+/* Pagination nested */
+.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next {
+	height: 24px;
+	width: 24px;
+	float: left;
+	cursor:pointer;
+}
+
+#example_length {width:300px; margin-bottom:5px; }
+
+#example_info, #example_paginate {
+	margin-top:10px;
+	width:170px;
+}
+
+#example_paginate {
+	margin-bottom:10px;
+}
+
+#example_previous {
+	margin-right:5px;
+}
+.paginate_disabled_previous {
+	background-image: url('../images/back_disabled.png');
+}
+
+.paginate_enabled_previous {
+	background-image: url('../images/back_enabled.png');
+}
+
+.paginate_disabled_next {
+	background-image: url('../images/forward_disabled.png');
+}
+
+.paginate_enabled_next {
+	background-image: url('../images/forward_enabled.png');
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables display
+*/
+
+.display {
+	clear: both;
+	width:100%;
+	border:1px solid #CCC;
+	
+
+}
+
+.display tbody tr td {
+	padding-top:3px;
+	padding-bottom:3px;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables sorting
+ */
+
+.sorting_asc {
+	background-color:#CCC;
+}
+
+.sorting_desc {
+	background-color:#CCC;
+}
+
+
+/* TH STYLE */
+.th_chexbox {
+	width:25px;
+}
+.th_title {
+	width:250px;
+}
+.th_status {
+	width:150px;
+}
+.th_date {
+	width:150px;
+}
+.th_author {
+	width:150px;
+}
+.th_action {
+	width:10px;
+}
+
+.paging_two_button .ui-button {
+	float: left;
+	cursor: pointer;
+	* cursor: hand;
+}
+
+.paging_full_numbers .ui-button {
+	padding: 2px 6px;
+	
+	cursor: pointer;
+	* cursor: hand;
+}
+
+.dataTables_paginate .ui-button {
+	margin-right: -0.1em !important;
+}
+
+.paging_full_numbers {
+	width: 450px !important;
+	
+}
+
+.dataTables_wrapper .ui-toolbar {
+	padding: 5px;
+}
+
+.dataTables_paginate {
+	width: auto;
+}
+
+.dataTables_info {
+	padding-top: 3px;
+}
+
+table.display thead th {
+	padding: 3px 0px 3px 10px;
+	cursor: pointer;
+	* cursor: hand;
+}
+
+div.dataTables_wrapper .ui-widget-header {
+	font-weight: normal;
+}
+
+
+/*
+ * Sort arrow icon positioning
+ */
+table.display thead th div.DataTables_sort_wrapper {
+	position: relative;
+	padding-right: 20px;
+	padding-right: 20px;
+}
+
+table.display thead th div.DataTables_sort_wrapper span {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+	right: 0;
+}
+
+
+.sorting_asc {
+	background: #eaeaea; /* Old browsers */
+background: -moz-linear-gradient(top, #eaeaea 0%, #fafafa 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaeaea), color-stop(100%,#fafafa)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #eaeaea 0%,#fafafa 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #eaeaea 0%,#fafafa 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #eaeaea 0%,#fafafa 100%); /* IE10+ */
+background: linear-gradient(top, #eaeaea 0%,#fafafa 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaeaea', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */
+
+}
+
+.sorting_desc {
+	background: #eaeaea; /* Old browsers */
+background: -moz-linear-gradient(top, #eaeaea 0%, #fafafa 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaeaea), color-stop(100%,#fafafa)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #eaeaea 0%,#fafafa 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #eaeaea 0%,#fafafa 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #eaeaea 0%,#fafafa 100%); /* IE10+ */
+background: linear-gradient(top, #eaeaea 0%,#fafafa 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaeaea', endColorstr='#fafafa',GradientType=0 ); /* IE6-9 */
+
+}
+
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *
+ * Everything below this line is the same as demo_table.css. This file is
+ * required for 'cleanliness' of the markup
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * DataTables features
+ */
+
+
+
+.dataTables_length {
+	width: 40%;
+	float: left;
+}
+
+.dataTables_filter {
+	width: 50%;
+	float: right;
+	text-align: right;
+}
+
+.dataTables_info {
+	width: 50%;
+	float: left;
+}
+
+.dataTables_paginate {
+	float: right;
+	text-align: right;
+}
+
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Misc
+ */
+.dataTables_scroll {
+	clear: both;
+}
+
+.top, .bottom {
+	padding: 15px;
+	background-color: #F5F5F5;
+	border: 1px solid #CCCCCC;
+}
+
+.top .dataTables_info {
+	float: none;
+}
+
+.clear {
+	clear: both;
+}
+
+.dataTables_empty {
+	text-align: center;
+}
+
+tfoot input {
+	margin: 0.5em 0;
+	width: 100%;
+	color: #444;
+}
+
+tfoot input.search_init {
+	color: #999;
+}
+
+td.group {
+	background-color: #d1cfd0;
+	border-bottom: 2px solid #A19B9E;
+	border-top: 2px solid #A19B9E;
+}
+
+td.details {
+	background-color: #d1cfd0;
+	border: 2px solid #A19B9E;
+}
+
+
+.example_alt_pagination div.dataTables_info {
+	width: 40%;
+}
+
+.paging_full_numbers span.paginate_button,
+ 	.paging_full_numbers span.paginate_active {
+	border: 1px solid #cccccc;
+	padding: 5px 10px;
+	margin: 0 3px;
+	cursor: pointer;
+	*cursor: hand;
+	background: #f7f6f6; /* Old browsers */
+	background: -moz-linear-gradient(top, #f7f6f6 1%, #fafafa 100%, #e1e0e0 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#f7f6f6), color-stop(100%,#fafafa), color-stop(100%,#e1e0e0)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #f7f6f6 1%,#fafafa 100%,#e1e0e0 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #f7f6f6 1%,#fafafa 100%,#e1e0e0 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #f7f6f6 1%,#fafafa 100%,#e1e0e0 100%); /* IE10+ */
+	background: linear-gradient(top, #f7f6f6 1%,#fafafa 100%,#e1e0e0 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f6f6', endColorstr='#e1e0e0',GradientType=0 ); /* IE6-9 */
+
+
+}
+
+.paging_full_numbers span.paginate_button {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+

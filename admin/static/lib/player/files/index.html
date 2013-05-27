@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title></title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../plugin/css/style.css">
+    <link rel="stylesheet" href="css/demo.css">
+
+    <script type="text/javascript" src="js/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="../plugin/jquery-jplayer/jquery.jplayer.js"></script>
+    <script type="text/javascript" src="../plugin/ttw-video-player-min.js"></script>
+
+    <script type="text/javascript">
+        $(function() {
+
+            var playlist = [
+                {
+                    poster:'images/sample-playlist-item.png',
+                    m4v:'1.m4v',
+                    ogv:'1.ogv'
+                },
+                {
+                    poster:'images/sample-playlist-item2.png',
+                    m4v:'1.m4v',
+                    ogv:'1.ogv'
+                },
+                {
+                    poster:'images/sample-playlist-item.png',
+                    m4v:'1.m4v',
+                    ogv:'1.ogv'
+                },
+                {
+                    poster:'images/sample-playlist-item2.png',
+                    m4v:'1.m4v',
+                    ogv:'1.ogv'
+                }
+            ];
+
+            $('#video-container-inner').ttwVideoPlayer(playlist , {
+                debug:true,
+                autoHidePlaylist:true,
+                jPlayer:{
+                    swfPath: "../plugin/jquery-jplayer"
+                },
+                hdPlaylist:playlist,
+                hdButtonCallback:function(){
+                    alert('You clicked the hdButton. If specified, the plugin will load an HD version of the currently playing video');
+                },
+                settingsButtonCallback:function(){
+                    alert('You clicked the settingsButton. You can use the settingsButton callback to show a settings screen OR hide this button in the plugin settings');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="container">
+    <header>
+
+    </header>
+
+    <div id="main" role="main">
+        <div id="title"></div>
+        <div id="subtitle">codebasehero.com</div>
+        <div id="video-container-outer">
+            <div id="video-container-inner">
+             
+            </div>
+        </div>
+    </div>
+
+    <footer>
+
+    </footer>
+</div>
+</body>
+</html>
