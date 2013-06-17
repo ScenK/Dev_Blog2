@@ -38,10 +38,10 @@
       {% include 'admin/Element/footer.html' %}
     </section><!-- #middle-->
   <div class="clear"></div>
-  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery-1.7.1.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery.dataTables.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/autoresize.jquery.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/chosen.jquery.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('admin.static', filename='js/backend.js') }}"></script>
+  <script 
+      src="{{ url_for('admin.static', filename='lib/seajs/sea.js') }}" 
+      data-config="{{ url_for('admin.static', filename='js/config') }}"
+      data-main="{{ url_for('admin.static', filename='js/main') }}">
+  </script>
   </body>
 </html>

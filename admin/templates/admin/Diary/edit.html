@@ -42,7 +42,7 @@
         <div class="elem">
             <label>标签:(请使用<b>英文</b>逗号分隔) </label>
             <div class="indent">
-                <input type="text" id="diary_title" name="tags"  class="medium" value="{% for t in diary.tags %}{{ t }},{% endfor %}" />
+                <input type="text" name="tags"  class="medium" value="{% for t in diary.tags %}{{ t }},{% endfor %}" />
             </div>
         </div>
 
