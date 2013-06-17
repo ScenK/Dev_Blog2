@@ -81,10 +81,12 @@ def diary_add():
 
     return render_template('admin/Diary/add.html', error=error)
 
-@admin.route('/diary/edit', methods=['GET', 'POST'])
+@admin.route('/diary/edit/<diary_id>', methods=['GET', 'POST'])
 @login_required
-def diary_edit():
+def diary_edit(diary_id=None):
     error = None
+    diary = Diary.objects(pk=diary_id)[0]
+
     if request.method == 'POST' and 'title' and 'content' in request.form:
         title = request.form["title"]
         content = request.form["content"]
@@ -100,7 +102,7 @@ def diary_edit():
         post.save()
         return redirect(url_for("admin.index"))
 
-    return render_template('admin/Diary/add.html', error=error)
+    return render_template('admin/Diary/edit.html', error=error, diary=diary)
 
 @admin.route('/diary/list')
 @login_required

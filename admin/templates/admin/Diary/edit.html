@@ -1,0 +1,56 @@
+{% extends 'admin/base.html' %}
+{% block title %}编辑日志{% endblock %}
+{% block content %}
+<!--Form-->
+<div class="form">
+    <form method="post" id="customForm" action="#">
+        <div class="elem">
+            <label>题目: </label>
+            <div class="indent">
+                <input type="text" id="diary_title" name="title"  class="medium" value="{{ diary.title }}" />
+            </div>
+        </div>
+
+        <div class="elem">
+            <label>文章分类:</label>
+            <div class="indent">
+                <select class="chzn-select medium-select select" name="category">
+                    <option selected="selected">{{ diary.category }}</option>
+                    <option value="2">创建新分类</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="elem">
+            <label>图片:</label>
+            <div class="indent">
+                <div class="uploader black">
+                    <input type="text"  class="filename" readonly="readonly"/>
+                    <input type="button" name="file" class="button_files " value="Browse..."/>
+                    <input type="file" />
+                </div>
+            </div>
+        </div>
+
+        <div class="elem">
+            <label>正文:</label>
+            <div class="indent">
+                <textarea  cols="50" rows="5"  class="resize-text medium" name="content"> {{ diary.content }} </textarea>
+            </div>
+        </div>
+
+        <div class="elem">
+            <label>标签:(请使用<b>英文</b>逗号分隔) </label>
+            <div class="indent">
+                <input type="text" id="diary_title" name="tags"  class="medium" value="{% for t in diary.tags %}{{ t }},{% endfor %}" />
+            </div>
+        </div>
+
+        <div class="elem">
+          <div class="indent"><button type="submit" class="button-a dark-blue">发表</button></div>
+        </div>
+    </form>
+    <div class="clear"> </div>
+</div>
+<!--Form end-->
+{% endblock %}
