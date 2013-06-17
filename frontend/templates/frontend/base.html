@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} - {{ config['MAIN_TITLE'] }}</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('frontend.static', filename='css/frontend.css') }}">
+  </head>
+  <body>
+    <div id="container">
+      <div id="logo">
+        <a href="/" title="{{ self.title() }}"></a>
+        <p>不要因为工作 学习 忙碌 而忽视了生活.</p>
+      </div>
+      <div id="nav">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/gallary">Gallary</a></li>
+          <li><a href="/feed">RSS</a></li>
+          <li><a href="/about">About Me</a></li>
+        </ul>
+      </div>
+      {% block content %}
+      {% endblock %}
+      <div id="sidebar">
+        <h2>SEARCH</h2>
+        <form action="http://google.com/search" method="get" accept-charset="utf-8" id="search_form">
+          <input class="search" type="text" name="q" results="0" autocomplete="true">
+          <input type="hidden" name="q" value="site:tuzii.me">
+        </form>
+        <br />
+        <h2>ARCHIVES</h2>
+        <ul id="side-cats">
+          <li class="cat-item"><a href="/category/" title="">分类(1)</a></li>
+        </ul>
+        <h2>LINKS</h2>
+        <ul class="recent-comments">
+          <li><a href="http://xsky.me/" title="空の領域" target="_blank">空の領域</a>: 小天的博客...坑爹女一枚...</li>
+          <li><a href="http://www.youmeek.com/" title="YouMeek" target="_blank">YouMeek</a>: Judas.n的博客...低调男一枚...</li>
+          <li><a href="mailto:he.kang@dev-engine.com" title="交换链接">交换链接</a>: 交换链接可以给我邮件...博客收入现已均衡...谢绝下三烂的广告提供...</li>
+        </ul>
+        <h2>OPEN SOURSE</h2>
+        <ul class="opensourse">
+          <li><a href="https://bitbucket.org/Scen/dev_blog/" target="_blank" title="博客Bitbucket开源代码">Bitbucket</a>: 本分支代码为Dev 版本 会有不同程度的不稳定性 使用时请注意</li>
+          <li><a href="https://github.com/ScenK/dev_blog/" target="_blank" title="博客Github开源代码">Github</a>: 本分支代码为Stable 版本 将在Dev版本主功能完成 并72小时稳定后进行合并操作</li>
+        </ul>
+      </div>
+    </div>
+    <footer>
+    &copy; <a href="mailto:he.kang@dev-engine.com">Dev-engine</a>  |  Powered By Flask and MongoDB
+    </footer>
+    {% block script %}{% endblock %}
+  </body>
+</html>
