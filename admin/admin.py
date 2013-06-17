@@ -107,3 +107,10 @@ def diary_edit():
 def diary_list():
     diaries = Diary.objects.all()
     return render_template('admin/Diary/list.html', diaries=diaries)
+
+@admin.route('/diary/del/<diary_id>')
+@login_required
+def diary_del(diary_id):
+    message=None
+    Diary.objects(pk=diary_id).delete()
+    return redirect(url_for("admin.index"))
