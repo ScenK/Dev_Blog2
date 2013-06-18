@@ -19,7 +19,7 @@ define(function(require, exports, module) {
 	});
 
   //*********************  FORMS   *********************//
-  $(".chzn-select").chosen(); $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+  $(".chzn-select").chosen(); 
 
   //*******************  TAGS  *******************//
   var str = $('input[name="tags"]').val(); str = str.replace(/\,$/, '');
@@ -29,7 +29,10 @@ define(function(require, exports, module) {
   $('#categories_select').change(function(){
     var self = $(this);
     if(self.val() === '创建新分类'){
-      jPrompt('新分类名称:', '', '添加新分类', function(r) {
+      jPrompt('新分类名称:', '', '添加新分类', function(cat) {
+        $('#categories_select :selected').text(cat);
+        $('#categories_select').append('<option>创建新分类</option>');
+        $(".chzn-select").trigger("liszt:updated");
       });
     }
   });

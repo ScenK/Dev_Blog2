@@ -6,9 +6,10 @@ from mongoengine import *
 db = MongoEngine()
 
 class User(db.Document):
-    email  = db.StringField(required=True)
-    name   = db.StringField(max_length=50)
-    avatar = db.StringField()
+    email        = db.StringField(required=True)
+    name         = db.StringField(max_length=50)
+    avatar       = db.StringField()
+    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 
 class Diary(db.Document):
     title        = db.StringField(required=True)
@@ -25,6 +26,11 @@ class Diary(db.Document):
     meta = {'allow_inheritance': True}
 
 class Comment(db.EmbeddedDocument):
-    content = db.StringField(required=True)
-    name    = db.StringField(max_length=120, required=True)
-    email   = db.EmailField()
+    content      = db.StringField(required=True)
+    name         = db.StringField(max_length=120, required=True)
+    email        = db.EmailField()
+    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+
+class Category(db.EmbeddedDocument):
+    name         = db.StringField(max_length=120, required=True)
+    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
