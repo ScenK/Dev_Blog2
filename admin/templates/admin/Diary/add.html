@@ -15,8 +15,11 @@
             <label>文章分类:</label>
             <div class="indent">
                 <select class="chzn-select medium-select select" name="category" id="categories_select"> 
-                    <option>未分类</option>
+                    {% for c in categories %}
+                    <option>{{ c.name }}</option>
+                    {% endfor %}
                     <option>创建新分类</option>
+
                 </select>   
             </div>
         </div>
