@@ -30,7 +30,9 @@
         <br />
         <h2>ARCHIVES</h2>
         <ul id="side-cats">
-          <li class="cat-item"><a href="/category/" title="">分类(1)</a></li>
+          {% for c in categories %}
+          <li class="cat-item"><a href="/category/{{ c.name }}" title="{{ c.name }}">{{ c.name }}({{ c.diaries|count }})</a></li>
+          {% endfor %}
         </ul>
         <h2>LINKS</h2>
         <ul class="recent-comments">
