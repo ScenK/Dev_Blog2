@@ -1,0 +1,162 @@
+/*CSS ANIMATION
+======================*/
+
+
+/*@-moz-keyframes rotate-head {
+	0% {
+		-moz-transform: translate(-50px,0px);
+	}
+	8% {
+		-moz-transform: translate(-30px,-10px);
+	}
+	16% {
+		-moz-transform: translate(-15px,-20px);
+	}
+	25% {
+		-moz-transform: translate(0px,-30px);
+	}
+	33% {
+		-moz-transform: translate(15px,-20px);
+	}
+	41% {
+		-moz-transform: translate(30px,-10px);
+	}
+	50% {
+		-moz-transform: translate(50px,0px);
+	}
+	58% {
+		-moz-transform: translate(30px,10px);
+	}
+	66% {
+		-moz-transform: translate(15px,20px);
+	}
+	80% {
+		-moz-transform: translate(0px,30px);
+	}
+	90% {
+		-moz-transform: translate(-15px,20px);
+	}
+	100% {
+		-moz-transform: translate(-30px,10px);
+	}
+
+}*/
+
+@-moz-keyframes  rotate-wing-left {
+	0%{-moz-transform: rotate(-20deg);}
+	100%{-moz-transform: rotate(15deg);}
+}
+@-moz-keyframes rotate-wing-right {
+	0%{-moz-transform: rotate(20deg);}
+	100%{-moz-transform: rotate(-15deg);}
+
+}
+
+@-moz-keyframes rotate-eyebrow {
+
+	0%{-moz-transform: translate(0, 0) rotate(0deg);}
+	100%{-moz-transform: translate(2px,-2px) rotate(15deg);}
+
+}
+@-moz-keyframes rotate-eyebrow-right{
+		0%{-moz-transform: translate(0, 0) rotate(0deg);}
+	100%{-moz-transform: translate(2px,-2px) rotate(-15deg);}
+
+}
+
+@-moz-keyframes eye-pupil{
+	0%{-moz-transform: translate(3px, 0px)}
+	100%{-moz-transform: translate(-8px,-2px)}
+
+}
+
+@-moz-keyframes eye-pupil-r {
+	0%{-moz-transform: translate(8px, -2px)}
+	100%{-moz-transform: translate(-3px,0px)}
+
+}
+
+@-moz-keyframes leg-a{
+	0%{-moz-transform: translate(3px, 1px) rotate(-1deg)}
+	100%{-moz-transform: translate(-3px,-1px) rotate(1deg)}
+
+}
+
+@-moz-keyframes leg-b{
+	0%{-moz-transform: translate(3px, 1px) rotate(1deg)}
+	100%{-moz-transform: translate(-3px,-1px) rotate(-1deg)}
+}
+
+/*
+#wraper #head {
+	-moz-animation-name: rotate-head;
+	-moz-animation-duration: 4s;
+	-moz-animation-iteration-count: infinite;
+	-moz-transform-origin: 50% 50%;
+ -moz-animation-timing-function: linear;
+
+
+}*/
+
+#wraper #wing-one span {
+	-moz-transform:rotate(20deg);
+	-moz-transform-origin:100% 100%;
+	-moz-animation: rotate-wing-left 800ms ease-in-out infinite alternate;
+	z-index:1;
+}
+
+#wraper #wing-two span {
+	-moz-transform:rotate(-15deg);
+	-moz-transform-origin:left bottom;
+	-moz-animation: rotate-wing-right 800ms ease-in-out infinite alternate;
+	z-index:1;
+}
+
+#left-eye .eyebrow span{
+	-moz-transform:rotate(5deg);
+	-moz-transform-origin: right 50%;
+	-moz-animation:  rotate-eyebrow 2s ease-in-out infinite alternate;
+}
+
+#right-eye .eyebrow span {
+	-moz-transform:rotate(-5deg);
+	/*-moz-animation-name: rotate-eyebrow-right;
+	-moz-animation-duration: 7s;
+	-moz-animation-iteration-count: infinite;*/
+	-moz-transform-origin: left 50%;
+	-moz-animation:   rotate-eyebrow-right 2s ease-in-out infinite alternate;
+}
+#wraper .eye-pupil {
+	/*-moz-animation-name: eye-pupil;
+	-moz-animation-duration: 7s;
+	-moz-animation-iteration-count: infinite;*/
+	-moz-transform-origin: 0 0;
+	-moz-animation: eye-pupil 2s linear infinite alternate;
+}
+#wraper #right-eye .eye-pupil {
+	/*-moz-animation-name: eye-pupil;
+	-moz-animation-duration: 7s;
+	-moz-animation-iteration-count: infinite;*/
+	-moz-transform-origin: 0 0;
+	-moz-animation: eye-pupil-r 2s linear infinite alternate;
+}
+
+#wraper .legs-a {
+/*	-moz-animation-name: leg-a;
+	-moz-animation-duration: 5s;
+	-moz-animation-iteration-count: infinite;*/
+	-moz-transform-origin: 0 0;
+
+	-moz-transform:translate(5px,0) rotate(1deg);
+	-moz-animation: leg-a 2s linear infinite alternate;
+}
+#wraper .legs-b {
+	/*-moz-animation-name: leg-b;
+	-moz-animation-duration: 5s;
+	-moz-animation-iteration-count: infinite;*/
+	-moz-transform-origin: 0 0;
+
+	-moz-transform:translate(5px,0) rotate(-1deg);
+	-moz-animation: leg-b 2s linear infinite alternate;
+}
+
