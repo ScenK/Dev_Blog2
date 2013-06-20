@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template
 from jinja2 import TemplateNotFound
 from Model.models import Diary, Category
 
@@ -21,5 +21,6 @@ def diary_detail(diary_id, diary_title=None):
 
 @frontend.route('/category/<category_name>')
 def category_list(category_name):
+    categories = Category.objects.order_by('-publish_time')
     diaries = Diary.objects(category=category_name).order_by('-publish_time')
-    return render_template('frontend/category/list.html', category=category_name, diaries=diaries)
+    return render_template('frontend/category/list.html', category=category_name, diaries=diaries, categories=categories)

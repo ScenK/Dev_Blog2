@@ -1,0 +1,29 @@
+{% extends 'admin/base.html' %}
+{% block title %}分类管理{% endblock %}
+{% block content %}
+<!--Table Styling-->
+<table class="display" id="example">
+<thead>
+    <tr>
+        <th class="th_chexbox"><input type="checkbox" name="set" /></th>
+        <th class="th_title">分类名称</th>
+        <th class="th_status">日志个数</th>
+        <th class="th_date">创建时间</th>
+        <th class="th_chexbox">操作</th>
+    </tr>
+</thead>
+<tbody>
+    {% for c in categories %}
+    <tr class="item">
+        <td><input type="checkbox" name="id[]" value="1" /></td>
+        <td>{{ c.name }}</td>
+        <td>{{ c.diaries|count }}</td>
+        <td>{{ c.publish_time }}</td>
+        <td class="action"><a href="{{ url_for('admin.category_del', category_name = c.name) }}" title="删除分类"><img src="../static/images/del.png" alt="delete"></a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+<div class="clear"> </div>
+<!--Table Styling end-->
+{% endblock %}

@@ -83,7 +83,7 @@ def diary_add():
             Category.objects(name=category).update_one(push__diaries=post)
         return redirect(url_for("admin.diary_list"))
 
-    return render_template('admin/Diary/add.html', error=error, categories=categories)
+    return render_template('admin/diary/add.html', error=error, categories=categories)
 
 @admin.route('/diary/edit/<diary_id>', methods=['GET', 'POST'])
 @login_required
@@ -105,17 +105,28 @@ def diary_edit(diary_id=None):
         post.save()
         return redirect(url_for("admin.index"))
 
-    return render_template('admin/Diary/edit.html', error=error, diary=diary)
+    return render_template('admin/diary/edit.html', error=error, diary=diary)
 
 @admin.route('/diary/list')
 @login_required
 def diary_list():
     diaries = Diary.objects.order_by('-publish_time')
-    return render_template('admin/Diary/list.html', diaries=diaries)
+    return render_template('admin/diary/list.html', diaries=diaries)
 
 @admin.route('/diary/del/<diary_id>')
 @login_required
 def diary_del(diary_id):
-    message=None
     Diary.objects.get_or_404(pk=diary_id).delete()
     return redirect(url_for("admin.diary_list"))
+
+@admin.route('/category/list')
+@login_required
+def category_list():
+    categories = Category.objects.order_by('-publish_time')
+    return render_template('admin/category/list.html', categories=categories)
+
+@admin.route('/category/del/<category_name>')
+@login_required
+def category_del(category_name):
+    Category.objects.get_or_404(name=category_name).delete()
+    return redirect(url_for("admin.category_list"))
