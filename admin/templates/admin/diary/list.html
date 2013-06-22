@@ -20,7 +20,7 @@
         <td class="subject"><a href="{{ url_for('admin.diary_edit', diary_id = i.id) }}" titl"编辑日志">{{ i.title }}</a></td>
         <td><span class="published">313</span></td>
         <td>{{ i.summary }}</td>
-        <td class="name">{{ i.publish_time }}</td>
+        <td class="name">{{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}</td>
         <td class="action"><a href="{{ url_for('admin.diary_del', diary_id = i.id) }}" title="删除日志"><img src="../static/images/del.png" alt="delete"></a></td>
     </tr>
     {% endfor %}

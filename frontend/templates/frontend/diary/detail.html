@@ -4,7 +4,7 @@
 <div id="content-container">
   <div class="post">
       <h1><a class="post-title" href="/diary/{{ diary.id }}/{{ diary.title }}" title="{{ diary.title }}">{{ diary.title }}</a></h1>
-    <div class="author"><span>作者:</span> <a>{{ diary.author.name }}</a>&nbsp;<span>日期:</span> {{ diary.publish_time }}&nbsp;<span>标签:</span> {% for t in diary.tags %}<a href="/tag/{{ t }}" title="{{ t }}">{{ t }}</a> {% endfor %}</div>
+    <div class="author"><span>作者:</span> <a>{{ diary.author.name }}</a>&nbsp;<span>日期:</span> {{ diary.publish_time.strftime('%Y-%m-%d %H:%M') }}&nbsp;<span>标签:</span> {% for t in diary.tags %}<a href="/tag/{{ t }}" title="{{ t }}">{{ t }}</a> {% endfor %}</div>
     <p></p>
     <div class="summary">
       {{ diary.html|safe }}
@@ -22,7 +22,7 @@
     <ol class="commentlist">
         {% for c in diary.comments %}
         <li class="alt">
-          <small class="commentmetadata"><a>{{ c.publish_time }}</a></small>
+          <small class="commentmetadata"><a>{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</a></small>
           <cite>{{ c.author }} <span>:</span></cite> 
           <div class="comment-content">
             <p>{{ c.content }}</p>
