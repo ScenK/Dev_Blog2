@@ -32,7 +32,6 @@ class Category(db.Document):
 
 class Comment(db.EmbeddedDocument):
     content      = db.StringField(required=True)
-    name         = db.StringField(max_length=120, required=True)
+    author       = db.StringField(max_length=120, required=True)
     email        = db.EmailField()
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
-

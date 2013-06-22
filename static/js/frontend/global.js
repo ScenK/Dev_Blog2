@@ -19,10 +19,16 @@
         name = u_name.val(),
         email = u_email.val(),
         comment = u_comment.val();
+
         $.ajax({
           type: 'POST',
-          url: '/comment/add',
-          data: {username: name, did: did, email: email, comment: comment, _xsrf: _xsrf},
+          url: "/comment/add",
+          data: {
+              username : name,
+              did      : did,
+              email    : email,
+              comment  : comment
+          },
           success: function(data){
             self.val('提交').removeAttr('style').attr('disabled', false);
           },

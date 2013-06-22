@@ -15,18 +15,21 @@
             <li><a href="/category/{{ diary.category }}" title="{{ diary.category }}" rel="category tag">{{ diary.category }}</a></li>
         </ul>
       </span>
-      <span class="post-comments">&nbsp;&nbsp;评论: <a>( 0 )</a></span>
+      <span class="post-comments">&nbsp;&nbsp;评论: <a>( {{ diary.comments|count }} )</a></span>
       </div>
   </div>
   <h3 id="comments"> 0 个回复给 《<span>{{ diary.title }}</span>》</h3>
     <ol class="commentlist">
+        {% for c in diary.comments %}
         <li class="alt">
-          <small class="commentmetadata"><a></a></small>
-          <cite> <span>:</span></cite> 
+          <small class="commentmetadata"><a>{{ c.publish_time }}</a></small>
+          <cite>{{ c.author }} <span>:</span></cite> 
           <div class="comment-content">
-            <p></p>
+            <p>{{ c.content }}</p>
           </div>
         </li>
+        {% endfor %}
+        {#
         <li class="admin-reply">
           <img class="avatar-image" src="">    
           <small class="commentmetadata"><a></a></small>
@@ -35,10 +38,11 @@
             <p></p>
           </div>
         </li>
+#}
     </ol>
   <h3 id="respond">新增评论:<span class="welcome-back"> { 欢迎回来~ <a></a> } </span></h3>
   <form id="comment_add_form">
-    <input type="hidden" id="did" value="">
+    <input type="hidden" id="did" value="{{ diary.id }}">
 
     <p>
       <input type="text" class="username" value="" size="22" tabindex="1">
