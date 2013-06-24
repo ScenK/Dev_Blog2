@@ -5,7 +5,7 @@ from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin, AnonymousUser,
                             confirm_login, fresh_login_required)
 from jinja2 import TemplateNotFound
-from Model.models import User, Diary, Comment, Category
+from Model.models import User, Diary, CommentEm, Category, Comment
 import markdown
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
@@ -77,7 +77,7 @@ def diary_add():
         post.html = markdown.markdown(content)
         post.tags = tags.split(',')
         post.save()
-        
+
         a, cat = Category.objects.get_or_create(name=category, defaults={'diaries': [post]})
         if not cat:
             Category.objects(name=category).update_one(push__diaries=post)
@@ -130,3 +130,9 @@ def category_list():
 def category_del(category_name):
     Category.objects.get_or_404(name=category_name).delete()
     return redirect(url_for("admin.category_list"))
+
+@admin.route('/comment/list')
+@login_required
+def comment_list():
+    comments = Comment.objects.order_by('-publish_time')
+    return render_template('admin/comment/list.html', comments=comments)

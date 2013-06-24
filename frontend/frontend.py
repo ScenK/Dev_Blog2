@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, render_template, redirect, request, url_for
 from jinja2 import TemplateNotFound
-from Model.models import Diary, Category, Comment
+from Model.models import Diary, Category, CommentEm, Comment
 
 frontend = Blueprint('frontend', __name__, template_folder='templates', static_folder='static')
 
@@ -31,13 +31,20 @@ def comment_add():
         name = request.form['username']
         did = request.form['did']
         email = request.form['email']
-        comment = request.form['comment']
+        content = request.form['comment']
 
         post = Diary.objects(pk=did)
-        comment = Comment(
+        commentEm = CommentEm(
                     author = name,
-                    content = comment,
+                    content = content,
                     email = email
                 )
-        post.update_one(push__comments=comment)
-        return '' 
+        post.update_one(push__comments=commentEm)
+        
+        ''' Save in Comment Model for admin manage'''
+        comment = Comment(content=content)
+        comment.diary = post[0]
+        comment.email = email
+        comment.author = name
+        comment.save(validate=False)
+        return ''

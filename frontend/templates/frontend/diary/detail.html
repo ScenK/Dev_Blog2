@@ -18,7 +18,7 @@
       <span class="post-comments">&nbsp;&nbsp;评论: <a>( {{ diary.comments|count }} )</a></span>
       </div>
   </div>
-  <h3 id="comments"> 0 个回复给 《<span>{{ diary.title }}</span>》</h3>
+  <h3 id="comments"> {{ diary.comments|count }} 个回复给 《<span>{{ diary.title }}</span>》</h3>
     <ol class="commentlist">
         {% for c in diary.comments %}
         <li class="alt">

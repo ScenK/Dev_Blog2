@@ -19,7 +19,7 @@ class Diary(db.Document):
     category     = db.StringField(default=u'未分类')
     author       = db.ReferenceField(User)
     tags         = db.ListField(db.StringField())
-    comments     = db.ListField(db.EmbeddedDocumentField('Comment'))
+    comments     = db.ListField(db.EmbeddedDocumentField('CommentEm'))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
     update_time  = db.DateTimeField(default=datetime.datetime.now, required=True)
 
@@ -30,7 +30,14 @@ class Category(db.Document):
     diaries      = db.ListField(db.ReferenceField(Diary))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 
-class Comment(db.EmbeddedDocument):
+class Comment(db.Document):
+    content      = db.StringField(required=True)
+    author       = db.StringField(max_length=120, required=True)
+    email        = db.EmailField()
+    diary        = db.ReferenceField(Diary)
+    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+
+class CommentEm(db.EmbeddedDocument):
     content      = db.StringField(required=True)
     author       = db.StringField(max_length=120, required=True)
     email        = db.EmailField()

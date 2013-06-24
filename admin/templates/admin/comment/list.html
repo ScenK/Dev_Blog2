@@ -1,0 +1,29 @@
+{% extends 'admin/base.html' %}
+{% block title %}评论管理{% endblock %}
+{% block content %}
+<!--Table Styling-->
+<table class="display" id="example">
+<thead>
+    <tr>
+        <th class="th_chexbox"><input type="checkbox" name="set" /></th>
+        <th class="th_title">作者</th>
+        <th class="th_status">评论</th>
+        <th class="th_date">文章标题</th>
+        <th class="th_author">发表时间</th>
+    </tr>
+</thead>
+<tbody>
+    {% for c in comments %}
+    <tr class="item">
+        <td><input type="checkbox" name="id[]" value="1" /></td>
+        <td class="subject">{{ c.author }}</td>
+        <td><span class="published">{{ c.content }}</span></td>
+        <td>{{ c.diary.title }}</td>
+        <td class="name">{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+<div class="clear"> </div>
+<!--Table Styling end-->
+{% endblock %}

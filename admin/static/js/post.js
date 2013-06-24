@@ -22,8 +22,10 @@ define(function(require, exports, module) {
   $(".chzn-select").chosen(); 
 
   //*******************  TAGS  *******************//
-  var str = $('input[name="tags"]').val(); str = str.replace(/\,$/, '');
-  $('input[name="tags"]').val(str);
+  if($('input[name="tags"]').length > 0 ){
+    var str = $('input[name="tags"]').val(); str = str.replace(/\,$/, '');
+    $('input[name="tags"]').val(str);
+  }
 
   //*******************  CATEGORIES  *******************//
   $('#categories_select').change(function(){
