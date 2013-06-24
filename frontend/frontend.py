@@ -2,6 +2,9 @@
 from flask import Blueprint, render_template, redirect, request, url_for
 from jinja2 import TemplateNotFound
 from Model.models import Diary, Category, CommentEm, Comment
+from config import *
+import PyRSS2Gen
+import datetime
 
 frontend = Blueprint('frontend', __name__, template_folder='templates', static_folder='static')
 
@@ -40,7 +43,7 @@ def comment_add():
                     email = email
                 )
         post.update_one(push__comments=commentEm)
-        
+
         ''' Save in Comment Model for admin manage'''
         comment = Comment(content=content)
         comment.diary = post[0]
@@ -48,3 +51,27 @@ def comment_add():
         comment.author = name
         comment.save(validate=False)
         return ''
+
+@frontend.route('/feed')
+def rss():
+    articles = Diary.objects[:12]
+    items = []
+    for article in articles:
+        content = article.html
+
+        url = Config.SITE_URL + '/diary/detail/' + str(article.pk) + '/' + article.title
+        items.append(PyRSS2Gen.RSSItem(
+            title = article.title,
+            link = url,
+            description = content,
+            guid = PyRSS2Gen.Guid(url),
+            pubDate = article.publish_time,
+        ))
+    rss = PyRSS2Gen.RSS2(
+        title = Config.MAIN_TITLE,
+        link = Config.SITE_URL,
+        description = Config.DESCRIPTION,
+        lastBuildDate = datetime.datetime.now(),
+        items = items
+    ).to_xml()
+    return rss
