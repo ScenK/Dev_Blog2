@@ -1,5 +1,6 @@
 define(function(require) {
 
-  var Post = require('./post.js');
+  var Account = require('./account.js'),
+      Post    = require('./post.js');
 
 });

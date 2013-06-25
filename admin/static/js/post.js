@@ -3,7 +3,13 @@ define(function(require, exports, module) {
    var $          = require('jquery'),
        autoResize = require('autoResize'),
        alerts     = require('alerts'),
+       dataTable  = require('dataTable'),
        chosen     = require('chosen');
+
+  //********************* TABLE (NEWS) *********************//
+  $('#example').dataTable({
+    "sPaginationType": "full_numbers"
+  });
 
   //********************* autorisize *********************//
 	$('textarea.resize-text').autoResize();

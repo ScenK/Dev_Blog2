@@ -15,9 +15,9 @@
       </span>
       <div id="login-content">
         <ul>
-          <li><a href="#"><img src="static/images/setting.png" alt=""> <span>Settings</span></a></li>
-          <li><a href="#"><img src="static/images/help.png" alt=""><span>Help</span></a></li>
-          <li><a href="/index.html"><img src="static/images/logout.png" alt=""><span>Log Out</span></a></li>
+          <li><a href="{{ url_for('admin.account_settings') }}"><img src="{{ url_for('admin.static', filename='images/setting.png') }}"> <span>Settings</span></a></li>
+          <li><a href="#"><img src="{{ url_for('admin.static', filename='images/help.png') }}"><span>Help</span></a></li>
+          <li><a href="{{ url_for('admin.logout') }}"><img src="{{ url_for('admin.static', filename='images/logout.png') }}"><span>Log Out</span></a></li>
         </ul>
       </div>
       </li>

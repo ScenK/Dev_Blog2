@@ -47,7 +47,7 @@ def logout():
 @admin.route('/')
 @login_required
 def index():
-    return render_template('admin/dashboard.html', current_user=current_user)
+    return render_template('admin/dashboard.html')
 
 @admin.route('/diary/add', methods=['GET', 'POST'])
 @login_required
@@ -125,3 +125,8 @@ def category_del(category_name):
 def comment_list():
     comments = Comment.objects.order_by('-publish_time')
     return render_template('admin/comment/list.html', comments=comments)
+
+@admin.route('/account/settings', methods=['GET', 'POST'])
+@login_required
+def account_settings():
+    return render_template('admin/account/settings.html')
