@@ -6,10 +6,13 @@ from mongoengine import *
 db = MongoEngine()
 
 class User(db.Document):
-    email        = db.StringField(required=True)
-    name         = db.StringField(max_length=50)
+    name         = db.StringField(max_length=50, required=True)
+    password     = db.StringField()
+    email        = db.StringField()
     avatar       = db.StringField()
-    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+    intro        = db.StringField()
+    desc         = db.StringField() 
+    created_at   = db.DateTimeField(default=datetime.datetime.now, required=True)
 
 class Diary(db.Document):
     title        = db.StringField(required=True)
