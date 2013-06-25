@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
-from functools import wraps
+from werkzeug.security import check_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
-                            login_user, logout_user, UserMixin, AnonymousUser,
+                            login_user, logout_user, UserMixin,
                             confirm_login, fresh_login_required)
 from jinja2 import TemplateNotFound
-from Model.models import User, Diary, CommentEm, Category, Comment
+from Model.models import Diary, CommentEm, Category, Comment
+from Model.models import User as UserModel
 import markdown
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
-
-
 class User(UserMixin):
     def __init__(self, name, id, active=True):
         self.name = name
@@ -20,26 +19,16 @@ class User(UserMixin):
     def is_active(self):
         return self.active
 
-
-class Anonymous(AnonymousUser):
-    name = u"Anonymous"
-
-USERS = {
-    1: User(u"Notch", 1),
-    2: User(u"Steve", 2),
-    3: User(u"Creeper", 3, False),
-}
-
-USER_NAMES = dict((u.name, u) for u in USERS.itervalues())
-
 @admin.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST' and 'username' in request.form:
+        user = UserModel.objects.first()
         username = request.form["username"]
-        if username in USER_NAMES:
-            remember = request.form.get("remember", "no") == "yes"
-            if login_user(USER_NAMES[username], remember=remember):
+        password = request.form["password"]
+        
+        if username == user.name and check_password_hash(user.password, password):
+            if login_user(User(user.name, user.pk)):
                 flash("Logged in!")
                 return redirect(request.args.get("next") or url_for("index.index"))
             else:
@@ -58,7 +47,7 @@ def logout():
 @admin.route('/')
 @login_required
 def index():
-    return render_template('admin/dashboard.html')
+    return render_template('admin/dashboard.html', current_user=current_user)
 
 @admin.route('/diary/add', methods=['GET', 'POST'])
 @login_required
