@@ -10,16 +10,18 @@
         <th class="th_status">评论</th>
         <th class="th_date">文章标题</th>
         <th class="th_author">发表时间</th>
+        <th class="th_author">操作</th>
     </tr>
 </thead>
 <tbody>
     {% for c in comments %}
-    <tr class="item">
+    <tr class="item" data-title="{{ c.diary.title }}" data-author="{{ c.author }}" data-email="{{ c.email }}" data-did="{{ c.diary.pk }}">
         <td><input type="checkbox" name="id[]" value="1" /></td>
         <td class="subject">{{ c.author }}</td>
         <td><span class="published">{{ c.content }}</span></td>
         <td>{{ c.diary.title }}</td>
         <td class="name">{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>{% if c.author != current_user.name %}<a class="comment_back" href="javascript:void(0);">回复</a>{% endif %}</td>
     </tr>
     {% endfor %}
 </tbody>

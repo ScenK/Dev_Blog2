@@ -126,6 +126,30 @@ def comment_list():
     comments = Comment.objects.order_by('-publish_time')
     return render_template('admin/comment/list.html', comments=comments)
 
+@admin.route('/comment/reply', methods=['POST'])
+#@login_required
+def comment_reply():
+    if request.method == 'POST':
+        author = request.form['author']
+        did = request.form['did']
+        title = request.form['title']
+        email = request.form['email']
+        content = request.form['content']
+
+        post = Diary.objects(pk=did)
+        commentEm = CommentEm(
+                    author = current_user.name,
+                    content = content,
+                )
+        post.update_one(push__comments=commentEm)
+
+        ''' Save in Comment Model for admin manage'''
+        comment = Comment(content=content)
+        comment.diary = post[0]
+        comment.author = current_user.name
+        comment.save(validate=False)
+    return ''
+
 @admin.route('/account/settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():

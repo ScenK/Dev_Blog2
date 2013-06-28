@@ -38,6 +38,8 @@
       {% include 'admin/element/footer.html' %}
     </section><!-- #middle-->
   <div class="clear"></div>
+  {% block script %}
+  {% endblock %}
   <script 
       src="{{ url_for('admin.static', filename='lib/seajs/sea.js') }}" 
       data-config="{{ url_for('admin.static', filename='js/config') }}"

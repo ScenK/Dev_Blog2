@@ -32,6 +32,10 @@ header, footer, nav, section{
   float:right;
 }
 
+.hide {
+  display: none;
+}
+
 
 /* Typography */
 a{ text-decoration:none; cursor:pointer;}

@@ -4,7 +4,7 @@ html,body,div,span,applet,object,iframe,input,h1,h2,h3,h4,h5,h6,p,blockquote,pre
 		padding:0;
 	}
 	
-	input[type="text"]:focus { outline: none; }
+	input[type="text"]:focus, input[type="password"]:focus { outline: none; }
 	/* General Section */
 	
 	html, body, textarea, input { 
@@ -79,7 +79,7 @@ html,body,div,span,applet,object,iframe,input,h1,h2,h3,h4,h5,h6,p,blockquote,pre
 		float:right;
 	}
 	
-	input[type=text] {
+	input[type=text], input[type=password] {
 		background-image:url(../images/input-login.png);
 		width:245px;
 		height:40px;
