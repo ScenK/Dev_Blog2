@@ -5,6 +5,7 @@ from Model.models import Diary, Category, CommentEm, Comment
 from config import *
 import PyRSS2Gen
 import datetime
+from utils.email_util import send_reply_mail
 
 frontend = Blueprint('frontend', __name__, template_folder='templates', static_folder='static')
 
@@ -36,21 +37,27 @@ def comment_add():
         email = request.form['email']
         content = request.form['comment']
 
-        post = Diary.objects(pk=did)
-        commentEm = CommentEm(
-                    author = name,
-                    content = content,
-                    email = email
-                )
-        post.update_one(push__comments=commentEm)
+        #post = Diary.objects(pk=did)
+        #commentEm = CommentEm(
+                    #author = name,
+                    #content = content,
+                    #email = email
+                #)
+        #post.update_one(push__comments=commentEm)
 
-        ''' Save in Comment Model for admin manage'''
-        comment = Comment(content=content)
-        comment.diary = post[0]
-        comment.email = email
-        comment.author = name
-        comment.save(validate=False)
-        return ''
+        #''' Save in Comment Model for admin manage'''
+        #comment = Comment(content=content)
+        #comment.diary = post[0]
+        #comment.email = email
+        #comment.author = name
+        #comment.save(validate=False)
+
+        try:
+            #send_reply_mail(Config.EMAIL, Config.MAIN_TITLE+u'收到了新的评论, 请查收', content, did, name)
+            send_reply_mail(Config.EMAIL, Config.MAIN_TITLE, content, did, name)
+        except Exception as e:
+            print str(e)
+        return 'success'
 
 @frontend.route('/feed')
 def rss():
