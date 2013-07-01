@@ -53,6 +53,14 @@
       }
   });
 
+  $(window).on('scroll', function () {
+    var top = $("#back_to_top").offset().top;
+    top > 1000 ? $('#back_to_top').removeClass('hide') : $('#back_to_top').addClass('hide'); 
+  });
+
+  $(document).on('click', '#back_to_top', function() {
+    $('body').animate({ scrollTop: $('#nav').offset().top }, 200);
+  });
 
   $(document).ready(function() {
     // gallary page funciton
