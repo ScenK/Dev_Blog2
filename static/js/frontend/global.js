@@ -30,7 +30,10 @@
               comment  : comment
           },
           success: function(data){
-            self.val('提交').attr('disabled', false).removeAttr('style');
+            if(data === 'success')
+              self.val('提交').attr('disabled', false).removeAttr('style');
+            else
+              self.val('发生错误, 错误信息已发送给博主').attr('disabled', false).removeAttr('style');
           },
           error: function(){
             self.val('发生错误, 错误信息已发送给博主');
