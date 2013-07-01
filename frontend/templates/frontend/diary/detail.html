@@ -40,27 +40,23 @@
         </li>
 #}
     </ol>
-  <h3 id="respond">新增评论:<span class="welcome-back"> { 欢迎回来~ <a></a> } </span></h3>
-  <form id="comment_add_form">
-    <input type="hidden" id="did" value="{{ diary.id }}">
-
-    <p>
-      <input type="text" class="username" value="" size="22" tabindex="1">
-      <label for="author"><small><strong>称呼</strong> (必填)</small></label>
-    </p>
-
-    <p>
-      <input type="text" class="email" value="" size="22" tabindex="2">
-      <label for="email"><small>邮箱 (用于接收回复邮件) (必填)</small></label>
-    </p>
-
-    <p>
-      <textarea class="comment" cols="100%" rows="10" tabindex="4"></textarea>
-    </p>
-
-    <p>
-      <input type="button" id="comment_add_form_btn" tabindex="5" value="提交" class="small blue-button">
-    </p>
-  </form>
+    <h3 id="respond">新增评论:<span class="welcome-back">{% if guest_name %} { 欢迎回来~ <a>{{guest_name}}</a> } {% endif %}</span></h3>
+    <form id="comment_add_form">
+      <input type="hidden" id="did" value="{{ diary.id }}">
+      <p>
+        <input type="text" class="username" value="{% if guest_name %}{{ guest_name }}{% endif %}" size="22" tabindex="1">
+        <label for="author"><small><strong>称呼</strong> (必填)</small></label>
+      </p>
+      <p>
+        <input type="text" class="email" value="{% if guest_email %}{{ guest_email }}{% endif %}" size="22" tabindex="2">
+        <label for="email"><small>邮箱 (用于接收回复邮件) (必填)</small></label>
+      </p>
+      <p>
+        <textarea class="comment" cols="100%" rows="10" tabindex="4"></textarea>
+      </p>
+      <p>
+        <input type="button" id="comment_add_form_btn" tabindex="5" value="提交" class="small blue-button">
+      </p>
+    </form>
 </div>
 {% endblock %}

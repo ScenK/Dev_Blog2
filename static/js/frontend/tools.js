@@ -1,8 +1,28 @@
 var Tools = {
+  
+  setCookie: function (key, value, exdays) {
+    var exdate=new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var c_value = escape(value) + ((exdays==null) ? "" : "; expires = " + exdate.toUTCString());
+    document.cookie = key + "=" + c_value;
+  },
 
-  getCookie: function (name) {
-    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
-    return r ? r[1] : undefined;
+  getCookie: function (c_name) {
+    var c_value = document.cookie;
+    var c_start = c_value.indexOf(" " + c_name + "=");
+    if (c_start == -1){
+      c_start = c_value.indexOf(c_name + "=");
+    }else if (c_start == -1){
+      c_value = null;
+    }else{
+      c_start = c_value.indexOf("=", c_start) + 1;
+      var c_end = c_value.indexOf(";", c_start);
+      if (c_end == -1){
+        c_end = c_value.length;
+      }
+      c_value = unescape(c_value.substring(c_start,c_end));
+    }
+    return c_value;
   },
 
   emailCheck: function (target) {

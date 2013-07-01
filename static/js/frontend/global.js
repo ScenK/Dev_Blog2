@@ -1,7 +1,5 @@
 (function($){
 
-  var _xsrf = Tools.getCookie("_xsrf");
-
   // Comment Add Check
   $(document).on('click', '#comment_add_form_btn', function(){
     var self = $(this);
@@ -30,10 +28,14 @@
               comment  : comment
           },
           success: function(data){
-            if(data === 'success')
+            if(data === 'success'){
+              Tools.setCookie('guest_name', name, 30);
+              Tools.setCookie('guest_email', email, 30);
               self.val('提交').attr('disabled', false).removeAttr('style');
-            else
+            }
+            else{
               self.val('发生错误, 错误信息已发送给博主').attr('disabled', false).removeAttr('style');
+            }
           },
           error: function(){
             self.val('发生错误, 错误信息已发送给博主');

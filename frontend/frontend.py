@@ -9,6 +9,7 @@ from utils.email_util import send_reply_mail
 
 frontend = Blueprint('frontend', __name__, template_folder='templates', static_folder='static')
 
+
 @frontend.route('/')
 def home():
     diaries = Diary.objects.order_by('-publish_time')
@@ -16,18 +17,25 @@ def home():
 
     return render_template('frontend/home.html', diaries=diaries, categories=categories)
 
+
 @frontend.route('/diary/<diary_id>/<diary_title>')
 def diary_detail(diary_id, diary_title=None):
     diary = Diary.objects(pk=diary_id)[0]
     categories = Category.objects.order_by('-publish_time')
 
-    return render_template('frontend/diary/detail.html', diary=diary, categories=categories)
+    guest_name = request.cookies.get('guest_name') 
+    guest_email = request.cookies.get('guest_email')
+    
+    return render_template('frontend/diary/detail.html', diary=diary, categories=categories,
+                           guest_name=guest_name, guest_email=guest_email)
+
 
 @frontend.route('/category/<category_name>')
 def category_list(category_name):
     categories = Category.objects.order_by('-publish_time')
     diaries = Diary.objects(category=category_name).order_by('-publish_time')
     return render_template('frontend/category/list.html', category=category_name, diaries=diaries, categories=categories)
+
 
 @frontend.route('/comment/add', methods=['POST'])
 def comment_add():
@@ -60,6 +68,7 @@ def comment_add():
             return 'success'
         except Exception as e:
             return str(e)
+
 
 @frontend.route('/feed')
 def rss():
