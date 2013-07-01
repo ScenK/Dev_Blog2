@@ -5,18 +5,9 @@
   <title>登陆 - Sea_Kudo的博客</title>
   <meta name="description" content="">
   <link rel="shortcut icon" href="{{ url_for('admin.static', filename='images/favicon.ico') }}" />
-  <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/validationEngine.jquery.css') }}" type="text/css" media="screen"  />
   <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/login.css') }}" type="text/css" media="screen"  />
 
-  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery-1.7.1.min.js') }}"></script>
-  <script src="{{ url_for('admin.static', filename='lib/jquery.validationEngine.js') }}" type="text/javascript" charset="utf-8"></script>
-  <script src="{{ url_for('admin.static', filename='lib/jquery.validationEngine-en.js') }}" type="text/javascript" charset="utf-8"></script>
-  <script>
-    jQuery(document).ready(function(){
-        // binds form submission and fields to the validation engine
-        jQuery("#form-login").validationEngine();
-    });
-  </script>
+  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery-1.9.1.min.js') }}"></script>
   <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
