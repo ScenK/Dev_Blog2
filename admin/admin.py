@@ -8,6 +8,7 @@ from jinja2 import TemplateNotFound
 from Model.models import Diary, CommentEm, Category, Comment
 from Model.models import User as UserModel
 import markdown
+from utils.email_util import send_reply_mail
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 class User(UserMixin):
@@ -127,7 +128,7 @@ def comment_list():
     return render_template('admin/comment/list.html', comments=comments)
 
 @admin.route('/comment/reply', methods=['POST'])
-#@login_required
+@login_required
 def comment_reply():
     if request.method == 'POST':
         author = request.form['author']
@@ -148,7 +149,13 @@ def comment_reply():
         comment.diary = post[0]
         comment.author = current_user.name
         comment.save(validate=False)
-    return ''
+
+        try:
+            send_reply_mail(email, u'您评论的文章《' + title + u'》收到了来自博主的回复, 请查收',
+                            content, did, author, title)
+            return 'success'
+        except Exception as e:
+            return str(e)
 
 @admin.route('/account/settings', methods=['GET', 'POST'])
 @login_required
