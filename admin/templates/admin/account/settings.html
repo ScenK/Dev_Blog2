@@ -1,4 +1,57 @@
 {% extends 'admin/base.html' %}
 {% block title %}设置中心{% endblock %}
 {% block content %}
+<div class="grid-1">
+    <div class="content-gird">
+        <div class="form">
+            <form method="post" id="account_settings_form" action="">
+                <div class="elem">
+                    <label>登录名: </label>
+                    <div class="indent">
+                        <input type="text" name="username" class="medium" placeholder="{{ user.name }}"/> 
+                    </div>
+                </div>
+
+                <div class="elem">
+                    <label>E-mail:</label>
+                    <div class="indent">
+                        <input type="text" name="email" class="medium tip-top" title="用于接收评论邮件提醒" placeholder="{{ user.email }}"/> 
+                    </div>
+                </div>
+
+                <div class="elem">
+                    <label>密码:</label>
+                    <div class="indent">
+                        <input type="password" id="pass1" name="pass1" class="medium tip-top" title="此操作将改变网站后台的登陆密码"/> 
+                    </div>
+                </div>
+
+                <div class="elem">
+                    <label>重复密码:</label>
+                    <div class="indent">
+                        <input type="password" id="pass2" name="pass2" class="medium tip-top" title="确保两次输入的密码一致"/> 
+                    </div>
+                </div>
+
+                <div class="elem">
+                    <label>头像:</label>
+                    <div class="indent">
+                        <input type="text" class="medium"> 
+                    </div>
+                </div>
+
+                <div class="elem">
+                    <label>签名档:</label>
+                    <div class="indent">
+                        <textarea class="medium" name="signature" rows="5" placeholder="{{ user.signature }}"></textarea>
+                        <br><br>
+                        <input id="send" name="send" type="submit" class="button-a dark-blue" value="保存">  
+                    </div>
+                </div>
+
+            </form>
+            <div class="clear"> </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

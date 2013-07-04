@@ -25,6 +25,10 @@ seajs.config({
       src: 'chosen.jquery.min.js',
       exports: 'chosen'
     },
+    'tipTip' : {
+      src: 'jquery.tipTip.minified.js',
+      exports: 'tipTip'
+    },
     'alerts' : {
       src: 'jquery.alerts.js',
       exports: 'alerts'

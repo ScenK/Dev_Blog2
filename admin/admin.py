@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin,
@@ -20,6 +20,7 @@ class User(UserMixin):
     def is_active(self):
         return self.active
 
+
 @admin.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -38,6 +39,7 @@ def login():
             flash(u"Invalid username.")
     return render_template('admin/login.html', error=error)
 
+
 @admin.route("/logout")
 @login_required
 def logout():
@@ -45,10 +47,12 @@ def logout():
     flash("Logged out.")
     return redirect(url_for("admin.index"))
 
+
 @admin.route('/')
 @login_required
 def index():
     return render_template('admin/dashboard.html')
+
 
 @admin.route('/diary/add', methods=['GET', 'POST'])
 @login_required
@@ -75,6 +79,7 @@ def diary_add():
 
     return render_template('admin/diary/add.html', error=error, categories=categories)
 
+
 @admin.route('/diary/edit/<diary_id>', methods=['GET', 'POST'])
 @login_required
 def diary_edit(diary_id=None):
@@ -97,11 +102,13 @@ def diary_edit(diary_id=None):
 
     return render_template('admin/diary/edit.html', error=error, diary=diary)
 
+
 @admin.route('/diary/list')
 @login_required
 def diary_list():
     diaries = Diary.objects.order_by('-publish_time')
     return render_template('admin/diary/list.html', diaries=diaries)
+
 
 @admin.route('/diary/del/<diary_id>')
 @login_required
@@ -109,11 +116,13 @@ def diary_del(diary_id):
     Diary.objects.get_or_404(pk=diary_id).delete()
     return redirect(url_for("admin.diary_list"))
 
+
 @admin.route('/category/list')
 @login_required
 def category_list():
     categories = Category.objects.order_by('-publish_time')
     return render_template('admin/category/list.html', categories=categories)
+
 
 @admin.route('/category/del/<category_name>')
 @login_required
@@ -121,11 +130,13 @@ def category_del(category_name):
     Category.objects.get_or_404(name=category_name).delete()
     return redirect(url_for("admin.category_list"))
 
+
 @admin.route('/comment/list')
 @login_required
 def comment_list():
     comments = Comment.objects.order_by('-publish_time')
     return render_template('admin/comment/list.html', comments=comments)
+
 
 @admin.route('/comment/reply', methods=['POST'])
 @login_required
@@ -157,7 +168,37 @@ def comment_reply():
         except Exception as e:
             return str(e)
 
+
 @admin.route('/account/settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
-    return render_template('admin/account/settings.html')
+    user = UserModel.objects().first()
+    if request.method == 'POST':
+        username = request.form['username']
+        pass1 = request.form['pass1']
+        pass2 = request.form['pass2']
+        signature = request.form['signature']
+        email = request.form['email']
+
+        if pass1 and pass2 and pass1 == pass2:
+            user.password = generate_password_hash(password=pass1)
+
+        if username:
+            user.name = username
+
+        if signature:
+            user.signature = signature
+
+        if email:
+            user.email = email
+
+        user.save()
+
+        if pass1 or username:
+            logout_user()
+            flash(u"请重新登陆")
+            return redirect(url_for("admin.index"))
+
+        return redirect(url_for("admin.account_settings"))
+    else:
+        return render_template('admin/account/settings.html', user=user)

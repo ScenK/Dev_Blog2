@@ -35,7 +35,10 @@ header, footer, nav, section{
 .hide {
   display: none;
 }
-
+.error {
+  background: #f8dbdb !important;
+  border-color: #e77776 !important;
+}
 
 /* Typography */
 a{ text-decoration:none; cursor:pointer;}

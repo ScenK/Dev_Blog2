@@ -10,8 +10,7 @@ class User(db.Document):
     password     = db.StringField()
     email        = db.StringField()
     avatar       = db.StringField()
-    intro        = db.StringField()
-    desc         = db.StringField() 
+    signature    = db.StringField() 
     created_at   = db.DateTimeField(default=datetime.datetime.now, required=True)
 
 class Diary(db.Document):
