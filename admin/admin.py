@@ -2,8 +2,7 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
-                            login_user, logout_user, UserMixin,
-                            confirm_login, fresh_login_required)
+                            login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
 from Model.models import Diary, CommentEm, Category, Comment
 from Model.models import User as UserModel
@@ -215,3 +214,9 @@ def account_settings():
         return redirect(url_for("admin.account_settings"))
     else:
         return render_template('admin/account/settings.html', user=user)
+
+@admin.route('/diary/addphoto', methods=['POST'])
+@login_required
+def diary_add_photo():
+    if request.method == 'POST':
+        pass

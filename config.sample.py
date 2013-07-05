@@ -30,4 +30,10 @@ class SmtpConfig(Config):
     SERVER = 'smtp.gmail.com'
     PORT = 587
     USER = 'no-reply@dev-engine.com'
-    PASSWORD = 'Aptx4869'
+    PASSWORD = ''
+
+class UpyunConfig(Config):
+    URL = ''
+    BUCKET = ''
+    ADMIN = ''
+    PASSWORD = ''
