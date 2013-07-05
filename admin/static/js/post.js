@@ -4,6 +4,8 @@ define(function(require, exports, module) {
        autoResize = require('autoResize'),
        alerts     = require('alerts'),
        dataTable  = require('dataTable'),
+       wysiwyg    = require('wysiwyg'),
+       wysiwygLink= require('wysiwygLink'),
        chosen     = require('chosen');
 
   //********************* TABLE (NEWS) *********************//
@@ -42,6 +44,26 @@ define(function(require, exports, module) {
         $('#categories_select').append('<option>创建新分类</option>');
         $(".chzn-select").trigger("liszt:updated");
       });
+    }
+  });
+
+  //*******************  EDITOR  *******************//
+  $('#wysiwyg_target').wysiwyg({
+    rmUnusedControls : true,
+    createLink       : true,
+    controls         : {
+      bold                : { visible : true },
+      italic              : { visible : true },
+      strikeThrough       : { visible : true },
+      code                : { visible : true },
+      underline           : { visible : true },
+      insertOrderedList   : { visible : true },
+      insertUnorderedList : { visible : true },
+      createLink          : { visible : true },
+      insertImage         : { 
+        visible : true,
+        exec: function () { alert (7); }
+      }
     }
   });
 

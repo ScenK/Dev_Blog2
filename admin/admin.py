@@ -7,7 +7,6 @@ from flask.ext.login import (current_user, login_required,
 from jinja2 import TemplateNotFound
 from Model.models import Diary, CommentEm, Category, Comment
 from Model.models import User as UserModel
-import markdown
 from utils.email_util import send_reply_mail
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
@@ -60,22 +59,23 @@ def diary_add():
     error = None
     categories = Category.objects.all()
     if request.method == 'POST' and 'title' and 'content' in request.form:
-        title = request.form["title"]
-        content = request.form["content"]
-        category = request.form["category"]
-        tags = request.form["tags"]
+        print content
+        #title = request.form["title"]
+        #content = request.form["content"]
+        #category = request.form["category"]
+        #tags = request.form["tags"]
 
-        post = Diary(title=title)
-        post.content = content
-        post.summary = markdown.markdown(content[0:80] + '...')
-        post.html = markdown.markdown(content)
-        post.tags = tags.split(',')
-        post.save()
+        #post = Diary(title=title)
+        #post.content = content
+        #post.summary = markdown.markdown(content[0:80] + '...')
+        #post.html = markdown.markdown(content)
+        #post.tags = tags.split(',')
+        #post.save()
 
-        a, cat = Category.objects.get_or_create(name=category, defaults={'diaries': [post]})
-        if not cat:
-            Category.objects(name=category).update_one(push__diaries=post)
-        return redirect(url_for("admin.diary_list"))
+        #a, cat = Category.objects.get_or_create(name=category, defaults={'diaries': [post]})
+        #if not cat:
+            #Category.objects(name=category).update_one(push__diaries=post)
+        #return redirect(url_for("admin.diary_list"))
 
     return render_template('admin/diary/add.html', error=error, categories=categories)
 
@@ -87,18 +87,19 @@ def diary_edit(diary_id=None):
     diary = Diary.objects.get_or_404(pk=diary_id)[0]
 
     if request.method == 'POST' and 'title' and 'content' in request.form:
-        title = request.form["title"]
-        content = request.form["content"]
-        category = request.form["category"]
-        tags = request.form["tags"]
+        pass
+        #title = request.form["title"]
+        #content = request.form["content"]
+        #category = request.form["category"]
+        #tags = request.form["tags"]
 
-        post = Diary(title=title)
-        post.content = content
-        post.summary = markdown.markdown(content[0:80] + '...')
-        post.html = markdown.markdown(content)
-        post.tags = tags.split(',')
-        post.save()
-        return redirect(url_for("admin.index"))
+        #post = Diary(title=title)
+        #post.content = content
+        #post.summary = markdown.markdown(content[0:80] + '...')
+        #post.html = markdown.markdown(content)
+        #post.tags = tags.split(',')
+        #post.save()
+        #return redirect(url_for("admin.index"))
 
     return render_template('admin/diary/edit.html', error=error, diary=diary)
 

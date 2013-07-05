@@ -29,6 +29,14 @@ seajs.config({
       src: 'jquery.tipTip.minified.js',
       exports: 'tipTip'
     },
+    'wysiwyg' : {
+      src: 'editor/jquery.wysiwyg.js',
+      exports: 'wysiwyg'
+    },
+    'wysiwygLink' : {
+      src: 'editor/wysiwyg.link.js',
+      exports: 'wysiwygLink'
+    },
     'alerts' : {
       src: 'jquery.alerts.js',
       exports: 'alerts'
