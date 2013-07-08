@@ -8,8 +8,8 @@ from jinja2 import TemplateNotFound
 from Model.models import Diary, CommentEm, Category, Comment
 from Model.models import User as UserModel
 from utils.email_util import send_reply_mail
-from utils.html_helper import MyHTMLParser
-from utils.upyun_helper import UpYunHelper
+from utils.helper.html_helper import MyHTMLParser
+from utils.helper.upyun_helper import UpYunHelper
 import json
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
