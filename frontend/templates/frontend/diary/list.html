@@ -1,0 +1,22 @@
+{% extends 'frontend/base.html' %}
+{% block title %} 日志列表 {% endblock %}
+{% block content %}
+<div id="content-container">
+    {% for i in diaries %}
+    <div class="post">
+        <h1><a class="post-title" href="/diary/{{ i.id }}/{{ i.title }}" title="{{ i.title }}">{{ i.title }}</a></h1>
+        <div class="author"><span>作者:</span> <a>{{ i.author.name }}</a>&nbsp;<span>日期:</span> {{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}&nbsp;<span>标签:</span> {% for t in i.tags %}<a href="/tag/{{ t }}" title="{{ t }}">{{ t }}</a> {% endfor %}</div>
+
+        <p>{{ i.summary|safe }}</p>
+        <p>详细阅读... <a href="/diary/{{ i.id }}/{{ i.title }}" class="more-link">(more…)</a></p>
+
+        <div class="post-comment-entice">
+            <p><span class="post-comments"><a href="/diary/{{ i.id }}/{{ i.title }}">{{ i.comments|count }} Comments </a></span></p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div id="bottom-paging">
+    {% if page_num|int -1 > 0 %}<a href="/diary/list/{{ page_num|int -1 }}">« Newer Posts</a>{% endif %} — {% if next_page == True %}<a href="/diary/list/{{ page_num|int +1 }}">Older Posts »</a>{% endif %}
+</div>
+{% endblock %}

@@ -30,11 +30,28 @@ def diary_detail(diary_id, diary_title=None):
                            guest_name=guest_name, guest_email=guest_email)
 
 
+@frontend.route('/diary/list/<page_num>')
+def diary_list(page_num):
+    next_page = False
+    diary_num = len(Diary.objects)
+    categories = Category.objects.order_by('-publish_time')
+
+    diaries = Diary.objects.order_by('-publish_time')[int(page_num):int(page_num)+5] 
+
+    if diary_num > int(page_num)+5:
+        next_page = True
+
+    return render_template('frontend/diary/list.html', diaries=diaries, categories=categories,
+                           next_page=next_page, page_num=page_num)
+
+
+
 @frontend.route('/category/<category_name>')
 def category_list(category_name):
     categories = Category.objects.order_by('-publish_time')
     diaries = Diary.objects(category=category_name).order_by('-publish_time')
-    return render_template('frontend/category/list.html', category=category_name, diaries=diaries, categories=categories)
+    return render_template('frontend/category/list.html', category=category_name,
+                           diaries=diaries, categories=categories)
 
 
 @frontend.route('/comment/add', methods=['POST'])
