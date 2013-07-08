@@ -1,7 +1,6 @@
 define(function(require, exports, module) {
 
    var $            = require('jquery'),
-       autoResize   = require('autoResize'),
        alerts       = require('alerts'),
        dataTable    = require('dataTable'),
        wysiwyg      = require('wysiwyg'),
@@ -13,19 +12,6 @@ define(function(require, exports, module) {
   $('#example').dataTable({
     "sPaginationType": "full_numbers"
   });
-
-  //********************* autorisize *********************//
-	$('textarea').autoResize();
-
-  $("input[type=file]").change(function(){
-    $(this).parents(".uploader").find(".filename").val($(this).val());
-  });
-
-	$("input[type=file]").each(function(){
-    if($(this).val()==""){
-      $(this).parents(".uploader").find(".filename").val("No file selected...");
-    }
-	});
 
   //*********************  FORMS   *********************//
   $(".chzn-select").chosen(); 
@@ -50,6 +36,7 @@ define(function(require, exports, module) {
 
   //*******************  EDITOR  *******************//
   $('#wysiwyg_target').wysiwyg({
+    autoGrow         : true,
     rmUnusedControls : true,
     createLink       : true,
     controls         : {

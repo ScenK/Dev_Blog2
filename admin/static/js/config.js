@@ -17,10 +17,6 @@ seajs.config({
       src: 'jquery.dataTables.min.js',
       exports: 'dataTable'
     },
-    'autoResize' : {
-      src: 'autoresize.jquery.min.js',
-      exports: 'autoresize'
-    },
     'chosen' : {
       src: 'chosen.jquery.min.js',
       exports: 'chosen'
