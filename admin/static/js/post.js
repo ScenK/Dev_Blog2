@@ -1,12 +1,13 @@
 define(function(require, exports, module) {
 
-   var $          = require('jquery'),
-       autoResize = require('autoResize'),
-       alerts     = require('alerts'),
-       dataTable  = require('dataTable'),
-       wysiwyg    = require('wysiwyg'),
-       wysiwygLink= require('wysiwygLink'),
-       chosen     = require('chosen');
+   var $            = require('jquery'),
+       autoResize   = require('autoResize'),
+       alerts       = require('alerts'),
+       dataTable    = require('dataTable'),
+       wysiwyg      = require('wysiwyg'),
+       wysiwygLink  = require('wysiwygLink'),
+       fineUploader = require('fineUploader'),
+       chosen       = require('chosen');
 
   //********************* TABLE (NEWS) *********************//
   $('#example').dataTable({
@@ -14,7 +15,7 @@ define(function(require, exports, module) {
   });
 
   //********************* autorisize *********************//
-	$('textarea.resize-text').autoResize();
+	$('textarea').autoResize();
 
   $("input[type=file]").change(function(){
     $(this).parents(".uploader").find(".filename").val($(this).val());
@@ -62,9 +63,21 @@ define(function(require, exports, module) {
       createLink          : { visible : true },
       insertImage         : { 
         visible : true,
-        exec: function () { alert (7); }
+        exec: function () { 
+        }
       }
     }
+  });
+
+  //*************  PHOTO ADD ALERT  ***************//
+  $('.insertImage').fineUploader({
+    autoUpload: true,
+    uploadButtonText: "",
+    request: {
+      endpoint: "/admin/diary/add-photo"
+    }
+  }).on('complete', function(event, id, filename, responseJSON){
+    $('#wysiwyg_target').wysiwyg('insertHtml', '<img src="' + responseJSON.url + '">');
   });
 
 });

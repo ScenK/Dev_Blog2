@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
+import datetime
 from config import *
 from utils.upyun import UpYun
+from config import UpyunConfig
 
 class UpYunHelper(object):
 
-    def up_to_upyun(collection, data):
-        img_data = data.get('body')
-        img_name = data.get('filename').encode("utf-8")
+    def up_to_upyun(self, collection, data, img_name):
 
-        bucket = conf['upyun_bucket']
-        admin = conf['upyun_admin']
-        password = conf['upyun_password']
+        bucket = UpyunConfig.BUCKET
+        admin = UpyunConfig.ADMIN
+        password = UpyunConfig.PASSWORD
 
         u = UpYun(bucket, admin, password)
         u.setApiDomain('v0.api.upyun.com')
@@ -21,6 +21,7 @@ class UpYunHelper(object):
         month = datetime.datetime.now().strftime("%m")
         day = datetime.datetime.now().strftime("%d")
         target = '/%s/%s/%s/%s/%s' % (collection, year, month, day, img_name)
-        a = u.writeFile(str(target) , img_data, True)
-        url = conf['upyun_url'] + str(target)
+
+        a = u.writeFile(str(target) , data.read(), True)
+        url = UpyunConfig.URL + str(target)
         return url

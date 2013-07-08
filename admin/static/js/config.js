@@ -37,6 +37,10 @@ seajs.config({
       src: 'editor/wysiwyg.link.js',
       exports: 'wysiwygLink'
     },
+    'fineUploader' : {
+      src: 'fineuploader/fineuploader.min.js',
+      exports: 'fineUploader'
+    },
     'alerts' : {
       src: 'jquery.alerts.js',
       exports: 'alerts'

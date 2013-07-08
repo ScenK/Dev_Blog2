@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from werkzeug import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
@@ -8,6 +9,8 @@ from Model.models import Diary, CommentEm, Category, Comment
 from Model.models import User as UserModel
 from utils.email_util import send_reply_mail
 from utils.html_helper import MyHTMLParser
+from utils.upyun_helper import UpYunHelper
+import json
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 class User(UserMixin):
@@ -81,13 +84,14 @@ def diary_add():
             Category.objects(name=category).update_one(push__diaries=post)
         return redirect(url_for("admin.diary_list"))
 
-    return render_template('admin/diary/add.html', error=error, categories=categories)
+    return render_template('admin/diary/add.html', categories=categories)
 
 
 @admin.route('/diary/edit/<diary_id>', methods=['GET', 'POST'])
 @login_required
 def diary_edit(diary_id=None):
-    diary = Diary.objects.get_or_404(pk=diary_id)[0]
+    diary = Diary.objects.get_or_404(pk=diary_id)
+    categories = Category.objects.all()
 
     if request.method == 'POST' and 'title' and 'content' in request.form:
         title = request.form["title"]
@@ -112,7 +116,7 @@ def diary_edit(diary_id=None):
             Category.objects(name=category).update_one(push__diaries=diary)
         return redirect(url_for("admin.diary_list"))
 
-    return render_template('admin/diary/edit.html', error=error, diary=diary)
+    return render_template('admin/diary/edit.html', diary=diary, categories=categories)
 
 
 @admin.route('/diary/list')
@@ -215,8 +219,12 @@ def account_settings():
     else:
         return render_template('admin/account/settings.html', user=user)
 
-@admin.route('/diary/addphoto', methods=['POST'])
+@admin.route('/diary/add-photo', methods=['POST'])
 @login_required
 def diary_add_photo():
     if request.method == 'POST':
-        pass
+        data = request.files['qqfile']
+        filename = secure_filename(data.filename)
+        helper = UpYunHelper()
+        url = helper.up_to_upyun('diary', data, filename)
+        return json.dumps({'success': 'true', 'url': url})

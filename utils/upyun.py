@@ -11,9 +11,9 @@ DL = '/'
 
 
 def md5(src):
-    m1 = imd5.new()
-    m1.update(src)
-    dest1 = m1.hexdigest()
+    m1 = imd5.new()   
+    m1.update(src)   
+    dest1 = m1.hexdigest() 
     return dest1
 
 def md5file(fobj):
@@ -38,7 +38,7 @@ class UpYunException(Exception):
 
     More specific details will be included in the exception message
     when thrown.
-    '''
+    ''' 
 
 #目录条目类
 class FolderItem(object):
@@ -89,22 +89,22 @@ class UpYun(object):
     def delete(self, path, headers={}, metadata={}):
         resp = self._net_worker('DELETE',DL+self.bucket+DL+path, '',headers,metadata)
         return resp
-
+     
     #获取空间占用大小
     def getBucketUsage(self, path='', headers={}, metadata={}):
         resp = self.getList(path+'?usage', headers, metadata)
         try:
-            resp = int(resp.read())
+            resp = int(resp.read()) 
         except Exception, e:
             resp = None
         return resp
-
+    
     #获取某个目录的空间占用大小
     #path目录路径
     def getFolderUsage(self, path='', headers={}, metadata={}):
         resp = self.getBucketUsage(path, headers, metadata)
         return resp
-
+    
     #新建目录
     #path目录路径
     #[auto] 是否自动创建父级目录（最多10级）
@@ -126,7 +126,7 @@ class UpYun(object):
             return True
         else :
             return False
-
+    
     #读取目录,返回FolderItem
     #path目录路径
     def readDir(self, path='', headers={}, metadata={}):
@@ -140,11 +140,11 @@ class UpYun(object):
             while i+1<len(b):
                 fi = FolderItem(b[i],b[i+1],b[i+2],b[i+3])
                 fis.append(fi)
-                i+=4
+                i+=4    
             return fis
         else :
             return False
-
+        
     #上传文件
     #data 要上传的文件数据
     #path 远程文件的位置
@@ -202,9 +202,9 @@ class UpYun(object):
             rs['size'] = resp.getheader('x-upyun-file-size')
             rs['date'] = resp.getheader('x-upyun-file-date')
             return rs
-        else :
+        else : 
             return None
-
+    
     def _net_worker(self, method, path, data='', headers={}, metadata={}):
         connection = httplib.HTTPConnection(self.thehost)
 
@@ -221,11 +221,11 @@ class UpYun(object):
         if self.upAuth:
             self._add_upyun_auth_header(final_headers,method,path)
         else :
-            self._basicAuth(final_headers,self.username,self.password)
+            self._basicAuth(final_headers,self.username,self.password) 
 
         connection.request(method, path , data, final_headers)
 
-        resp = connection.getresponse()
+        resp = connection.getresponse()                                                                 
         if self.debug and resp.status != 200 and method != "HEAD" :
             raise UpYunException(u'ERROR: Code:%d,Message:%s'%(resp.status,resp.read()))
         return resp
@@ -241,8 +241,8 @@ class UpYun(object):
                       +'0'+'&'+md5(self.password))
 
         headers['Authorization'] = "UpYun %s:%s" % (self.username, scr)
-
-
+ 
+     
     def _basicAuth(self,headers, username, password):
         encode = base64.encodestring(username+':'+password)
         headers['Authorization'] = "Basic %s" % encode.strip()
