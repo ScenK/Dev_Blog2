@@ -7,6 +7,7 @@ import PyRSS2Gen
 import datetime
 from utils.email_util import send_reply_mail
 
+
 frontend = Blueprint('frontend', __name__, template_folder='templates', static_folder='static')
 
 
@@ -46,10 +47,11 @@ def diary_list(page_num):
 
 
 
-@frontend.route('/category/<category_name>')
-def category_list(category_name):
+@frontend.route('/category/<category_id>/<category_name>')
+def category_list(category_id,category_name=None):
     categories = Category.objects.order_by('-publish_time')
-    diaries = Diary.objects(category=category_name).order_by('-publish_time')
+    diaries = sorted(Category.objects(pk=category_id)[0].diaries, reverse=True)
+
     return render_template('frontend/category/list.html', category=category_name,
                            diaries=diaries, categories=categories)
 

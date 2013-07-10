@@ -31,7 +31,7 @@
         <h2>ARCHIVES</h2>
         <ul id="side-cats">
           {% for c in categories %}
-          <li class="cat-item"><a href="/category/{{ c.name }}" title="{{ c.name }}">{{ c.name }}({{ c.diaries|count }})</a></li>
+          <li class="cat-item"><a href="/category/{{ c.id }}/{{ c.name }}" title="{{ c.name }}">{{ c.name }}({{ c.diaries|count }})</a></li>
           {% endfor %}
         </ul>
         <h2>LINKS</h2>
