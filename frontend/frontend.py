@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
+import datetime
 from flask import Blueprint, render_template, redirect, request, url_for
 from jinja2 import TemplateNotFound
-from Model.models import Diary, Category, CommentEm, Comment
+from Model.models import Diary, Category, CommentEm, Comment, Tag
 from config import *
 import PyRSS2Gen
-import datetime
 from utils.email_util import send_reply_mail
 
-
-frontend = Blueprint('frontend', __name__, template_folder='templates', static_folder='static')
+frontend = Blueprint('frontend', __name__, template_folder='templates',
+                     static_folder='static')
 
 
 @frontend.route('/')
@@ -16,7 +16,8 @@ def home():
     diaries = Diary.objects.order_by('-publish_time')
     categories = Category.objects.order_by('-publish_time')
 
-    return render_template('frontend/home.html', diaries=diaries, categories=categories)
+    return render_template('frontend/home.html', diaries=diaries,
+                           categories=categories)
 
 
 @frontend.route('/diary/<diary_id>/<diary_title>')
@@ -27,8 +28,9 @@ def diary_detail(diary_id, diary_title=None):
     guest_name = request.cookies.get('guest_name') 
     guest_email = request.cookies.get('guest_email')
     
-    return render_template('frontend/diary/detail.html', diary=diary, categories=categories,
-                           guest_name=guest_name, guest_email=guest_email)
+    return render_template('frontend/diary/detail.html', diary=diary,
+                           categories=categories, guest_name=guest_name,
+                           guest_email=guest_email)
 
 
 @frontend.route('/diary/list/<page_num>')
@@ -42,8 +44,9 @@ def diary_list(page_num):
     if diary_num > int(page_num)+5:
         next_page = True
 
-    return render_template('frontend/diary/list.html', diaries=diaries, categories=categories,
-                           next_page=next_page, page_num=page_num)
+    return render_template('frontend/diary/list.html', diaries=diaries, 
+                           categories=categories, next_page=next_page,
+                           page_num=page_num)
 
 
 
@@ -54,6 +57,25 @@ def category_list(category_id,category_name=None):
 
     return render_template('frontend/category/list.html', category=category_name,
                            diaries=diaries, categories=categories)
+
+@frontend.route('/tag/<tag_name>')
+def tag_list(tag_name):
+    """ TagList Page
+        used for list diaries with the same tag_name
+
+        Args: 
+            tag_name: string
+
+        Return:
+            categories: used for sidebar list
+            diaries: sorted diaries_object by publish_time
+            tag: tag_name used for title 
+    """
+    categories = Category.objects.order_by('-publish_time')
+    diaries = sorted(Tag.objects(name=tag_name)[0].diaries, reverse=True)
+
+    return render_template('frontend/tag/list.html', diaries=diaries,
+                           categories=categories, tag=tag_name)
 
 
 @frontend.route('/comment/add', methods=['POST'])
