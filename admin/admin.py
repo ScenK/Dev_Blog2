@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
+import json
 from werkzeug import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
-from Model.models import Diary, CommentEm, Category, Comment
+from Model.models import Diary, CommentEm, Category, Comment, Tag
 from Model.models import User as UserModel
 from utils.email_util import send_reply_mail
 from utils.helper.html_helper import MyHTMLParser
 from utils.helper.upyun_helper import UpYunHelper
-import json
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 class User(UserMixin):
@@ -59,6 +59,32 @@ def index():
 @admin.route('/diary/add', methods=['GET', 'POST'])
 @login_required
 def diary_add():
+    """ Add a new diary from admin
+
+    receives title, content(html), tags and cagetory
+    save title, content(html), pure content(further use), tags and cagetory
+    also auto save author as current_user.
+
+    this method will auto save new Category or Tag if not exist otherwise save
+    in existed none with push only diary_object
+
+    Args:
+        title: string
+        html: string
+        cagetory: string
+        tags: list
+
+    Save:
+        title: string
+        html: string
+        content: string without html tags
+        category: string
+        tags: list
+        summary: first 80 characters in content with 3 dots in the end
+        author: current_user_object
+    """
+
+
     categories = Category.objects.all()
     if request.method == 'POST' and 'title' and 'content' in request.form:
         title = request.form["title"]
@@ -66,22 +92,30 @@ def diary_add():
         category = request.form["category"]
         tags = request.form["tags"]
 
-        ''' save simple data for further use'''
         parser = MyHTMLParser()
-
         parser.feed(html)
-        content = parser.html
+        content = parser.html # the pure content without html tags
+
+        splited_tags = tags.split(',')
 
         post = Diary(title=title)
         post.content = content
         post.summary = content[0:80] + '...'
         post.html = html
-        post.tags = tags.split(',')
+        post.tags = splited_tags
         post.save()
 
-        a, cat = Category.objects.get_or_create(name=category, defaults={'diaries': [post]})
+        a, cat = Category.objects.get_or_create(name=category,
+                                                defaults={'diaries': [post]})
         if not cat:
             Category.objects(name=category).update_one(push__diaries=post)
+
+        for i in splited_tags:
+            b, tag = Tag.objects.get_or_create(name=i, 
+                                               defaults={'diaries': [post]})
+            if not tag:
+                Tag.objects(name=i).update_one(push__diaries=post)
+
         return redirect(url_for("admin.diary_list"))
 
     return render_template('admin/diary/add.html', categories=categories)

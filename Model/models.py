@@ -27,6 +27,11 @@ class Diary(db.Document):
 
     meta = {'allow_inheritance': True}
 
+class Tag(db.Document):
+    name         = db.StringField(max_length=120, required=True)
+    diaries      = db.ListField(db.ReferenceField(Diary))
+    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+
 class Category(db.Document):
     name         = db.StringField(max_length=120, required=True)
     diaries      = db.ListField(db.ReferenceField(Diary))
