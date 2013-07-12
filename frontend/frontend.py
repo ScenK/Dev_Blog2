@@ -12,7 +12,18 @@ frontend = Blueprint('frontend', __name__, template_folder='templates',
 
 @frontend.route('/')
 def home():
-    diaries = Diary.objects.order_by('-publish_time')
+    """ HomePage.
+
+     list newest 5 diaries.
+
+    Args: 
+        none
+
+    Return:
+        diaries: 5 diaries list
+        categories: used for sidebar
+    """
+    diaries = Diary.objects.order_by('-publish_time')[:5]
     categories = Category.objects.order_by('-publish_time')
 
     return render_template('frontend/home.html', diaries=diaries,
@@ -21,6 +32,20 @@ def home():
 
 @frontend.route('/diary/<diary_id>/<diary_title>')
 def diary_detail(diary_id, diary_title=None):
+    """ Diary Detail Page. 
+
+    show diary details.
+
+    Args:
+        diary_id: ObjectedId
+        diary_title: string used for SEO Only
+
+    Return:
+        diary_detail: diary_object
+        categories: used for sidebar
+        guest_name: string cookie for guest comment auto complete filed
+        guest_email: string cookie for guest comment auto complete filed
+    """
     diary = Diary.objects(pk=diary_id)[0]
     categories = Category.objects.order_by('-publish_time')
 
@@ -34,13 +59,27 @@ def diary_detail(diary_id, diary_title=None):
 
 @frontend.route('/diary/list/<page_num>')
 def diary_list(page_num):
+    """Diary list page.
+
+    listed 5 diaries each page.
+
+    Args:
+        page_num: numberic and int
+
+    Return:
+        diaries: listed 5 diaries objects
+        next_page: bool True or False
+        categories: used for sidebar
+        page_num: current page_num
+    """
     next_page = False
     diary_num = len(Diary.objects)
     categories = Category.objects.order_by('-publish_time')
 
-    diaries = Diary.objects.order_by('-publish_time')[int(page_num):int(page_num)+5] 
+    diaries = Diary.objects.order_by('-publish_time')[(int(page_num) - 1) * 5
+                                                      :(int(page_num) - 1) * 5 + 5] 
 
-    if diary_num > int(page_num)+5:
+    if diary_num > (int(page_num) - 1) * 5 + 5:
         next_page = True
 
     return render_template('frontend/diary/list.html', diaries=diaries, 
@@ -49,26 +88,84 @@ def diary_list(page_num):
 
 
 @frontend.route('/category/<category_id>/<category_name>')
-def category_list(category_id,category_name=None):
+def category_list(category_id, category_name=None):
+    """Category list page.
+
+    show 5 diaries in this page.
+
+    Args:
+        category_id: categoryObjectID
+        category_name: only for SEO
+
+    Return:
+        next_page: bool True or False
+        page_num: 1
+        category: category_name used for title
+        diaries: listed 5 diaries in each page
+        categories: used in sidebar
+    """
+    next_page = False
+    diary_num = len(Category.objects(pk=category_id)[0].diaries)
+    if diary_num > 5:
+        next_page = True
+
     categories = Category.objects.order_by('-publish_time')
-    diaries = sorted(Category.objects(pk=category_id)[0].diaries, reverse=True)
+    diaries = sorted(Category.objects(pk=category_id)[0].diaries, 
+            reverse=True)[:5]
 
     return render_template('frontend/category/list.html', category=category_name,
-                           diaries=diaries, categories=categories)
+                           diaries=diaries, categories=categories,
+                           next_page=next_page, page_num=1, category_id=category_id)
+
+
+@frontend.route('/category/<category_id>/<category_name>/page/<page_num>')
+def category_paging(category_id, page_num, category_name=None):
+    """Category list page.
+
+    show 5 diaries in each page.
+
+    Args:
+        category_id: categoryObjectID
+        category_name: only for SEO
+        page_num: page_num
+
+    Return:
+        next_page: bool True or False
+        page_num: now page_num
+        category: category_name used for title
+        diaries: listed 5 diaries in each page
+        categories: used in sidebar
+    """
+    next_page = False
+    diary_num = len(Category.objects(pk=category_id)[0].diaries)
+
+    if diary_num > (int(page_num) - 1) * 5 + 5:
+        next_page = True
+
+    categories = Category.objects.order_by('-publish_time')
+    diaries = sorted(Category.objects(pk=category_id)[0].diaries,
+                     reverse=True)[(int(page_num) - 1) * 5
+                                   :(int(page_num) - 1) * 5 + 5]
+
+    return render_template('frontend/category/list.html', category=category_name,
+                           diaries=diaries, categories=categories,
+                           next_page=next_page, page_num=page_num, 
+                           category_id=category_id)
 
 
 @frontend.route('/tag/<tag_name>')
 def tag_list(tag_name):
-    """ TagList Page
-        used for list diaries with the same tag_name
+    """ TagList Page.
 
-        Args: 
-            tag_name: string
+    used for list diaries with the same tag_name
 
-        Return:
-            categories: used for sidebar list
-            diaries: sorted diaries_object by publish_time
-            tag: tag_name used for title 
+    Args: 
+        tag_name: string
+
+    Return:
+        categories: used for sidebar list
+        diaries: sorted diaries_object by publish_time
+        tag: tag_name used for title 
     """
     categories = Category.objects.order_by('-publish_time')
     diaries = sorted(Tag.objects(name=tag_name)[0].diaries, reverse=True)
@@ -79,6 +176,19 @@ def tag_list(tag_name):
 
 @frontend.route('/comment/add', methods=['POST'])
 def comment_add():
+    """ Comment Add AJAX Post Action.
+
+    designed for ajax post
+
+    Args:
+        username: guest_name
+        did: diary ObjectedId
+        email: guest_email
+        content: comment content
+
+    Return:
+        status: success
+    """
     if request.method == 'POST':
         name = request.form['username']
         did = request.form['did']
@@ -95,7 +205,6 @@ def comment_add():
                 )
         post.update_one(push__comments=commentEm)
 
-        ''' Save in Comment Model for admin manage'''
         comment = Comment(content=content)
         comment.diary = post[0]
         comment.email = email
@@ -112,6 +221,16 @@ def comment_add():
 
 @frontend.route('/feed')
 def rss():
+    """ RSS2 Support.
+    
+        support xml for RSSItem with 12 diaries.
+
+    Args:
+        none
+    Return:
+        diaries_object: list
+        site_settings: title, link, description
+    """
     articles = Diary.objects[:12]
     items = []
     for article in articles:
