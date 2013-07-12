@@ -83,8 +83,6 @@ def diary_add():
         summary: first 80 characters in content with 3 dots in the end
         author: current_user_object
     """
-
-
     categories = Category.objects.all()
     if request.method == 'POST' and 'title' and 'content' in request.form:
         title = request.form["title"]
@@ -127,6 +125,31 @@ def diary_add():
 @admin.route('/diary/edit/<diary_id>', methods=['GET', 'POST'])
 @login_required
 def diary_edit(diary_id=None):
+    """ Edit diary from admin
+
+    receives title, content(html), tags and cagetory
+    save title, content(html), pure content(further use), tags and cagetory
+    also auto save author as current_user.
+
+    this method will auto save new Category or Tag if not exist otherwise save
+    in existed none with push only diary_object
+
+    Args:
+        diary_id: diary_id
+        title: string
+        html: string
+        cagetory: string
+        tags: list
+
+    Save:
+        title: string
+        html: string
+        content: string without html tags
+        category: string
+        tags: list
+        summary: first 80 characters in content with 3 dots in the end
+        author: current_user_object
+    """
     diary = Diary.objects.get_or_404(pk=diary_id)
     categories = Category.objects.all()
 
@@ -138,19 +161,28 @@ def diary_edit(diary_id=None):
 
         ''' save simple data for further use'''
         parser = MyHTMLParser()
-
         parser.feed(html)
-        content = parser.html
+        content = parser.html # the pure content without html tags
+
+        splited_tags = tags.split(',')
 
         diary.content = content
         diary.summary = content[0:80] + '...'
         diary.html = html
-        diary.tags = tags.split(',')
+        diary.tags = splited_tags
         diary.save()
 
-        a, cat = Category.objects.get_or_create(name=category, defaults={'diaries': [diary]})
+        a, cat = Category.objects.get_or_create(name=category,
+                                                defaults={'diaries': [diary]})
         if not cat:
             Category.objects(name=category).update_one(push__diaries=diary)
+
+        for i in splited_tags:
+            b, tag = Tag.objects.get_or_create(name=i, 
+                                               defaults={'diaries': [diary]})
+            if not tag:
+                Tag.objects(name=i).update_one(push__diaries=diary)
+
         return redirect(url_for("admin.diary_list"))
 
     return render_template('admin/diary/edit.html', diary=diary, categories=categories)

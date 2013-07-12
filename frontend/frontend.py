@@ -77,9 +77,9 @@ def diary_list(page_num):
     categories = Category.objects.order_by('-publish_time')
 
     diaries = Diary.objects.order_by('-publish_time')[(int(page_num) - 1) * 5
-                                                      :(int(page_num) - 1) * 5 + 5] 
+                                                      :int(page_num) * 5] 
 
-    if diary_num > (int(page_num) - 1) * 5 + 5:
+    if diary_num > int(page_num) * 5:
         next_page = True
 
     return render_template('frontend/diary/list.html', diaries=diaries, 
@@ -145,7 +145,7 @@ def category_paging(category_id, page_num, category_name=None):
     categories = Category.objects.order_by('-publish_time')
     diaries = sorted(Category.objects(pk=category_id)[0].diaries,
                      reverse=True)[(int(page_num) - 1) * 5
-                                   :(int(page_num) - 1) * 5 + 5]
+                                   :int(page_num) * 5]
 
     return render_template('frontend/category/list.html', category=category_name,
                            diaries=diaries, categories=categories,
@@ -157,7 +157,7 @@ def category_paging(category_id, page_num, category_name=None):
 def tag_list(tag_name):
     """ TagList Page.
 
-    used for list diaries with the same tag_name
+    used for list diaries with the same tag_name with 5 diaries each page.
 
     Args: 
         tag_name: string
@@ -165,20 +165,58 @@ def tag_list(tag_name):
     Return:
         categories: used for sidebar list
         diaries: sorted diaries_object by publish_time
+        page_num: 1
         tag: tag_name used for title 
     """
+    next_page = False
+    diary_num = len(Tag.objects(name=tag_name)[0].diaries)
+    if diary_num > 5:
+        next_page = True
+
     categories = Category.objects.order_by('-publish_time')
-    diaries = sorted(Tag.objects(name=tag_name)[0].diaries, reverse=True)
+    diaries = sorted(Tag.objects(name=tag_name)[0].diaries, reverse=True)[:5]
 
     return render_template('frontend/tag/list.html', diaries=diaries,
-                           categories=categories, tag=tag_name)
+                           categories=categories, tag=tag_name, next_page=next_page,
+                           page_num=1)
+
+@frontend.route('/tag/<tag_name>/page/<page_num>')
+def tag_paging(tag_name, page_num):
+    """ TagList Paging.
+
+    used for list diaries with the same tag_name with 5 diaries each page.
+
+    Args: 
+        tag_name: string
+        page_num: page_num
+
+    Return:
+        categories: used for sidebar list
+        next_page: bool True or False
+        diaries: sorted diaries_object by publish_time with 5 each page
+        page_num: now page_num
+        tag: tag_name used for title 
+    """
+    next_page = False
+    diary_num = len(Tag.objects(name=tag_name)[0].diaries)
+    if diary_num > int(page_num) * 5:
+        next_page = True
+
+    categories = Category.objects.order_by('-publish_time')
+    diaries = sorted(Tag.objects(name=tag_name)[0].diaries,
+                     reverse=True)[(int(page_num) - 1) * 5
+                                    :int(page_num) * 5]
+
+    return render_template('frontend/tag/list.html', diaries=diaries,
+                           categories=categories, tag=tag_name, next_page=next_page,
+                           page_num=page_num)
 
 
 @frontend.route('/comment/add', methods=['POST'])
 def comment_add():
     """ Comment Add AJAX Post Action.
 
-    designed for ajax post
+    designed for ajax post and send reply email for admin
 
     Args:
         username: guest_name
@@ -187,7 +225,7 @@ def comment_add():
         content: comment content
 
     Return:
-        status: success
+        email_status: success
     """
     if request.method == 'POST':
         name = request.form['username']
@@ -212,7 +250,8 @@ def comment_add():
         comment.save(validate=False)
 
         try:
-            send_reply_mail(Config.EMAIL, Config.MAIN_TITLE + u'收到了新的评论, 请查收',
+            send_reply_mail(Config.EMAIL, 
+                            Config.MAIN_TITLE + u'收到了新的评论, 请查收',
                             content, did, name, diary_title)
             return 'success'
         except Exception as e:

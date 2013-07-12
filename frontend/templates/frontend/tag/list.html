@@ -16,4 +16,7 @@
   </div>
   {% endfor %}
 </div>
+<div id="bottom-paging">
+    {% if page_num|int -1 > 0 %}<a href="/tag/{{ tag }}/page/{{ page_num|int -1 }}">« Newer Posts</a>{% endif %} — {% if next_page == True %}<a href="/tag/{{ tag }}/page/{{ page_num|int +1 }}">Older Posts »</a>{% endif %}
+</div>
 {% endblock %}
