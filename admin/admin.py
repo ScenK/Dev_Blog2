@@ -98,10 +98,13 @@ def diary_add():
 
         splited_tags = tags.split(',')
 
+        author = UserModel.objects.first()
+
         post = Diary(title=title)
         post.content = content
         post.summary = content[0:80] + '...'
         post.html = html
+        post.author = author
         post.tags = splited_tags
         post.save()
 

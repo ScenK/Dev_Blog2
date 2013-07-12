@@ -10,7 +10,6 @@ from utils.email_util import send_reply_mail
 frontend = Blueprint('frontend', __name__, template_folder='templates',
                      static_folder='static')
 
-
 @frontend.route('/')
 def home():
     diaries = Diary.objects.order_by('-publish_time')
@@ -49,7 +48,6 @@ def diary_list(page_num):
                            page_num=page_num)
 
 
-
 @frontend.route('/category/<category_id>/<category_name>')
 def category_list(category_id,category_name=None):
     categories = Category.objects.order_by('-publish_time')
@@ -57,6 +55,7 @@ def category_list(category_id,category_name=None):
 
     return render_template('frontend/category/list.html', category=category_name,
                            diaries=diaries, categories=categories)
+
 
 @frontend.route('/tag/<tag_name>')
 def tag_list(tag_name):
