@@ -12,9 +12,9 @@
           <a href="{{ url_for('admin.comment_list') }}"><span>评论</span></a>
         </li>
         <li>
-        <a href="#"><span>相册</span></a>
+        <a href="{{ url_for('admin.gallary_list') }}"><span>相册</span></a>
         <ul class="acitem">
-            <li><a href="/widgets.html"><span class="gallery-pic icon">所有相册</span></a></li>
+          <li><a href="{{ url_for('admin.gallary_list') }}"><span class="gallery-pic icon">所有相册</span></a></li>
         </ul>
         </li>
         <li>

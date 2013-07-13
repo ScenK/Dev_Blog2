@@ -40,6 +40,27 @@ header, footer, nav, section{
   border-color: #e77776 !important;
 }
 
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix:before{
+  display: table;
+  content: "";
+  // Fixes Opera/contenteditable bug:
+  // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+  line-height: 0;
+}
+
+.clearfix:after{
+  display: table;
+  content: "";
+  // Fixes Opera/contenteditable bug:
+  // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+  line-height: 0;
+  clear: both;
+}
+
 /* Typography */
 a{ text-decoration:none; cursor:pointer;}
 a:hover { text-decoration:underline; }

@@ -12,7 +12,9 @@ from utils.email_util import send_reply_mail
 from utils.helper.html_helper import MyHTMLParser
 from utils.helper.upyun_helper import UpYunHelper
 
-admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
+admin = Blueprint('admin', __name__, template_folder='templates',
+                  static_folder='static')
+
 class User(UserMixin):
     def __init__(self, name, id, active=True):
         self.name = name
@@ -30,8 +32,9 @@ def login():
         user = UserModel.objects.first()
         username = request.form["username"]
         password = request.form["password"]
-        
-        if username == user.name and check_password_hash(user.password, password):
+
+        if username == user.name and check_password_hash(user.password,
+                                                         password):
             if login_user(User(user.name, user.pk)):
                 flash("Logged in!")
                 return redirect(request.args.get("next") or url_for("index.index"))
@@ -112,7 +115,7 @@ def diary_add():
             Category.objects(name=category).update_one(push__diaries=post)
 
         for i in splited_tags:
-            b, tag = Tag.objects.get_or_create(name=i, 
+            b, tag = Tag.objects.get_or_create(name=i,
                                                defaults={'diaries': [post]})
             if not tag:
                 Tag.objects(name=i).update_one(push__diaries=post)
@@ -178,14 +181,15 @@ def diary_edit(diary_id=None):
             Category.objects(name=category).update_one(push__diaries=diary)
 
         for i in splited_tags:
-            b, tag = Tag.objects.get_or_create(name=i, 
+            b, tag = Tag.objects.get_or_create(name=i,
                                                defaults={'diaries': [diary]})
             if not tag:
                 Tag.objects(name=i).update_one(push__diaries=diary)
 
         return redirect(url_for("admin.diary_list"))
 
-    return render_template('admin/diary/edit.html', diary=diary, categories=categories)
+    return render_template('admin/diary/edit.html', diary=diary,
+                            categories=categories)
 
 
 @admin.route('/diary/list')
@@ -247,8 +251,8 @@ def comment_reply():
         comment.save(validate=False)
 
         try:
-            send_reply_mail(email, u'您评论的文章《' + title + u'》收到了来自博主的回复, 请查收',
-                            content, did, author, title)
+            send_reply_mail(email, u'您评论的文章《' + title + u'》收到了来自\
+                            博主的回复, 请查收', content, did, author, title)
             return 'success'
         except Exception as e:
             return str(e)
@@ -288,6 +292,7 @@ def account_settings():
     else:
         return render_template('admin/account/settings.html', user=user)
 
+
 @admin.route('/diary/add-photo', methods=['POST'])
 @login_required
 def diary_add_photo():
@@ -297,3 +302,12 @@ def diary_add_photo():
         helper = UpYunHelper()
         url = helper.up_to_upyun('diary', data, filename)
         return json.dumps({'success': 'true', 'url': url})
+
+
+@admin.route('/gallary/list', methods=['GET', 'POST'])
+@login_required
+def gallary_list():
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template('admin/gallary/list.html')
