@@ -26,6 +26,13 @@ class Diary(db.Document):
     update_time  = db.DateTimeField(default=datetime.datetime.now, required=True)
 
     meta = {'allow_inheritance': True}
+    
+class Gallery(db.Document):
+    title        = db.StringField(required=True)
+    index        = db.StringField() 
+    description  = db.StringField()
+    content      = db.ListField(db.EmbeddedDocumentField('PhotoEm'))
+    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 
 class Tag(db.Document):
     name         = db.StringField(max_length=120, required=True)
@@ -48,4 +55,10 @@ class CommentEm(db.EmbeddedDocument):
     content      = db.StringField(required=True)
     author       = db.StringField(max_length=120, required=True)
     email        = db.EmailField()
+    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+
+class PhotoEm(db.EmbeddedDocument):
+    path         = db.StringField(required=True)
+    title        = db.StringField()
+    description  = db.StringField()
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)

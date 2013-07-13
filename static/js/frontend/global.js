@@ -63,7 +63,7 @@
   });
 
   $(document).ready(function() {
-    // gallary page funciton
+    // gallery page funciton
     $(window).load(function() {
       $('#colum-container').BlocksIt({
         numOfCol: 2,

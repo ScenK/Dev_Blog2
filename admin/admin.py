@@ -304,10 +304,30 @@ def diary_add_photo():
         return json.dumps({'success': 'true', 'url': url})
 
 
-@admin.route('/gallary/list', methods=['GET', 'POST'])
+@admin.route('/gallery/list', methods=['GET', 'POST'])
 @login_required
-def gallary_list():
+def gallery_list():
+    """Admin Gallery list Page.
+
+    for look up all albums and create a new album.
+
+    Methods:
+        GET and Post
+
+    Args:
+        GET:
+            none
+        Post:
+            title: string of album title
+            desc: string of description of the album
+
+    Returns:
+        GET:
+            all albums
+        Post:
+            status: {status: success}
+    """
     if request.method == 'POST':
         pass
     else:
-        return render_template('admin/gallary/list.html')
+        return render_template('admin/gallery/list.html')
