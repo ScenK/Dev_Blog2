@@ -542,3 +542,45 @@ def album_detail(album_id):
         album = Gallery.objects(pk=album_id)[0]
 
         return render_template('admin/gallery/detail.html', album=album)
+    
+
+@admin.route('/album/del/<album_id>')
+@login_required
+def album_del(album_id):
+    """Admin Album Delete Action
+
+    Used for delete Album.
+
+    Methods:
+        GET
+
+    Args:
+        album_id: album ObjectID
+
+    Returns:
+        none
+    """
+    Gallery.objects.get_or_404(pk=album_id).delete()
+    return redirect(url_for("admin.gallery_list"))
+
+
+@admin.route('/photo/del/<album_id>/<photo_title>')
+@login_required
+def photo_del(album_id, photo_title):
+    """Admin Photo Delete Action
+
+    Used for delete Photo.
+
+    Methods:
+        GET
+
+    Args:
+        album_id: album_id ObjectID
+        photo_title: string title of photo 
+
+    Returns:
+        none
+    """
+    Gallery.objects(pk=album_id).update_one(pull__content={'title': photo_title})
+
+    return redirect(url_for('admin.album_detail', album_id=album_id))
