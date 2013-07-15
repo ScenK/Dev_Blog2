@@ -17,6 +17,10 @@ admin = Blueprint('admin', __name__, template_folder='templates',
                   static_folder='static')
 
 class User(UserMixin):
+    """ User object for Flasklogin
+    
+    define name, id, and active for Flasklogin use
+    """
     def __init__(self, name, id, active=True):
         self.name = name
         self.id = id
@@ -28,6 +32,26 @@ class User(UserMixin):
 
 @admin.route('/login', methods=['GET', 'POST'])
 def login():
+    """Login page for user to auth.
+
+    use Flasklogin Class login_user() to login user.
+
+    Methods:
+        GET and POST
+
+    Args:
+        GET:
+            none
+        POST:
+            username: string
+            password: string
+
+    Returns:
+        GET:
+            none
+        POST:
+            none
+    """
     error = None
     if request.method == 'POST' and 'username' in request.form:
         user = UserModel.objects.first()
@@ -49,6 +73,10 @@ def login():
 @admin.route("/logout")
 @login_required
 def logout():
+    """Action for logout current_user.
+
+    call this method for logout current_user.
+    """
     logout_user()
     flash("Logged out.")
     return redirect(url_for("admin.index"))
@@ -57,6 +85,10 @@ def logout():
 @admin.route('/')
 @login_required
 def index():
+    """Page for dashboard.
+
+    only display static page.
+    """
     return render_template('admin/dashboard.html')
 
 
@@ -196,6 +228,19 @@ def diary_edit(diary_id=None):
 @admin.route('/diary/list')
 @login_required
 def diary_list():
+    """Admin Diary lit page.
+
+    show all diaries.
+
+    Methods:
+        GET
+
+    Args:
+        none
+
+    Returns:
+        Diary object
+    """
     diaries = Diary.objects.order_by('-publish_time')
     return render_template('admin/diary/list.html', diaries=diaries)
 
@@ -203,6 +248,19 @@ def diary_list():
 @admin.route('/diary/del/<diary_id>')
 @login_required
 def diary_del(diary_id):
+    """Admin Diary Delete Action
+
+    Used for delete Diary.
+
+    Methods:
+        GET
+
+    Args:
+        diary_id: diary ObjectID
+
+    Returns:
+        none
+    """
     Diary.objects.get_or_404(pk=diary_id).delete()
     return redirect(url_for("admin.diary_list"))
 
@@ -210,6 +268,19 @@ def diary_del(diary_id):
 @admin.route('/category/list')
 @login_required
 def category_list():
+    """Admin Category lit page.
+
+    show all categories.
+
+    Methods:
+        GET
+
+    Args:
+        none
+
+    Returns:
+        Category object
+    """
     categories = Category.objects.order_by('-publish_time')
     return render_template('admin/category/list.html', categories=categories)
 
@@ -217,6 +288,19 @@ def category_list():
 @admin.route('/category/del/<category_name>')
 @login_required
 def category_del(category_name):
+    """Admin Category Delete Action
+
+    Used for delete Category.
+
+    Methods:
+        GET
+
+    Args:
+        category_name: string
+
+    Returns:
+        none
+    """
     Category.objects.get_or_404(name=category_name).delete()
     return redirect(url_for("admin.category_list"))
 
@@ -224,6 +308,19 @@ def category_del(category_name):
 @admin.route('/comment/list')
 @login_required
 def comment_list():
+    """Admin Comments list page.
+
+    Used for list all comments.
+
+    Methods:
+        GET
+
+    Args:
+        none
+
+    Returns:
+        comments object
+    """
     comments = Comment.objects.order_by('-publish_time')
     return render_template('admin/comment/list.html', comments=comments)
 
@@ -231,6 +328,23 @@ def comment_list():
 @admin.route('/comment/reply', methods=['POST'])
 @login_required
 def comment_reply():
+    """Comment Reply Action.
+
+    Used for reply guests comment and send notification email.
+
+    Methods:
+        POST
+
+    Args:
+        author: guest_name
+        did: diaryObjectID
+        title: diary_title
+        email: guest_email
+        content: reply content
+
+    Returns:
+        status: {success: true/false , reason: Exception}
+    """
     if request.method == 'POST':
         author = request.form['author']
         did = request.form['did']
@@ -254,14 +368,38 @@ def comment_reply():
         try:
             send_reply_mail(email, u'您评论的文章《' + title + u'》收到了来自\
                             博主的回复, 请查收', content, did, author, title)
-            return 'success'
+            return json.dumps({'success': 'true'})
         except Exception as e:
-            return str(e)
+            return json.dumps({'success': 'false', 'reason': str(e)})
 
 
 @admin.route('/account/settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
+    """Account Settings Page.
+
+    allow admin to change profile.
+
+    Methods:
+        GET and POST
+
+    Args:
+        GET:
+            none
+
+        POST:
+            username: string
+            pass1   : password 
+            pass2   : password twice for validate
+            signature: user profile signature
+            email   : for get reply email notification
+
+    Returns:
+        GET:
+            user object
+        POST:
+            none
+    """
     user = UserModel.objects().first()
     if request.method == 'POST':
         username = request.form['username']
@@ -297,6 +435,19 @@ def account_settings():
 @admin.route('/diary/add-photo', methods=['POST'])
 @login_required
 def diary_add_photo():
+    """Admin Diary Add Photo Action.
+
+    *for Ajax only.
+
+    Methods:
+        POST
+
+    Args:
+        files: [name: 'userfile'] 
+    
+    Returns:
+        status: {success: true/false}
+    """
     if request.method == 'POST':
         data = request.files['userfile']
         filename = secure_filename(data.filename)
@@ -362,14 +513,15 @@ def album_detail(album_id):
             album ObjectID
 
         PSOT(*for ajax only):
-            files: [name: 'qqfile']
+            files: [name: 'Filedata']
+            album_id: album ObjectID
 
     Returns:
         GET:
             album data
 
         POST:
-            status: {status: success}
+            status: {success: true/false, url: url}
     """
     if request.method == 'POST':
         data = request.files['Filedata']
