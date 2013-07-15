@@ -40,6 +40,10 @@ seajs.config({
     'alerts' : {
       src: 'jquery.alerts.js',
       exports: 'alerts'
+    },
+    'uploadifive': {
+      src: 'uploadifive/jquery.uploadifive.min.js',
+      exports: 'uploadifive'
     }
   }
 

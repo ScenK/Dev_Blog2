@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
-from Model.models import Diary, CommentEm, Category, Comment, Tag
+from Model.models import Diary, CommentEm, Category, Comment, Tag, Gallery
 from Model.models import User as UserModel
 from utils.email_util import send_reply_mail
 from utils.helper.html_helper import MyHTMLParser
@@ -312,22 +312,67 @@ def gallery_list():
     for look up all albums and create a new album.
 
     Methods:
-        GET and Post
+        GET and POST
 
     Args:
         GET:
             none
-        Post:
+
+        POST:
             title: string of album title
-            desc: string of description of the album
 
     Returns:
         GET:
             all albums
-        Post:
+
+        POST:
             status: {status: success}
     """
     if request.method == 'POST':
-        pass
+        title = request.form['title']
+
+        album = Gallery(title=title)
+        album.save()
+
+        return json.dumps({'success': 'true'})
     else:
-        return render_template('admin/gallery/list.html')
+        albums = Gallery.objects.order_by('-publish_time')
+
+        return render_template('admin/gallery/list.html', albums=albums)
+
+
+
+@admin.route('/album/detail/<album_id>', methods=['GET', 'POST'])
+@login_required
+def album_detail(album_id):
+    """Album Detail Admin Page.
+
+    Used for upload new photos to UpYun and set deail about album.
+
+    Methods:
+        GET and POST
+
+    Args:
+        GET:
+            album ObjectID
+
+        PSOT(*for ajax only):
+            files: [name: 'qqfile']
+
+    Returns:
+        GET:
+            album data
+
+        POST:
+            status: {status: success}
+    """
+    if request.method == 'POST':
+        data = request.files['Filedata']
+        filename = secure_filename(data.filename)
+        helper = UpYunHelper()
+        url = helper.up_to_upyun('diary', data, filename)
+        return ''
+    else:
+        album = Gallery.objects(pk=album_id)[0]
+
+        return render_template('admin/gallery/detail.html', album=album)

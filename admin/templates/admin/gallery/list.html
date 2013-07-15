@@ -2,17 +2,21 @@
 {% block title %}相册管理{% endblock %}
 
 {% block content %}
+<a class="button-a dark-blue" href="javascript:void(0);" id="add_new_album"><span class="edits icon-white-text">创建新相册</span></a>
+<hr/>
 <!--Big Image Gallery -->
 <ul class="gallery-3">
-    <li><a class="fancybox" href="">  <img src="" alt=""  /></a>
+    {% for i in albums %}
+    <li><a class="fancybox" href="{{ url_for('admin.album_detail', album_id=i.id) }}">  <img src="" alt=""  /></a>
     <ul class="img_options-3">
-        <li>相册名称: JPEG</li>
-        <li>创建时间: 1600x700</li>
-        <li>图片数量: 327kb</li>
-        <li class="ins"><a href="" class="zoom-3 fancybox">zoom</a></li>
+        <li>相册名称: {{ i.title }}</li>
+        <li>创建时间: {{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}</li>
+        <li>图片数量: {{ i.content|count }}</li>
+        <li class="ins"><a href="{{ url_for('admin.album_detail', album_id=i.id) }}" class="zoom-3 fancybox">zoom</a></li>
         <li><a href="" class="delete-3">delete</a></li>
     </ul>
     </li>
+    {% endfor %}
 </ul>
 <!--Big Image Gallery end-->
 
