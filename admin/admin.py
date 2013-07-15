@@ -297,11 +297,15 @@ def account_settings():
 @login_required
 def diary_add_photo():
     if request.method == 'POST':
-        data = request.files['qqfile']
+        data = request.files['userfile']
         filename = secure_filename(data.filename)
         helper = UpYunHelper()
         url = helper.up_to_upyun('diary', data, filename)
-        return json.dumps({'success': 'true', 'url': url})
+        if url:
+          return json.dumps({'success': 'true', 'url': url})
+        else:
+          return json.dumps({'success': 'false'})
+
 
 
 @admin.route('/gallery/list', methods=['GET', 'POST'])

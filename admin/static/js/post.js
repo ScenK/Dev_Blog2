@@ -5,7 +5,7 @@ define(function(require, exports, module) {
        dataTable    = require('dataTable'),
        wysiwyg      = require('wysiwyg'),
        wysiwygLink  = require('wysiwygLink'),
-       fineUploader = require('fineUploader'),
+       AjaxUpload   = require('AjaxUpload'),
        chosen       = require('chosen');
 
   //********************* TABLE (NEWS) *********************//
@@ -57,14 +57,14 @@ define(function(require, exports, module) {
   });
 
   //*************  PHOTO ADD ALERT  ***************//
-  $('.insertImage').fineUploader({
-    autoUpload: true,
-    uploadButtonText: "",
-    request: {
-      endpoint: "/admin/diary/add-photo"
-    }
-  }).on('complete', function(event, id, filename, responseJSON){
-    $('#wysiwyg_target').wysiwyg('insertHtml', '<img src="' + responseJSON.url + '">');
-  });
-
+  if($('.insertImage').length > 0){
+    new AjaxUpload($('.insertImage'), {
+      action: '/admin/diary/add-photo',
+      onComplete: function(file, responseJSON){
+        var obj = $.parseJSON(responseJSON);
+        $('#wysiwyg_target').wysiwyg('insertHtml', '<img src="' + obj.url + '">');
+      }
+    });
+  }
+  
 });

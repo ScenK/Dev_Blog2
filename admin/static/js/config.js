@@ -13,6 +13,10 @@ seajs.config({
       src: 'jquery-1.7.1.min.js',
       exports: 'jQuery'
     },
+    'AjaxUpload': {
+      src: 'ajaxupload.js',
+      exports: 'AjaxUpload'
+    },
     'dataTable' : {
       src: 'jquery.dataTables.min.js',
       exports: 'dataTable'
