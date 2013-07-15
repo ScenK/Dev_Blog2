@@ -6,7 +6,8 @@ from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
-from Model.models import Diary, CommentEm, Category, Comment, Tag, Gallery
+from Model.models import (Diary, CommentEm, Category, Comment, Tag, Gallery,
+                          PhotoEm)
 from Model.models import User as UserModel
 from utils.email_util import send_reply_mail
 from utils.helper.html_helper import MyHTMLParser
@@ -372,10 +373,19 @@ def album_detail(album_id):
     """
     if request.method == 'POST':
         data = request.files['Filedata']
+        album_id = request.form['album_id']
         filename = secure_filename(data.filename)
         helper = UpYunHelper()
-        url = helper.up_to_upyun('diary', data, filename)
-        return ''
+        url = helper.up_to_upyun('gallery', data, filename)
+        if url:
+          photo = PhotoEm(
+                    path = url,
+                    title = filename
+                  )
+          Gallery.objects(pk=album_id).update_one(push__content=photo)
+          return json.dumps({'success': 'true', 'url': url})
+        else:
+          return json.dumps({'success': 'false'})
     else:
         album = Gallery.objects(pk=album_id)[0]
 

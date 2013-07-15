@@ -2,13 +2,14 @@
 {% block title %}{{ album.title }}{% endblock %}
 
 {% block content %}
-<a class="button-a red" href="javascript:void(0);" id="add_new_photo"><span class="picture icon-white-text">上传新相片</span></a>
+<a class="button-a red" href="javascript:void(0);" id="add_new_photo" data-albumid="{{ album.pk }}"><span class="picture icon-white-text">上传新相片</span></a>
 
     {% if album.content %}
     <hr/>
     <!--Medium Image Gallery -->
     <ul class="gallery-2">
-      <li><a class="fancybox" href="images/thumbnails/13.png">  <img src="images/thumbnails/13.png" alt=""  /></a>
+      {% for i in album.content %}
+      <li><a class="fancybox" href="{{ i.path }}">  <img src="{{ i.path }}" alt=""  /></a>
       <ul class="img_options-2">
         <li>Type: JPEG</li>
         <li>Sizes: 1600x700</li>
@@ -17,6 +18,7 @@
         <li><a href="#ss" class="delete-2">delete</a></li>
       </ul>
       </li>
+      {% endfor %}
     </ul>               
     {% else %}
     {% endif %}

@@ -13,7 +13,7 @@
         <li>创建时间: {{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}</li>
         <li>图片数量: {{ i.content|count }}</li>
         <li class="ins"><a href="{{ url_for('admin.album_detail', album_id=i.id) }}" class="zoom-3 fancybox">zoom</a></li>
-        <li><a href="" class="delete-3">delete</a></li>
+        <li><a href="#" class="delete-3">delete</a></li>
     </ul>
     </li>
     {% endfor %}

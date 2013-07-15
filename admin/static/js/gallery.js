@@ -21,11 +21,13 @@ define(function(require, exports, module) {
   });
 
   //*************  PHOTO ADD ALERT  ***************//
+  var album_id = $('#add_new_photo').data('albumid');
   $('#add_new_photo').uploadifive({
     method       : 'post',
     dnd          : false,
     fileType     : 'image',
-    uploadScript : window.location.href
+    formData     : {'album_id' : album_id},
+    uploadScript : '/admin/album/detail/' + album_id
   });
   
 });
