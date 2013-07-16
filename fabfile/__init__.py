@@ -89,27 +89,30 @@ def backup_database():
     local("mongodump -d %s -o ~/mongobak" % conf['dbname'])
     local("tar -czvPf ~/%s%s.tar.gz ~/mongobak/*" % (conf['dbname'], datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
 
+
 @task
 def count_line():
-    count = 0
-    fcount = 0
-    for root,dirs,files in os.walk(os.getcwd()):
-        for f in files:
-            # Check the sub directorys
-            fname = (root + '/'+ f).lower()
-            ext = f[f.rindex('.'):]
-            try:
-                if(exts.index(ext) >= 0):
+    all_lines = 0
+    exts = ['.py', '.js', '.html', '.css']
+    for i in exts:
+        count = 0
+        fcount = 0
+        for root, dirs, files in os.walk(os.getcwd()):
+            for f in files:
+                # Check the sub directorys
+                fname = (root + '/'+ f)
+                try:
+                    ext = f[f.rindex('.'):]
+                except:
+                    pass
+
+                if '.git' not in fname and i == ext:
                     fcount += 1
                     c = read_line_count(fname)
                     count += c
-            except:
-                pass
 
-    print 'file count:%d' % fcount
-    print 'count:%d' % count
+        print '%s ==> has %d files and %d lines' % (i, fcount, count)
 
-exts = ['.py']
 def read_line_count(fname):
     count = 0
     with open(fname, 'r') as f:
