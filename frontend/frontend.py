@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import datetime
+import PyRSS2Gen
 from flask import Blueprint, render_template, redirect, request, url_for
 from jinja2 import TemplateNotFound
-from Model.models import Diary, Category, CommentEm, Comment, Tag
+from Model.models import (User, Diary, Category, CommentEm, Comment, Tag,
+                          Gallery)
 from config import *
-import PyRSS2Gen
 from utils.email_util import send_reply_mail
 
 frontend = Blueprint('frontend', __name__, template_folder='templates',
@@ -113,9 +114,10 @@ def category_list(category_id, category_name=None):
     diaries = sorted(Category.objects(pk=category_id)[0].diaries, 
             reverse=True)[:5]
 
-    return render_template('frontend/category/list.html', category=category_name,
-                           diaries=diaries, categories=categories,
-                           next_page=next_page, page_num=1, category_id=category_id)
+    return render_template('frontend/category/list.html',
+                           category=category_name, diaries=diaries,
+                           categories=categories, next_page=next_page,
+                           page_num=1, category_id=category_id)
 
 
 @frontend.route('/category/<category_id>/<category_name>/page/<page_num>')
@@ -147,10 +149,10 @@ def category_paging(category_id, page_num, category_name=None):
                      reverse=True)[(int(page_num) - 1) * 5
                                    :int(page_num) * 5]
 
-    return render_template('frontend/category/list.html', category=category_name,
-                           diaries=diaries, categories=categories,
-                           next_page=next_page, page_num=page_num, 
-                           category_id=category_id)
+    return render_template('frontend/category/list.html',
+                           category=category_name, diaries=diaries,
+                           categories=categories, next_page=next_page,
+                           page_num=page_num, category_id=category_id)
 
 
 @frontend.route('/tag/<tag_name>')
@@ -177,8 +179,8 @@ def tag_list(tag_name):
     diaries = sorted(Tag.objects(name=tag_name)[0].diaries, reverse=True)[:5]
 
     return render_template('frontend/tag/list.html', diaries=diaries,
-                           categories=categories, tag=tag_name, next_page=next_page,
-                           page_num=1)
+                           categories=categories, tag=tag_name,
+                           next_page=next_page, page_num=1)
 
 @frontend.route('/tag/<tag_name>/page/<page_num>')
 def tag_paging(tag_name, page_num):
@@ -208,8 +210,8 @@ def tag_paging(tag_name, page_num):
                                     :int(page_num) * 5]
 
     return render_template('frontend/tag/list.html', diaries=diaries,
-                           categories=categories, tag=tag_name, next_page=next_page,
-                           page_num=page_num)
+                           categories=categories, tag=tag_name,
+                           next_page=next_page, page_num=page_num)
 
 
 @frontend.route('/comment/add', methods=['POST'])
@@ -275,7 +277,8 @@ def rss():
     for article in articles:
         content = article.html
 
-        url = Config.SITE_URL + '/diary/detail/' + str(article.pk) + '/' + article.title
+        url = Config.SITE_URL + '/diary/detail/' + str(article.pk) + '/' + \
+              article.title
         items.append(PyRSS2Gen.RSSItem(
             title = article.title,
             link = url,
@@ -291,3 +294,24 @@ def rss():
         items = items
     ).to_xml()
     return rss
+
+@frontend.route('/gallery')
+def gallery():
+    """GalleryPage.
+
+     list all photo.
+
+    Args: 
+        none
+
+    Return:
+        albums : all photos
+        categories: used for sidebar
+        profile: user object
+    """
+    albums = Gallery.objects.order_by('-publish_time')
+    categories = Category.objects.order_by('-publish_time')
+    profile = User.objects.first()
+
+    return render_template('frontend/gallery/index.html', albums=albums,
+                           categories=categories, profile=profile)
