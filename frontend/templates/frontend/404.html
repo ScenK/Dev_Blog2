@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>没有找到相关页面 - {{ config['MAIN_TITLE'] }}</title>
+    <link rel="stylesheet" href="{{ url_for('frontend.static', filename='css/404.min.css') }}">
+  </head>
+  <body>
+    <div id="wraper">
+      <div class="content">
+        <div id="head">
+          <div class="head-move">
+           <div id="wing-one"><span></span></div>
+
+           <div id="skull">
+            <div id="left-eye" class="background">
+              <div class="eyebrow"><span></span></div>
+              <div class="eyeball">
+                <div class="eye-pupil">
+                  <div class="pupil-one"></div>
+                  <div class="pupil-two"></div>
+                </div>
+              </div>
+            </div><!--left-eye-->
+            <div id="right-eye" class="background">
+              <div class="eyebrow"><span></span></div>
+              <div class="eyeball">
+                <div class="eye-pupil">
+                  <div class="pupil-one"></div>
+                  <div class="pupil-two"></div>
+                </div>
+              </div>
+            </div><!--right-eye-->
+           </div><!--skull-->
+
+           <div id="wing-two"><span></span></div>
+
+           <div id="legs" class="background">
+            <div class="legs-a"><span></span></div>
+            <div class="legs-b"><span></span></div>
+           </div>
+          </div><!--head-move-->
+        </div><!--head-->
+        <div class="eror-font">
+          <span class="four-four">404</span>
+          <span class="info-one">It seems like you are missing...</span>
+          <span class="info-two">Run for your life!</span>
+        </div>
+      </div><!--content-->
+    </div><!--wraper-->
+    <div id="bottom">
+      <div id="nav" style="left: 411px;">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About Me</a></li>
+          <li><a href="https://bitbucket.org/Scen/dev_blog/">Open Sourse</a></li>
+          <li class="act"><a href="mailto:he.kang@dev-engine.com">Tell me about this error</a></li>
+        </ul>
+      </div>
+    </div><!--bottom-->
+    <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/404.js') }}"></script>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask
+from flask import Flask, render_template
 from config import *
 from frontend.frontend import frontend
 from admin.admin import admin, User
@@ -24,6 +24,10 @@ login_manager.login_message = u"Please log in to access this page."
 def load_user(id):
     user = UserModel.objects.first()
     return User(user.name, user.pk)  
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('frontend/404.html'), 404
 
 login_manager.init_app(app)
 
