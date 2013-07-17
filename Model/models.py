@@ -51,6 +51,22 @@ class Comment(db.Document):
     diary        = db.ReferenceField(Diary)
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 
+class Page(db.Document):
+    url          = db.StringField(required=True, unique=True)
+    title        = db.StringField(required=True)
+    content      = db.StringField()
+    summary      = db.StringField()
+    html         = db.StringField()
+    author       = db.ReferenceField(User)
+    comments     = db.ListField(db.EmbeddedDocumentField('CommentEm'))
+    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+    update_time  = db.DateTimeField(default=datetime.datetime.now, required=True)
+
+    meta = {'allow_inheritance': True}
+
+class StaticPage(Page):
+    pass
+
 class CommentEm(db.EmbeddedDocument):
     content      = db.StringField(required=True)
     author       = db.StringField(max_length=120, required=True)

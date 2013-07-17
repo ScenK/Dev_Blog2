@@ -4,7 +4,7 @@ import PyRSS2Gen
 from flask import Blueprint, render_template, redirect, request, url_for
 from jinja2 import TemplateNotFound
 from Model.models import (User, Diary, Category, CommentEm, Comment, Tag,
-                          Gallery)
+                          Gallery, StaticPage)
 from config import *
 from utils.email_util import send_reply_mail
 
@@ -295,10 +295,10 @@ def rss():
     ).to_xml()
     return rss
 
+
 @frontend.route('/gallery')
 def gallery():
     """GalleryPage.
-
      list all photo.
 
     Args: 
@@ -315,3 +315,25 @@ def gallery():
 
     return render_template('frontend/gallery/index.html', albums=albums,
                            categories=categories, profile=profile)
+
+
+@frontend.route('/page/<page_url>')
+def page(page_url):
+    """CMS page.
+    show page for page_name.
+
+    Methods:
+        POST
+
+    Args:
+        page_url: string
+
+    Return:
+        categories: used for sidebar
+        page object
+    """
+    categories = Category.objects.order_by('-publish_time')
+    page = StaticPage.objects.get_or_404(url=page_url)
+
+    return render_template('frontend/page/index.html', page=page,
+                           categories=categories)

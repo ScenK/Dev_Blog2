@@ -6,8 +6,9 @@ from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
-from Model.models import (Diary, CommentEm, Category, Comment, Tag, Gallery,
-                          PhotoEm)
+
+from Model.models import (Diary, Category, Comment, Tag, Gallery, StaticPage,
+                          CommentEm, PhotoEm)
 from Model.models import User as UserModel
 from utils.email_util import send_reply_mail
 from utils.helper.html_helper import MyHTMLParser
@@ -97,11 +98,11 @@ def index():
 def diary_add():
     """ Add a new diary from admin
 
-    receives title, content(html), tags and cagetory
-    save title, content(html), pure content(further use), tags and cagetory
+    Receives title, content(html), tags and cagetory
+    Save title, content(html), pure content(further use), tags and cagetory
     also auto save author as current_user.
 
-    this method will auto save new Category or Tag if not exist otherwise save
+    This method will auto save new Category or Tag if not exist otherwise save
     in existed none with push only diary_object
 
     Args:
@@ -584,3 +585,70 @@ def photo_del(album_id, photo_title):
     Gallery.objects(pk=album_id).update_one(pull__content={'title': photo_title})
 
     return redirect(url_for('admin.album_detail', album_id=album_id))
+
+@admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])
+@login_required
+def cmspage_edit(page_url):
+    """CMS page edit or create.
+
+    Action for CMS Page.
+    Receives title, content(html), tags and cagetory
+    Save title, content(html), pure content(further use), page_url
+    also auto save author as current_user.
+
+    Methods:
+        GET and POST
+
+    Args:
+        POST:
+            title: page title
+            html: content html
+            url: page url
+        GET:
+            page_url: string
+
+    Returns:
+        POST:
+            none (for create or save page only)
+        GET:
+            page object or none
+
+    Save:
+        title: string
+        html: string
+        content: string without html tags
+        url: string page_url
+        summary: first 80 characters in content with 3 dots in the end
+        author: current_user_object
+    """
+    if request.method == 'POST':
+        title = request.form["title"]
+        html = request.form["content"]
+        url = request.form["url"]
+
+        parser = MyHTMLParser()
+        parser.feed(html)
+        content = parser.html # the pure content without html tags
+
+        author = UserModel.objects.first()
+
+        
+        created = StaticPage.objects(url=url)
+
+        if created:
+            page = created[0]
+        else:
+            page = StaticPage(title=title, url=url)
+
+        page.content = content
+        page.summary = content[0:80] + '...'
+        page.html = html
+        page.author = author
+        page.save()
+
+        return redirect(url_for('admin.index'))
+
+    else:
+        page = StaticPage.objects(url=page_url).first()
+
+        return render_template('admin/page/edit.html', page=page)

@@ -1,0 +1,35 @@
+{% extends 'admin/base.html' %}
+{% block title %}编辑页面{% endblock %}
+{% block content %}
+<!--Form-->
+<div class="form">
+    <form method="post" id="customForm" action="">
+
+        <div class="elem">
+            <label>(url): </label>
+            <div class="indent">
+                <input type="text" name="url"  class="medium" value="{{ page.url }}" />
+            </div>
+        </div>
+
+        <div class="elem">
+            <label>标题: </label>
+            <div class="indent">
+                <input type="text" id="diary_title" name="title"  class="medium" value="{{ page.title }}" />
+            </div>
+        </div>
+
+        <div class="elem">
+            <label>正文:</label>
+            <div class="indent">
+                <textarea  id="wysiwyg_target" cols="50" rows="5"  class="resize-text medium" name="content"> {{ page.html }} </textarea>
+            </div>
+        </div>
+
+        <div class="elem">
+          <div class="indent"><button type="submit" class="button-a dark-blue">提交</button></div>
+        </div>
+    </form>
+</div>
+<!--Form end-->
+{% endblock %}
