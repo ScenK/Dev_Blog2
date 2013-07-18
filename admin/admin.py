@@ -19,7 +19,7 @@ admin = Blueprint('admin', __name__, template_folder='templates',
 
 class User(UserMixin):
     """ User object for Flasklogin
-    
+
     define name, id, and active for Flasklogin use
     """
     def __init__(self, name, id, active=True):
@@ -390,7 +390,7 @@ def account_settings():
 
         POST:
             username: string
-            pass1   : password 
+            pass1   : password
             pass2   : password twice for validate
             signature: user profile signature
             email   : for get reply email notification
@@ -444,8 +444,8 @@ def diary_add_photo():
         POST
 
     Args:
-        files: [name: 'userfile'] 
-    
+        files: [name: 'userfile']
+
     Returns:
         status: {success: true/false}
     """
@@ -543,7 +543,7 @@ def album_detail(album_id):
         album = Gallery.objects(pk=album_id)[0]
 
         return render_template('admin/gallery/detail.html', album=album)
-    
+
 
 @admin.route('/album/del/<album_id>')
 @login_required
@@ -577,7 +577,7 @@ def photo_del(album_id, photo_title):
 
     Args:
         album_id: album_id ObjectID
-        photo_title: string title of photo 
+        photo_title: string title of photo
 
     Returns:
         none
@@ -632,7 +632,7 @@ def cmspage_edit(page_url):
 
         author = UserModel.objects.first()
 
-        
+
         created = StaticPage.objects(url=url)
 
         if created:
@@ -652,3 +652,31 @@ def cmspage_edit(page_url):
         page = StaticPage.objects(url=page_url).first()
 
         return render_template('admin/page/edit.html', page=page)
+
+@admin.route('/sidebar', methods=['POST'])
+@login_required
+def sidebar():
+    if request.method == 'POST':
+        parent_id = request.form["parent_id"]
+
+        children = []
+
+        if parent_id == 'post':
+            children = [
+                        {'name': u'全部文章',
+                         'url': url_for("admin.diary_list")
+                        },
+                        {'name': u'写文章',
+                         'url': url_for("admin.diary_add")
+                        }
+                       ]
+
+        elif parent_id == 'page':
+            pages = StaticPage.objects.all()
+
+            for p in pages:
+                children.append({'name': p.title,
+                                 'url': url_for("admin.cmspage_edit",
+                                                page_url=p.url)})
+
+        return json.dumps({'parent_id': parent_id, 'children': children})

@@ -9,6 +9,10 @@ seajs.config({
 
   // Configure alias
   alias: {
+    'underscore': {
+      src: 'lodash.min.js',
+      exports: 'underscore'
+    },
     'jquery': {
       src: 'jquery-1.7.1.min.js',
       exports: 'jQuery'
