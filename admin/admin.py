@@ -656,6 +656,20 @@ def cmspage_edit(page_url):
 @admin.route('/sidebar', methods=['POST'])
 @login_required
 def sidebar():
+    """SideBar children generate function.
+
+    Used for return children nodes depends on parent_id.
+
+    Methods:
+        POST(Ajax only)
+
+    Args:
+        parent_id: string ('post' or page)
+
+    Returns:
+        json encode for children nodes ==> [{'url': linkurl, 'name': display_name}]
+
+    """
     if request.method == 'POST':
         parent_id = request.form["parent_id"]
 
