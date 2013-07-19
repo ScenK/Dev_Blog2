@@ -1,15 +1,7 @@
-dev_blog2
-=========
-
-#### Copyright 2012-2013 Dev-engine
-####
-#### Dev-Blog Python-Release Based On Flask and MongoDB
-####
-#### <http://tuzii.me/>
-####
-#### License for MIT License.
-####
-#### Author : Scen.K
+:Info: Dev_Blog Python-Release Based On Flask and MongoDB.
+:Repository: https://github.com/ScenK/Dev_Blog2
+:Author: Scen.K (http://tuzii.me).
+:License: MIT License.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -71,7 +63,6 @@ dev_blog2
 >   在完成第一版本之后 在更多的对python的进一步认识的基础上 考虑到之前第一版继续开发的扩展性受到很大限制 于是开发第二个博客代码版本
 
     * 技术改进:
-
        - 第二个版本后端上仍然采用MongoDB作为数据库 但是增加了新的MongnEngine作为Orm 提供强大的Model层
        - 网站从tornado搭建改为flask版本 而tornado退居后台 只进行作为非阻塞服务器使用
        - Admin后端放弃使用foundation的框架 而使用了一个全新的模版(colorful life)
