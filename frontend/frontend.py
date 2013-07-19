@@ -23,12 +23,16 @@ def home():
     Return:
         diaries: 5 diaries list
         categories: used for sidebar
+        pages: used for top-nav
+        profile: user object
     """
+    profile = User.objects.first()
     diaries = Diary.objects.order_by('-publish_time')[:5]
     categories = Category.objects.order_by('-publish_time')
+    pages = StaticPage.objects.all() 
 
     return render_template('frontend/home.html', diaries=diaries,
-                           categories=categories)
+                           categories=categories, pages=pages, profile=profile)
 
 
 @frontend.route('/diary/<diary_id>/<diary_title>')
@@ -46,16 +50,20 @@ def diary_detail(diary_id, diary_title=None):
         categories: used for sidebar
         guest_name: string cookie for guest comment auto complete filed
         guest_email: string cookie for guest comment auto complete filed
+        pages: used for top-nav
+        profile: user object
     """
+    profile = User.objects.first()
     diary = Diary.objects(pk=diary_id)[0]
     categories = Category.objects.order_by('-publish_time')
+    pages = StaticPage.objects.all() 
 
     guest_name = request.cookies.get('guest_name') 
     guest_email = request.cookies.get('guest_email')
     
     return render_template('frontend/diary/detail.html', diary=diary,
                            categories=categories, guest_name=guest_name,
-                           guest_email=guest_email)
+                           guest_email=guest_email, pages=pages, profile=profile)
 
 
 @frontend.route('/diary/list/<page_num>')
@@ -71,11 +79,15 @@ def diary_list(page_num):
         diaries: listed 5 diaries objects
         next_page: bool True or False
         categories: used for sidebar
+        pages: used for top-nav
         page_num: current page_num
+        profile: user object
     """
     next_page = False
     diary_num = len(Diary.objects)
     categories = Category.objects.order_by('-publish_time')
+    profile = User.objects.first()
+    pages = StaticPage.objects.all() 
 
     diaries = Diary.objects.order_by('-publish_time')[(int(page_num) - 1) * 5
                                                       :int(page_num) * 5] 
@@ -85,7 +97,7 @@ def diary_list(page_num):
 
     return render_template('frontend/diary/list.html', diaries=diaries, 
                            categories=categories, next_page=next_page,
-                           page_num=page_num)
+                           page_num=page_num, pages=pages, profile=profile)
 
 
 @frontend.route('/category/<category_id>/<category_name>')
@@ -104,20 +116,25 @@ def category_list(category_id, category_name=None):
         category: category_name used for title
         diaries: listed 5 diaries in each page
         categories: used in sidebar
+        pages: used for top-nav
+        profile: user object
     """
     next_page = False
     diary_num = len(Category.objects(pk=category_id)[0].diaries)
     if diary_num > 5:
         next_page = True
 
+    profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
+    pages = StaticPage.objects.all() 
     diaries = sorted(Category.objects(pk=category_id)[0].diaries, 
             reverse=True)[:5]
 
     return render_template('frontend/category/list.html',
                            category=category_name, diaries=diaries,
                            categories=categories, next_page=next_page,
-                           page_num=1, category_id=category_id)
+                           page_num=1, category_id=category_id, pages=pages,
+                           profile=profile)
 
 
 @frontend.route('/category/<category_id>/<category_name>/page/<page_num>')
@@ -137,6 +154,8 @@ def category_paging(category_id, page_num, category_name=None):
         category: category_name used for title
         diaries: listed 5 diaries in each page
         categories: used in sidebar
+        pages: used for top-nav
+        profile: user object
     """
     next_page = False
     diary_num = len(Category.objects(pk=category_id)[0].diaries)
@@ -144,7 +163,9 @@ def category_paging(category_id, page_num, category_name=None):
     if diary_num > (int(page_num) - 1) * 5 + 5:
         next_page = True
 
+    profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
+    pages = StaticPage.objects.all() 
     diaries = sorted(Category.objects(pk=category_id)[0].diaries,
                      reverse=True)[(int(page_num) - 1) * 5
                                    :int(page_num) * 5]
@@ -152,7 +173,8 @@ def category_paging(category_id, page_num, category_name=None):
     return render_template('frontend/category/list.html',
                            category=category_name, diaries=diaries,
                            categories=categories, next_page=next_page,
-                           page_num=page_num, category_id=category_id)
+                           page_num=page_num, category_id=category_id,
+                           pages=pages, profile=profile)
 
 
 @frontend.route('/tag/<tag_name>')
@@ -166,21 +188,27 @@ def tag_list(tag_name):
 
     Return:
         categories: used for sidebar list
+        pages: used for top-nav
         diaries: sorted diaries_object by publish_time
         page_num: 1
         tag: tag_name used for title 
+        profile: user object
     """
+    profile = User.objects.first()
     next_page = False
     diary_num = len(Tag.objects(name=tag_name)[0].diaries)
     if diary_num > 5:
         next_page = True
 
     categories = Category.objects.order_by('-publish_time')
+    pages = StaticPage.objects.all() 
     diaries = sorted(Tag.objects(name=tag_name)[0].diaries, reverse=True)[:5]
 
     return render_template('frontend/tag/list.html', diaries=diaries,
                            categories=categories, tag=tag_name,
-                           next_page=next_page, page_num=1)
+                           next_page=next_page, page_num=1, pages=pages,
+                           profile=profile)
+
 
 @frontend.route('/tag/<tag_name>/page/<page_num>')
 def tag_paging(tag_name, page_num):
@@ -198,20 +226,25 @@ def tag_paging(tag_name, page_num):
         diaries: sorted diaries_object by publish_time with 5 each page
         page_num: now page_num
         tag: tag_name used for title 
+        pages: used for top-nav
+        profile: user object
     """
     next_page = False
     diary_num = len(Tag.objects(name=tag_name)[0].diaries)
     if diary_num > int(page_num) * 5:
         next_page = True
 
+    profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
+    pages = StaticPage.objects.all() 
     diaries = sorted(Tag.objects(name=tag_name)[0].diaries,
                      reverse=True)[(int(page_num) - 1) * 5
                                     :int(page_num) * 5]
 
     return render_template('frontend/tag/list.html', diaries=diaries,
                            categories=categories, tag=tag_name,
-                           next_page=next_page, page_num=page_num)
+                           next_page=next_page, page_num=page_num, pages=pages,
+                           profile=profile)
 
 
 @frontend.route('/comment/add', methods=['POST'])
@@ -308,13 +341,15 @@ def gallery():
         albums : all photos
         categories: used for sidebar
         profile: user object
+        pages: used for top-nav
     """
     albums = Gallery.objects.order_by('-publish_time')
     categories = Category.objects.order_by('-publish_time')
     profile = User.objects.first()
+    pages = StaticPage.objects.all() 
 
     return render_template('frontend/gallery/index.html', albums=albums,
-                           categories=categories, profile=profile)
+                           categories=categories, profile=profile, pages=pages)
 
 
 @frontend.route('/page/<page_url>')
@@ -331,9 +366,13 @@ def page(page_url):
     Return:
         categories: used for sidebar
         page object
+        pages: used for top-nav
+        profile: user object
     """
+    profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
+    pages = StaticPage.objects.all() 
     page = StaticPage.objects.get_or_404(url=page_url)
 
     return render_template('frontend/page/index.html', page=page,
-                           categories=categories)
+                           categories=categories, pages=pages, profile=profile)

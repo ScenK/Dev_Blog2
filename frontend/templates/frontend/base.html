@@ -9,14 +9,16 @@
     <div id="container">
       <div id="logo">
         <a href="/" title="{{ self.title() }}"></a>
-        <p>不要因为工作 学习 忙碌 而忽视了生活.</p>
+        <p>{{ profile.signature }}</p>
       </div>
       <div id="nav">
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/gallery">Gallery</a></li>
-          <li><a href="/feed">RSS</a></li>
-          <li><a href="/about">About Me</a></li>
+          <li><a href="{{ url_for('frontend.home') }}">Home</a></li>
+          <li><a href="{{ url_for('frontend.gallery') }}">Gallery</a></li>
+          <li><a href="{{ url_for('frontend.rss') }}">RSS</a></li>
+          {% for p in pages %}
+          <li><a href="{{ url_for('frontend.page', page_url=p.url) }}">{{ p.title }}</a></li>
+          {% endfor %}
         </ul>
       </div>
       {% block content %}
@@ -25,13 +27,13 @@
         <h2>SEARCH</h2>
         <form action="http://google.com/search" method="get" accept-charset="utf-8" id="search_form">
           <input class="search" type="text" name="q" results="0" autocomplete="true">
-          <input type="hidden" name="q" value="site:tuzii.me">
+          <input type="hidden" name="q" value="site:{{ config['SITE_URL']}}">
         </form>
         <br />
         <h2>ARCHIVES</h2>
         <ul id="side-cats">
           {% for c in categories %}
-          <li class="cat-item"><a href="/category/{{ c.id }}/{{ c.name }}" title="{{ c.name }}">{{ c.name }}({{ c.diaries|count }})</a></li>
+          <li class="cat-item"><a href="{{ url_for('frontend.category_list', category_id=c.id, category_name=c.name) }}" title="{{ c.name }}">{{ c.name }}({{ c.diaries|count }})</a></li>
           {% endfor %}
         </ul>
         <h2>LINKS</h2>
@@ -42,8 +44,7 @@
         </ul>
         <h2>OPEN SOURSE</h2>
         <ul class="opensourse">
-          <li><a href="https://bitbucket.org/Scen/dev_blog/" target="_blank" title="博客Bitbucket开源代码">Bitbucket</a>: 本分支代码为Dev 版本 会有不同程度的不稳定性 使用时请注意</li>
-          <li><a href="https://github.com/ScenK/dev_blog/" target="_blank" title="博客Github开源代码">Github</a>: 本分支代码为Stable 版本 将在Dev版本主功能完成 并72小时稳定后进行合并操作</li>
+          <li><a href="https://github.com/ScenK/dev_blog2/" target="_blank" title="博客Github开源代码">Github</a>: 博客Github开源代码</li>
         </ul>
       </div>
     </div>
