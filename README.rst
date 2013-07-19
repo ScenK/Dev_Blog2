@@ -3,10 +3,9 @@
 :Author: Scen.K (http://tuzii.me).
 :License: MIT License.
 
- 文件目录结构:
-----------
-
-.. code-block:: c
+文件目录结构:
+---------
+::
 
     Dev_Blog2/
         .
@@ -53,7 +52,7 @@
             └── upyun.py                          又拍云SDK(v1.0)
 
 
-----------
+
 + 版本更替说明:
 
    本项目代码为dev_blog第一版制作并上线半年后重新开发而成
@@ -107,6 +106,4 @@
     * 遵循已有代码风格和文件夹风格 欢迎提pull request
     * MIT License.
 
-----------
 *Do it yourself and make joy :)*
-
