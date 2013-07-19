@@ -692,5 +692,8 @@ def sidebar():
                 children.append({'name': p.title,
                                  'url': url_for("admin.cmspage_edit",
                                                 page_url=p.url)})
+            children.append({'name': u'创建新页面',
+                             'url': url_for("admin.cmspage_edit",
+                                            page_url='new')})
 
         return json.dumps({'parent_id': parent_id, 'children': children})
