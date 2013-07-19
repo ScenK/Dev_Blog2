@@ -28,19 +28,19 @@ dev_blog2
         │   ├── templates                         页面文件夹
         │   │   └── admin
         ├── fabfile
-        │   └── __init__.py                       集成发布Fabric命令 
+        │   └── __init__.py                       集成发布Fabric命令
         ├── frontend                              前端Blueprint
-        │   ├── __init__.py                                         
+        │   ├── __init__.py
         │   ├── frontend.py                       前端Handler
         │   ├── templates                         页面文件夹
-        │   │   └── frontend                                        
-        ├── Model                                                   
-        │   ├── __init__.py                                         
-        │   └── models.py                                           
+        │   │   └── frontend
+        ├── Model
+        │   ├── __init__.py
+        │   └── models.py
         ├── static                                静态文件夹
-        │   ├── css                                                 
-        │   ├── less                                                
-        │   ├── images                            
+        │   ├── css
+        │   ├── less
+        │   ├── images
         │   ├── js
         │   ├── lib
         │   ├── favicon.ico
@@ -61,27 +61,29 @@ dev_blog2
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    
+
 + 版本更替说明:
 
-    本项目代码为dev_blog第一版制作并上线半年后重新开发而成
-    第一版代码库地址:<https://github.com/ScenK/dev_blog/>
-    在完成第一版本之后 在更多的对python的进一步认识的基础上 考虑到之前第一版继续开发的扩展性受到很大限制 于是开发第二个博客代码版本
+>   本项目代码为dev_blog第一版制作并上线半年后重新开发而成
+>
+>   第一版代码库地址:<https://github.com/ScenK/dev_blog/>
+>
+>   在完成第一版本之后 在更多的对python的进一步认识的基础上 考虑到之前第一版继续开发的扩展性受到很大限制 于是开发第二个博客代码版本
 
     * 技术改进:
 
        - 第二个版本后端上仍然采用MongoDB作为数据库 但是增加了新的MongnEngine作为Orm 提供强大的Model层
        - 网站从tornado搭建改为flask版本 而tornado退居后台 只进行作为非阻塞服务器使用
-       - Admin后端放弃使用foundation的框架 而使用了一个全新的模版(colorful life)    
-       - Admin后端放弃使用Markdown的写作方式 而采用了wysiwyg编辑器    
+       - Admin后端放弃使用foundation的框架 而使用了一个全新的模版(colorful life)
+       - Admin后端放弃使用Markdown的写作方式 而采用了wysiwyg编辑器
        - Admin后端采用了seajs作为模块化js开发和异步加载器
        - Admin后端放弃使用fineuploader图片上传组建 而采用uploadifive作为替代
        - 第一版数据结构优化
 
 + 版本迁移须知:
 
-     使用第一版本的博客代码 会提供一键数据库脚本(待完成)
-    
+>    使用第一版本的博客代码 会提供一键数据库脚本(待完成)
+
 + 安装须知:
 
     * 项目Wiki地址: (待完成)
@@ -110,7 +112,7 @@ dev_blog2
         - 每次改动的代码更新都可以使用fab update 进行服务端代码自动更新
 
 + 开发须知:
-    
+
     * 遵循已有代码风格和文件夹风格 欢迎提pull request
     * MIT License.
 
