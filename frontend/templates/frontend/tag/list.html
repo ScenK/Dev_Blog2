@@ -11,7 +11,7 @@
     <p>详细阅读... <a href="/diary/{{ i.id }}/{{ i.title }}" class="more-link">(more…)</a></p>
 
     <div class="post-comment-entice">
-      <p><span class="post-comments"><a href="/diary/{{ i.id }}/{{ i.title }}"> Comments </a></span></p>
+      <p><span class="post-comments"><a href="/diary/{{ i.id }}/{{ i.title }}">{{ i.comments|count }} Comments </a></span></p>
     </div>
   </div>
   {% endfor %}
