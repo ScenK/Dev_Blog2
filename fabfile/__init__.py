@@ -9,6 +9,7 @@ from config import *
 from mongoengine import *
 from Model.models import User
 from werkzeug.security import generate_password_hash
+from dbmover import DbMover
 
 connect(Config.MONGODB_SETTINGS.get('DB'))
 
@@ -119,3 +120,7 @@ def read_line_count(fname):
         for file_line in f:
             count += 1
         return count
+
+@task
+def dbmove():
+    DbMover().main()
