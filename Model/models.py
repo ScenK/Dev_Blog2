@@ -21,8 +21,8 @@ class Diary(db.Document):
     html         = db.StringField()
     category     = db.StringField(default=u'未分类')
     author       = db.ReferenceField(User)
-    tags         = db.ListField(db.StringField())
-    comments     = db.ListField(db.EmbeddedDocumentField('CommentEm'))
+    tags         = db.SortedListField(db.StringField())
+    comments     = db.SortedListField(db.EmbeddedDocumentField('CommentEm'))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
     update_time  = db.DateTimeField(default=datetime.datetime.now, required=True)
 
@@ -32,17 +32,17 @@ class Gallery(db.Document):
     title        = db.StringField(required=True)
     index        = db.StringField() 
     description  = db.StringField()
-    content      = db.ListField(db.EmbeddedDocumentField('PhotoEm'))
+    content      = db.SortedListField(db.EmbeddedDocumentField('PhotoEm'))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 
 class Tag(db.Document):
     name         = db.StringField(max_length=120, required=True)
-    diaries      = db.ListField(db.ReferenceField(Diary))
+    diaries      = db.SortedListField(db.ReferenceField(Diary))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 
 class Category(db.Document):
     name         = db.StringField(max_length=120, required=True)
-    diaries      = db.ListField(db.ReferenceField(Diary))
+    diaries      = db.SortedListField(db.ReferenceField(Diary))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 
 class Comment(db.Document):
@@ -59,7 +59,7 @@ class Page(db.Document):
     summary      = db.StringField()
     html         = db.StringField()
     author       = db.ReferenceField(User)
-    comments     = db.ListField(db.EmbeddedDocumentField('CommentEm'))
+    comments     = db.SortedListField(db.EmbeddedDocumentField('CommentEm'))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
     update_time  = db.DateTimeField(default=datetime.datetime.now, required=True)
 

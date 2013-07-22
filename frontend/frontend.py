@@ -127,8 +127,7 @@ def category_list(category_id, category_name=None):
     profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
     pages = StaticPage.objects.all() 
-    diaries = sorted(Category.objects(pk=category_id)[0].diaries, 
-                     reverse=True)[:5]
+    diaries = Category.objects(pk=category_id)[0].diaries[:5]
 
     return render_template('frontend/category/list.html',
                            category=category_name, diaries=diaries,
@@ -166,9 +165,8 @@ def category_paging(category_id, page_num, category_name=None):
     profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
     pages = StaticPage.objects.all() 
-    diaries = sorted(Category.objects(pk=category_id)[0].diaries,
-                     reverse=True)[(int(page_num) - 1) * 5
-                                   :int(page_num) * 5]
+    diaries = Category.objects(pk=category_id)[0].diaries[(int(page_num) - 1) * 5
+                                                           :int(page_num) * 5]
 
     return render_template('frontend/category/list.html',
                            category=category_name, diaries=diaries,
@@ -202,7 +200,7 @@ def tag_list(tag_name):
 
     categories = Category.objects.order_by('-publish_time')
     pages = StaticPage.objects.all() 
-    diaries = sorted(Tag.objects(name=tag_name)[0].diaries, reverse=True)[:5]
+    diaries = Tag.objects(name=tag_name)[0].diaries[:5]
 
     return render_template('frontend/tag/list.html', diaries=diaries,
                            categories=categories, tag=tag_name,
@@ -237,9 +235,8 @@ def tag_paging(tag_name, page_num):
     profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
     pages = StaticPage.objects.all() 
-    diaries = sorted(Tag.objects(name=tag_name)[0].diaries,
-                     reverse=True)[(int(page_num) - 1) * 5
-                                    :int(page_num) * 5]
+    diaries = Tag.objects(name=tag_name)[0].diaries[(int(page_num) - 1) * 5
+                                                    :int(page_num) * 5]
 
     return render_template('frontend/tag/list.html', diaries=diaries,
                            categories=categories, tag=tag_name,
