@@ -15,7 +15,7 @@ class User(db.Document):
 
 class Diary(db.Document):
     title        = db.StringField(required=True)
-    old_id       = db.StringField()
+    old_id       = db.IntField()
     content      = db.StringField()
     summary      = db.StringField()
     html         = db.StringField()

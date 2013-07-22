@@ -128,7 +128,7 @@ def category_list(category_id, category_name=None):
     categories = Category.objects.order_by('-publish_time')
     pages = StaticPage.objects.all() 
     diaries = sorted(Category.objects(pk=category_id)[0].diaries, 
-            reverse=True)[:5]
+                     reverse=True)[:5]
 
     return render_template('frontend/category/list.html',
                            category=category_name, diaries=diaries,

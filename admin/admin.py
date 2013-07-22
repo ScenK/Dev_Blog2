@@ -93,72 +93,6 @@ def index():
     return render_template('admin/dashboard.html')
 
 
-@admin.route('/diary/add', methods=['GET', 'POST'])
-@login_required
-def diary_add():
-    """ Add a new diary from admin
-
-    Receives title, content(html), tags and cagetory
-    Save title, content(html), pure content(further use), tags and cagetory
-    also auto save author as current_user.
-
-    This method will auto save new Category or Tag if not exist otherwise save
-    in existed none with push only diary_object
-
-    Args:
-        title: string
-        html: string
-        cagetory: string
-        tags: list
-
-    Save:
-        title: string
-        html: string
-        content: string without html tags
-        category: string
-        tags: list
-        summary: first 80 characters in content with 3 dots in the end
-        author: current_user_object
-    """
-    categories = Category.objects.all()
-    if request.method == 'POST' and 'title' and 'content' in request.form:
-        title = request.form["title"]
-        html = request.form["content"]
-        category = request.form["category"]
-        tags = request.form["tags"]
-
-        parser = MyHTMLParser()
-        parser.feed(html)
-        content = parser.html # the pure content without html tags
-
-        splited_tags = tags.split(',')
-
-        author = UserModel.objects.first()
-
-        post = Diary(title=title)
-        post.content = content
-        post.summary = content[0:80] + '...'
-        post.html = html
-        post.author = author
-        post.tags = splited_tags
-        post.save()
-
-        a, cat = Category.objects.get_or_create(name=category,
-                                                defaults={'diaries': [post]})
-        if not cat:
-            Category.objects(name=category).update_one(push__diaries=post)
-
-        for i in splited_tags:
-            b, tag = Tag.objects.get_or_create(name=i,
-                                               defaults={'diaries': [post]})
-            if not tag:
-                Tag.objects(name=i).update_one(push__diaries=post)
-
-        return redirect(url_for("admin.diary_list"))
-
-    return render_template('admin/diary/add.html', categories=categories)
-
-
 @admin.route('/diary/edit/<diary_id>', methods=['GET', 'POST'])
 @login_required
 def diary_edit(diary_id=None):
@@ -187,9 +121,6 @@ def diary_edit(diary_id=None):
         summary: first 80 characters in content with 3 dots in the end
         author: current_user_object
     """
-    diary = Diary.objects.get_or_404(pk=diary_id)
-    categories = Category.objects.all()
-
     if request.method == 'POST' and 'title' and 'content' in request.form:
         title = request.form["title"]
         html = request.form["content"]
@@ -203,9 +134,19 @@ def diary_edit(diary_id=None):
 
         splited_tags = tags.split(',')
 
+        author = UserModel.objects.first()
+
+        try:
+            diary = Diary.objects(pk=diary_id).first()
+        except:
+            diary = Diary(title=title)
+
+        diary.title = title
         diary.content = content
+        diary.category = category
         diary.summary = content[0:80] + '...'
         diary.html = html
+        diary.author = author
         diary.tags = splited_tags
         diary.save()
 
@@ -222,8 +163,15 @@ def diary_edit(diary_id=None):
 
         return redirect(url_for("admin.diary_list"))
 
-    return render_template('admin/diary/edit.html', diary=diary,
-                            categories=categories)
+    else:
+        try:
+            diary = Diary.objects(pk=diary_id).first()
+        except:
+            diary = None
+        categories = Category.objects.all()
+
+        return render_template('admin/diary/edit.html', diary=diary,
+                               categories=categories)
 
 
 @admin.route('/diary/list')
@@ -683,7 +631,7 @@ def sidebar():
                          'url': url_for("admin.diary_list")
                         },
                         {'name': u'写文章',
-                         'url': url_for("admin.diary_add")
+                         'url': url_for("admin.diary_edit", diary_id='New')
                         }
                        ]
 
