@@ -12,9 +12,6 @@ class DbMover(object):
 
 
     def connect_db(self):
-        #sourse_db = raw_input('Type your sourse database (from where?) :')
-        #if sourse_db:
-            #print 'OK!'
         target_db = raw_input('Type your target database (to where?) :')
         if target_db:
             self.target_db = target_db
@@ -109,9 +106,12 @@ class DbMover(object):
             category.publish_time = c.get('publish_time')
             category.save(validate=False)
 
-            for d in c.get('diaries'):
-                diary = Diary.objects(old_id=int(d.get('did'))).first()
-                Category.objects(name=c.get('name')).update_one(push__diaries=diary)
+            try:
+                for d in c.get('diaries'):
+                    diary = Diary.objects(old_id=int(d.get('did'))).first()
+                    Category.objects(name=c.get('name')).update_one(push__diaries=diary)
+            except:
+                pass
 
         print 'Category Data moved OK!'
 
@@ -143,10 +143,33 @@ class DbMover(object):
         print 'Gallery Data moved OK!'
 
 
+    def move_tag(self):
+        print 'Start moving Tag Data...'
+
+        """sourse_db"""
+        tags = self.sourse_db.tags.find()
+
+        """target_db"""
+        for t in tags:
+            tag = Tag(name=t.get('name'))
+            tag.publish_time = t.get('publish_time')
+            tag.save(validate=False)
+
+            try:
+                for d in t.get('diaries'):
+                    diary = Diary.objects(old_id=int(d.get('did'))).first()
+                    Tag.objects(name=t.get('name')).update_one(push__diaries=diary)
+            except:
+                pass
+
+        print 'Tag Data moved OK!'
+
+
     def main(self):
         self.connect_db()
         #self.move_user()
         #self.move_diary()
         #self.move_comment()
         #self.move_category()
-        self.move_gallery()
+        #self.move_gallery()
+        self.move_tag()
