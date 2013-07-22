@@ -20,6 +20,7 @@
         │   ├── templates                         页面文件夹
         │   │   └── admin
         ├── fabfile
+        │   ├── dbmover.py                        博客版本数据库迁移助手
         │   └── __init__.py                       集成发布Fabric命令
         ├── frontend                              前端Blueprint
         │   ├── __init__.py
