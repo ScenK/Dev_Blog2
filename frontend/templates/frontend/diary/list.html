@@ -2,7 +2,7 @@
 {% block title %} 日志列表 {% endblock %}
 {% block content %}
 <div id="content-container">
-    {% for i in diaries|sort(attribute='publish_time', reverse=True) %}
+    {% for i in diaries %}
     <div class="post">
         <h1><a class="post-title" href="/diary/{{ i.id }}/{{ i.title }}" title="{{ i.title }}">{{ i.title }}</a></h1>
         <div class="author"><span>作者:</span> <a>{{ i.author.name }}</a>&nbsp;<span>日期:</span> {{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}&nbsp;<span>标签:</span> {% for t in i.tags %}<a href="/tag/{{ t }}" title="{{ t }}">{{ t }}</a> {% endfor %}</div>

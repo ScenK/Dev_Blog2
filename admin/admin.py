@@ -138,8 +138,10 @@ def diary_edit(diary_id=None):
 
         try:
             diary = Diary.objects(pk=diary_id).first()
+            old_cat = diary.category
         except:
             diary = Diary(title=title)
+            old_cat = None
 
         diary.title = title
         diary.content = content
@@ -154,6 +156,8 @@ def diary_edit(diary_id=None):
                                                 defaults={'diaries': [diary]})
         if not cat:
             Category.objects(name=category).update_one(push__diaries=diary)
+            if old_cat is not None:
+                Category.objects(name=old_cat).update_one(pull__diaries=diary)
 
         for i in splited_tags:
             b, tag = Tag.objects.get_or_create(name=i,
@@ -199,7 +203,7 @@ def diary_list():
 def diary_del(diary_id):
     """Admin Diary Delete Action
 
-    Used for delete Diary.
+    Used for delete Diary.Also del reference Tag and Category.
 
     Methods:
         GET
@@ -210,7 +214,9 @@ def diary_del(diary_id):
     Returns:
         none
     """
-    Diary.objects.get_or_404(pk=diary_id).delete()
+    diary = Diary.objects(pk=diary_id)
+    Category.objects(name=diary[0].category).update_one(pull__diaries=diary[0])
+    diary.delete()
     return redirect(url_for("admin.diary_list"))
 
 
@@ -406,7 +412,6 @@ def diary_add_photo():
           return json.dumps({'success': 'true', 'url': url})
         else:
           return json.dumps({'success': 'false'})
-
 
 
 @admin.route('/gallery/list', methods=['GET', 'POST'])
