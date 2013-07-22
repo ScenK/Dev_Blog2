@@ -5,6 +5,9 @@ from pymongo import Connection
 from mongoengine import *
 from werkzeug.security import generate_password_hash
 from Model.models import *
+from config import *
+
+connect(Config.MONGODB_SETTINGS.get('DB'))
 
 class DbMover(object):
     """DbMover helper for transmit dev_blog ver1.0 to ver2.0.
@@ -15,8 +18,6 @@ class DbMover(object):
     Attributes:
         sourse_db: default=dev_blog and you should change it if you used another
                    name.
-        target_db: will ask you to input DB name. And you should type in the
-                   same one with that in your config file.
     """
     def __init__(self):
         """Init sourse database.
@@ -25,25 +26,10 @@ class DbMover(object):
         self.sourse_db = Connection().dev_blog
 
 
-    def connect_db(self):
-        """Your target DataBase name.
-
-        You will be asked to input the new DataBase name.
-
-        Args:
-            target DataBase name.
-        """
-        target_db = raw_input('Type your target database (to where?) :')
-        if target_db:
-            self.target_db = target_db
-            connect(target_db)
-            print 'connect DB: OK!'
-
-
     def move_user(self):
         """User data moving function.
 
-        This method will auto merge 'admin' and 'accounts' in to one 'User', 
+        This method will auto merge 'admin' and 'accounts' in to one 'User',
         also will generate new password hash.
 
         Save:
@@ -69,7 +55,7 @@ class DbMover(object):
     def move_diary(self):
         """Diary data moving function.
 
-        This method will move 'diaries' in to 'Diary'. 
+        This method will move 'diaries' in to 'Diary'.
 
         Save:
             Diary Object Schema.
@@ -101,7 +87,7 @@ class DbMover(object):
     def move_comment(self):
         """Comment data moving function.
 
-        This method will move 'comments' in to 'Comment' and 'CommentEm'. 
+        This method will move 'comments' in to 'Comment' and 'CommentEm'.
 
         Save:
             Comment Object Schema.
@@ -141,7 +127,7 @@ class DbMover(object):
     def move_category(self):
         """Category data moving function.
 
-        This method will move 'categories' in to 'Category'. 
+        This method will move 'categories' in to 'Category'.
 
         Save:
             Category Object Schema.
@@ -170,7 +156,7 @@ class DbMover(object):
     def move_gallery(self):
         """Gallery data moving function.
 
-        This method will move 'gallaries' in to 'Gallery'. 
+        This method will move 'gallaries' in to 'Gallery'.
 
         Save:
             Gallery Object Schema.
@@ -206,7 +192,7 @@ class DbMover(object):
     def move_tag(self):
         """Tag data moving function.
 
-        This method will move 'tags' in to 'Tag'. 
+        This method will move 'tags' in to 'Tag'.
 
         Save:
             Tag Object Schema.
@@ -247,7 +233,6 @@ class DbMover(object):
             Move_gallery()
             Move_tag()
         """
-        self.connect_db()
         self.move_user()
         self.move_diary()
         self.move_comment()
