@@ -586,6 +586,7 @@ def photo_del(album_id, photo_title):
 
     return redirect(url_for('admin.album_detail', album_id=album_id))
 
+
 @admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])
 @login_required
 def cmspage_edit(page_url):
@@ -652,6 +653,7 @@ def cmspage_edit(page_url):
         page = StaticPage.objects(url=page_url).first()
 
         return render_template('admin/page/edit.html', page=page)
+
 
 @admin.route('/sidebar', methods=['POST'])
 @login_required

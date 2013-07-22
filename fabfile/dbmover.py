@@ -115,10 +115,38 @@ class DbMover(object):
 
         print 'Category Data moved OK!'
 
+    def move_gallery(self):
+        print 'Start moving Gallery Data...'
+
+        """sourse_db"""
+        galleries = self.sourse_db.gallaries.find()
+
+        """target_db"""
+        for g in galleries:
+            gallery = Gallery(title=g.get('title'))
+            gallery.publish_time = g.get('publish_time')
+            gallery.description = g.get('description')
+            gallery.index = g.get('index')
+            gallery.save(validate=False)
+
+            try:
+                for c in g.get('content'):
+                    photo = PhotoEm(
+                            path = c.get('url'),
+                            title = c.get('title'),
+                            publish_time = c.get('publish_time'),
+                          )
+                    Gallery.objects(title=g.get('title')).update_one(push__content=photo)
+            except:
+                pass
+
+        print 'Gallery Data moved OK!'
+
 
     def main(self):
         self.connect_db()
-        self.move_user()
-        self.move_diary()
-        self.move_comment()
-        self.move_category()
+        #self.move_user()
+        #self.move_diary()
+        #self.move_comment()
+        #self.move_category()
+        self.move_gallery()
