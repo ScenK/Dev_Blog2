@@ -211,8 +211,9 @@ class DbMover(object):
             try:
                 for d in t.get('diaries'):
                     diary = Diary.objects(old_id=int(d.get('did'))).first()
-                    Tag.objects(name=t.get('name')).update_one(
-                                                           push__diaries=diary)
+                    diaries_list = Tag.objects(name=t.get('name')).first().diaries
+                    if diary not in diaries_list:
+                        Tag.objects(name=t.get('name')).update_one(push__diaries=diary)
             except:
                 pass
 
