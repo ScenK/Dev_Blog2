@@ -7,11 +7,32 @@ from werkzeug.security import generate_password_hash
 from Model.models import *
 
 class DbMover(object):
+    """DbMover helper for transmit dev_blog ver1.0 to ver2.0.
+
+    This helper will help moving old data to new database.
+    Version: 1.0.
+
+    Attributes:
+        sourse_db: default=dev_blog and you should change it if you used another
+                   name.
+        target_db: will ask you to input DB name. And you should type in the
+                   same one with that in your config file.
+    """
     def __init__(self):
+        """Init sourse database.
+        You should change it with your real name.
+        """
         self.sourse_db = Connection().dev_blog
 
 
     def connect_db(self):
+        """Your target DataBase name.
+
+        You will be asked to input the new DataBase name.
+
+        Args:
+            target DataBase name.
+        """
         target_db = raw_input('Type your target database (to where?) :')
         if target_db:
             self.target_db = target_db
@@ -20,6 +41,14 @@ class DbMover(object):
 
 
     def move_user(self):
+        """User data moving function.
+
+        This method will auto merge 'admin' and 'accounts' in to one 'User', 
+        also will generate new password hash.
+
+        Save:
+            User Object Schema.
+        """
         print 'Start moving User Data...'
 
         """sourse_db"""
@@ -38,6 +67,13 @@ class DbMover(object):
         print 'User Data moved OK!'
 
     def move_diary(self):
+        """Diary data moving function.
+
+        This method will move 'diaries' in to 'Diary'. 
+
+        Save:
+            Diary Object Schema.
+        """
         print 'Start moving Diary Data...'
 
         """sourse_db"""
@@ -63,6 +99,14 @@ class DbMover(object):
 
 
     def move_comment(self):
+        """Comment data moving function.
+
+        This method will move 'comments' in to 'Comment' and 'CommentEm'. 
+
+        Save:
+            Comment Object Schema.
+            CommentEm Object Schema.
+        """
         print 'Start moving Comment Data...'
 
         """sourse_db"""
@@ -95,6 +139,13 @@ class DbMover(object):
 
 
     def move_category(self):
+        """Category data moving function.
+
+        This method will move 'categories' in to 'Category'. 
+
+        Save:
+            Category Object Schema.
+        """
         print 'Start moving Category Data...'
 
         """sourse_db"""
@@ -109,13 +160,21 @@ class DbMover(object):
             try:
                 for d in c.get('diaries'):
                     diary = Diary.objects(old_id=int(d.get('did'))).first()
-                    Category.objects(name=c.get('name')).update_one(push__diaries=diary)
+                    Category.objects(name=c.get('name')).update_one(
+                                                           push__diaries=diary)
             except:
                 pass
 
         print 'Category Data moved OK!'
 
     def move_gallery(self):
+        """Gallery data moving function.
+
+        This method will move 'gallaries' in to 'Gallery'. 
+
+        Save:
+            Gallery Object Schema.
+        """
         print 'Start moving Gallery Data...'
 
         """sourse_db"""
@@ -136,7 +195,8 @@ class DbMover(object):
                             title = c.get('title'),
                             publish_time = c.get('publish_time'),
                           )
-                    Gallery.objects(title=g.get('title')).update_one(push__content=photo)
+                    Gallery.objects(title=g.get('title')).update_one(
+                                                           push__content=photo)
             except:
                 pass
 
@@ -144,6 +204,13 @@ class DbMover(object):
 
 
     def move_tag(self):
+        """Tag data moving function.
+
+        This method will move 'tags' in to 'Tag'. 
+
+        Save:
+            Tag Object Schema.
+        """
         print 'Start moving Tag Data...'
 
         """sourse_db"""
@@ -158,7 +225,8 @@ class DbMover(object):
             try:
                 for d in t.get('diaries'):
                     diary = Diary.objects(old_id=int(d.get('did'))).first()
-                    Tag.objects(name=t.get('name')).update_one(push__diaries=diary)
+                    Tag.objects(name=t.get('name')).update_one(
+                                                           push__diaries=diary)
             except:
                 pass
 
@@ -166,10 +234,23 @@ class DbMover(object):
 
 
     def main(self):
+        """Main function in Class Object.
+        Always NOT change the following sequence.
+        That means Diary Object should be transmited as User Object moved done.
+
+        Calls:
+            Connection DB()
+            Move_user()
+            Move_diary()
+            Move_comment()
+            Move_category()
+            Move_gallery()
+            Move_tag()
+        """
         self.connect_db()
-        #self.move_user()
-        #self.move_diary()
-        #self.move_comment()
-        #self.move_category()
-        #self.move_gallery()
+        self.move_user()
+        self.move_diary()
+        self.move_comment()
+        self.move_category()
         self.move_tag()
+        self.move_gallery()
