@@ -72,7 +72,14 @@
 
 + 版本迁移须知:
 
-    使用第一版本的博客代码 会提供一键数据库脚本(待完成)
+    第一版本的博客代码 使用一键数据库脚本(已集成在fab命令中)
+    
+    * 使用步骤:
+       - config.py设置好目标数据库名称(避免跟原始数据库名称一致)
+       - 备份导出原始数据库: fab backup_database
+       - 导入数据库: mongorestore -d dev_blog --drop ~/mongobak/dev_blog
+       - 执行迁移命令: fab dbmove
+       - 等待脚本结束
 
 + 安装须知:
 
