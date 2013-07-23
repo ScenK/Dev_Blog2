@@ -2,12 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>登陆 - Sea_Kudo的博客</title>
+  <title>登陆 - {{ config['MAIN_TITLE'] }}</title>
   <meta name="description" content="">
-  <link rel="shortcut icon" href="{{ url_for('admin.static', filename='images/favicon.ico') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
   <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/login.css') }}" type="text/css" media="screen"  />
 
-  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery-1.9.1.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('admin.static', filename='lib/jquery-1.7.1.min.js') }}"></script>
   <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->

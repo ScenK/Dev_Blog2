@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %} - {{ config['MAIN_TITLE'] }}</title>
-    <link rel="shortcut icon" href="{{ url_for('admin.static', filename='images/favicon.ico') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
     <link rel=stylesheet type=text/css href="{{ url_for('admin.static', filename='css/style.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('admin.static', filename='css/chosen.min.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('admin.static', filename='css/tables.css') }}">
