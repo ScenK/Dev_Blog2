@@ -54,8 +54,10 @@
   });
 
   $(window).on('scroll', function () {
-    var top = $("#back_to_top").offset().top;
-    top > 1000 ? $('#back_to_top').removeClass('hide') : $('#back_to_top').addClass('hide'); 
+    var top = $("#back_to_top").offset();
+    try{
+      top.top > 1000 ? $('#back_to_top').removeClass('hide') : $('#back_to_top').addClass('hide'); 
+    }catch(err){}
   });
 
   $(document).on('click', '#back_to_top', function() {
