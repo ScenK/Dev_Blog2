@@ -46,8 +46,8 @@ define("port", default=8888, help="run on the given port", type=int)
 def main():
     http_server = HTTPServer(WSGIContainer(app))
     enable_pretty_logging()
-    http_server.listen(options.port)
     options.parse_command_line()
+    http_server.listen(options.port)
     IOLoop.instance().start()
     print 'Quit the server with CONTROL-C'
 
