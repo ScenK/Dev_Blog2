@@ -5,7 +5,7 @@ from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from config import *
 from frontend.frontend import frontend
 from admin.admin import admin, User
@@ -20,11 +20,16 @@ app = Flask(__name__)
 app.register_blueprint(frontend)
 app.register_blueprint(admin, url_prefix='/admin')
 
+
 app.config.from_object('config.DevelopmentConfig')
 
 login_manager = LoginManager()
 login_manager.login_view = "admin.login"
 login_manager.login_message = u"Please log in to access this page."
+
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 @login_manager.user_loader
 def load_user(id):
