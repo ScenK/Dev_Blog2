@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+from tornado.options import define, options
+from tornado.log import enable_pretty_logging
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
+
 from flask import Flask, render_template
 from config import *
 from frontend.frontend import frontend
@@ -23,7 +29,7 @@ login_manager.login_message = u"Please log in to access this page."
 @login_manager.user_loader
 def load_user(id):
     user = UserModel.objects.first()
-    return User(user.name, user.pk)  
+    return User(user.name, user.pk)
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -35,5 +41,15 @@ DebugToolbarExtension(app)
 
 db.init_app(app)
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+define("port", default=8888, help="run on the given port", type=int)
+
+def main():
+    http_server = HTTPServer(WSGIContainer(app))
+    enable_pretty_logging()
+    http_server.listen(options.port)
+    options.parse_command_line()
+    IOLoop.instance().start()
+    print 'Quit the server with CONTROL-C'
+
+if __name__ == "__main__":
+    main()
