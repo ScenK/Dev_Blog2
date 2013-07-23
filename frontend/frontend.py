@@ -310,7 +310,7 @@ def rss():
         diaries_object: list
         site_settings: title, link, description
     """
-    articles = Diary.objects[:12]
+    articles = Diary.objects.order_by('-publish_time')[:12]
     items = []
     for article in articles:
         content = article.html
