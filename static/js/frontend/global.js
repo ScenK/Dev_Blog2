@@ -81,8 +81,8 @@
     };
 
     // auto img-position fix
-    if($('p img').length > 0)
-      $('p img').parent().css('text-align', 'center');
+    if($('div img').length > 0)
+      $('div img').parent().css('text-align', 'center');
   }); 
 
 })(jQuery);
