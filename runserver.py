@@ -21,7 +21,7 @@ app.register_blueprint(frontend)
 app.register_blueprint(admin, url_prefix='/admin')
 
 
-app.config.from_object('config.DevelopmentConfig')
+app.config.from_object('config.ProductionConfig')
 
 login_manager = LoginManager()
 login_manager.login_view = "admin.login"

@@ -2,9 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}{% endblock %} - {{ config['MAIN_TITLE'] }}</title>
-    <link rel=stylesheet type=text/css href="{{ url_for('frontend.static', filename='css/frontend.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta name="keywords" content="{{ config['KEYWORDS'] }}">
+    <meta name="description" content="{{ config['DESCRIPTION'] }}">
+    <title>{% block title %}{% endblock %} - {{ config['MAIN_TITLE'] }}</title>
+    {% if config['DEBUG'] == True %}
+      <link rel=stylesheet type=text/css href="{{ url_for('frontend.static', filename='css/frontend.css') }}">
+    {% else %}
+      <link rel=stylesheet type=text/css href="{{ url_for('frontend.static', filename='css/frontend.min.css') }}">
+    {% endif %}
   </head>
   <body>
     <div id="container">
@@ -28,7 +34,7 @@
         <h2>SEARCH</h2>
         <form action="http://google.com/search" method="get" accept-charset="utf-8" id="search_form">
           <input class="search" type="text" name="q" results="0" autocomplete="true">
-          <input type="hidden" name="q" value="site:{{ config['SITE_URL']}}">
+          <input type="hidden" name="q" value="site:{{ config['SITE_URL'] }}">
         </form>
         <br />
         <h2>ARCHIVES</h2>
@@ -50,9 +56,13 @@
       </div>
     </div>
     <footer>
-    &copy; <a href="mailto:he.kang@dev-engine.com">Dev-engine</a>  |  Powered By Flask and MongoDB
+    &copy; <a href="mailto:he.kang@dev-engine.com">Dev-engine</a>  |  Powered By Flask, Tornado and MongoDB
     </footer>
     {% block script %}{% endblock %}
-    <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/frontend.js') }}"></script>
+    {% if config['DEBUG'] == True %}
+      <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/frontend.js') }}"></script>
+    {% else %}
+      <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/frontend.min.js') }}"></script>
+    {% endif %}
   </body>
 </html>

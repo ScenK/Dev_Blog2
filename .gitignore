@@ -2,3 +2,5 @@
 *.DS_Store
 *._*
 config.py
+static/css/*
+static/js/*.min*
