@@ -11,6 +11,9 @@ class Config(object):
 
 class ProductionConfig(Config):
     SECRET_KEY = ''
+    ANALYTICS = '''<script type="text/javascript">                     
+                    </script>                                          
+                '''    
 
 class DevelopmentConfig(Config):
     DEBUG = True

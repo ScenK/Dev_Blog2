@@ -63,6 +63,7 @@
       <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/frontend.js') }}"></script>
     {% else %}
       <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/frontend.min.js') }}"></script>
+      {{ config['ANALYTICS']|safe }}
     {% endif %}
   </body>
 </html>
