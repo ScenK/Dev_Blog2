@@ -21,7 +21,7 @@
         <td><span class="published">{{ c.content }}</span></td>
         <td>{{ c.diary.title }}</td>
         <td class="name">{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</td>
-        <td>{% if c.author != current_user.name %}<a class="comment_back" href="javascript:void(0);">回复</a>{% endif %}</td>
+        <td>{% if c.author != '博主回复' %}<a class="comment_back" href="javascript:void(0);">回复</a>{% endif %}</td>
     </tr>
     {% endfor %}
 </tbody>

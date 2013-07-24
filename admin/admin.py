@@ -309,7 +309,7 @@ def comment_reply():
 
         post = Diary.objects(pk=did)
         commentEm = CommentEm(
-                    author = current_user.name,
+                    author = u'博主回复',
                     content = content,
                 )
         post.update_one(push__comments=commentEm)

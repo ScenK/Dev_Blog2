@@ -12,7 +12,7 @@
     <div class="post-meta">
       <span>文章分类:
         <ul class="post-categories">
-            <li><a href="/category/{{ diary.category }}" title="{{ diary.category }}" rel="category tag">{{ diary.category }}</a></li>
+            <li><a title="{{ diary.category }}" rel="category tag">{{ diary.category }}</a></li>
         </ul>
       </span>
       <span class="post-comments">&nbsp;&nbsp;评论: <a>( {{ diary.comments|count }} )</a></span>
@@ -21,6 +21,16 @@
   <h3 id="comments"> {{ diary.comments|count }} 个回复给 《<span>{{ diary.title }}</span>》</h3>
     <ol class="commentlist">
         {% for c in diary.comments %}
+        {% if c.author == '博主回复' %}
+        <li class="admin-reply">
+          <img class="avatar-image" src="{{ profile.avatar}}">    
+          <small class="commentmetadata"><a>{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</a></small>
+          <cite>{{ c.author }} <span>:</span></cite> 
+          <div class="comment-content">
+            <p>{{ c.content }}</p>
+          </div>
+        </li>
+        {% else %}
         <li class="alt">
           <small class="commentmetadata"><a>{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</a></small>
           <cite>{{ c.author }} <span>:</span></cite> 
@@ -28,17 +38,8 @@
             <p>{{ c.content }}</p>
           </div>
         </li>
+        {% endif %}
         {% endfor %}
-        {#
-        <li class="admin-reply">
-          <img class="avatar-image" src="">    
-          <small class="commentmetadata"><a></a></small>
-          <cite><span>:</span></cite> 
-          <div class="comment-content">
-            <p></p>
-          </div>
-        </li>
-#}
     </ol>
     <h3 id="respond">新增评论:<span class="welcome-back">{% if guest_name %} { 欢迎回来~ <a>{{guest_name}}</a> } {% endif %}</span></h3>
     <form id="comment_add_form">
