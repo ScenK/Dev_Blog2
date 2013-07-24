@@ -5,12 +5,12 @@ class Config(object):
     SECRET_KEY = 'lask+mongoengine=<3'
     MAIN_TITLE = u'Sea_Kudo的博客'
     SITE_URL = 'http://tuzii.me'
-    KEYWORDS = 'u前端开发, 互联网, 技术博客, 个人博客, 生活记录'
+    KEYWORDS = u'前端开发, 互联网, 技术博客, 个人博客, 生活记录'
     DESCRIPTION  = u'并不是所有唯美的故事 都伴有精彩的风景. 我只愿尽我所能 带你看遍整个春夏秋冬.'
     EMAIL = 'he.kang@dev-engine.com'
 
 class ProductionConfig(Config):
-    DATABASE_URI = 'mysql://user@localhost/foo'
+    SECRET_KEY = ''
 
 class DevelopmentConfig(Config):
     DEBUG = True
