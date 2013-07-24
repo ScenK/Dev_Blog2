@@ -34,6 +34,11 @@ define(function(require, exports, module) {
     }
   });
 
+  if($('#categories_select').val() === '创建新分类') {
+      $('#categories_select').trigger('change');
+  }
+  
+
   //*******************  EDITOR  *******************//
   $('#wysiwyg_target').wysiwyg({
     autoGrow         : true,
