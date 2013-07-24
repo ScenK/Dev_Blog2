@@ -42,6 +42,7 @@
         ├── README.md                             帮助文件
         ├── requirements.txt                      Python基础安装包列表
         ├── runserver.py                          用来启动web服务器
+        ├── yuicompressor.jar                     YUI js,css压缩器
         ├── config.py                             网站初始化设置文件
         └── utils                                 第三方及助手文件夹
             ├── __init__.py
