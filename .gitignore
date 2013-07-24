@@ -4,3 +4,4 @@
 config.py
 static/css/*
 static/js/*.min*
+admin/static/css/admin.min.css

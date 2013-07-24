@@ -71,6 +71,12 @@ def compress_css():
             'java -jar yuicompressor.jar --charset utf-8 --type css %s >> %s' %
             ('static/css/'+f+'.css', 'static/css/'+f+'.min.css'))
 
+    local("rm -f admin/static/css/admn.min.css")
+
+    local(
+        'java -jar yuicompressor.jar --charset utf-8 --type css %s >> %s' %
+        ('admin/static/css/admin.css', 'admin/static/css/admin.min.css'))
+
 @task
 def lessc():
     local("lessc static/less/frontend.less > static/css/frontend.css")
