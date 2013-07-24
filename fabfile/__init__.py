@@ -91,8 +91,8 @@ def update():
 @task
 def backup_database():
     local("sudo rm -rf ~/mongobak")
-    local("mongodump -d %s -o ~/mongobak" % conf['dbname'])
-    local("tar -czvPf ~/%s%s.tar.gz ~/mongobak/*" % (conf['dbname'], datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
+    local("mongodump -d %s -o ~/mongobak" % Config.MONGODB_SETTINGS.get('DB'))
+    local("tar -czvPf ~/%s_%s.tar.gz ~/mongobak/*" % (Config.MONGODB_SETTINGS.get('DB'), datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
 
 
 @task
