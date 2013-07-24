@@ -13,7 +13,7 @@ define(function(require, exports, module) {
           url    : '/admin/gallery/list',
           data   : {'title': r},
           success: function(e) {
-            console.log(e);
+            window.location.reload();
           }
         });
       }
