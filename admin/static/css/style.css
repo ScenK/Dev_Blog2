@@ -1916,6 +1916,7 @@ div.progressbar div
 .gallery li img {
   margin:auto;
   height:86px;
+  width:86px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -1987,6 +1988,7 @@ a.zoom span{
 .gallery-2 li img {
   margin:auto;
   height:110px;
+  width:110px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
