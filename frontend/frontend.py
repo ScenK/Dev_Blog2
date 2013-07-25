@@ -27,14 +27,23 @@ def home():
         categories: used for sidebar
         pages: used for top-nav
         profile: user object
+        next_page: boolen
     """
     profile = User.objects.first()
-    diaries = Diary.objects.order_by('-publish_time')[:5]
+    diaries_all = Diary.objects.order_by('-publish_time')
+    diaries = diaries_all[:5]
+    diary_num = len(diaries_all)
+    if diary_num > 5:
+        next_page = True
+    else:
+        next_page = False
+
     categories = Category.objects.order_by('-publish_time')
     pages = StaticPage.objects.all() 
 
     return render_template('frontend/home.html', diaries=diaries,
-                           categories=categories, pages=pages, profile=profile)
+                           categories=categories, pages=pages, profile=profile,
+                           next_page=next_page)
 
 
 @frontend.route('/diary/<diary_id>/<diary_title>')

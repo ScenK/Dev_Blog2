@@ -16,7 +16,9 @@
     </div>
     {% endfor %}
   </div>
+  {% if next_page == True %}
   <div id="bottom-paging">
     <a href="/diary/list/2">Older Posts »</a>
   </div>  
+  {% endif %}
 {% endblock %}
