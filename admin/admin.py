@@ -359,7 +359,7 @@ def account_settings():
         POST:
             none
     """
-    user = UserModel.objects().first()
+    user = UserModel.objects(name=current_user.name).first()
     if request.method == 'POST':
         username = request.form['username']
         pass1 = request.form['pass1']
