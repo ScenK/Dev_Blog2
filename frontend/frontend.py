@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+import json
 import datetime
 from operator import attrgetter
 import PyRSS2Gen
-from flask import Blueprint, render_template, redirect, request, url_for
+from flask import Blueprint, render_template, redirect, request, url_for, make_response
 from jinja2 import TemplateNotFound
 from Model.models import (User, Diary, Category, CommentEm, Comment, Tag,
                           Gallery, StaticPage)
@@ -293,7 +294,11 @@ def comment_add():
             send_reply_mail(Config.EMAIL, 
                             Config.MAIN_TITLE + u'收到了新的评论, 请查收',
                             content, did, name, diary_title)
-            return 'success'
+
+            response = make_response(redirect('/'))
+            response.set_cookie('guest_name', name) 
+            response.set_cookie('guest_email', email) 
+            return json.dumps({'success': 'true'})
         except Exception as e:
             return str(e)
 

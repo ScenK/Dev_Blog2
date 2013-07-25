@@ -27,7 +27,10 @@ define(function(require, exports, module) {
     dnd          : false,
     fileType     : 'image',
     formData     : {'album_id' : album_id},
-    uploadScript : '/admin/album/detail/' + album_id
+    uploadScript : '/admin/album/detail/' + album_id,
+    onQueueComplete: function() {
+      window.location.reload();
+    }
   });
   
 });

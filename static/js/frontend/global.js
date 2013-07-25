@@ -28,14 +28,7 @@
               comment  : comment
           },
           success: function(data){
-            if(data === 'success'){
-              Tools.setCookie('guest_name', name, 30);
-              Tools.setCookie('guest_email', email, 30);
               self.val('提交').attr('disabled', false).removeAttr('style');
-            }
-            else{
-              self.val('发生错误, 错误信息已发送给博主').attr('disabled', false).removeAttr('style');
-            }
           },
           error: function(){
             self.val('发生错误, 错误信息已发送给博主');
@@ -80,9 +73,6 @@
       prettyPrint();
     };
 
-    // auto img-position fix
-    if($('div img').length > 0)
-      $('div img').parent().css('text-align', 'center');
   }); 
 
 })(jQuery);
