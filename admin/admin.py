@@ -461,7 +461,8 @@ def gallery_list():
 def album_detail(album_id):
     """Album Detail Admin Page.
 
-    Used for upload new photos to UpYun and set deail about album.
+    Used for upload new photos to UpYun and set deail about album.Also, if
+    the album index is not set, use the first photo.
 
     Methods:
         GET and POST
@@ -492,6 +493,7 @@ def album_detail(album_id):
                     path = url,
                     title = filename
                   )
+          Gallery.objects(pk=album_id).update(set__index=url)
           Gallery.objects(pk=album_id).update_one(push__content=photo)
           return json.dumps({'success': 'true', 'url': url})
         else:
