@@ -4,6 +4,7 @@ from tornado.log import enable_pretty_logging
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
+import tornado.web
 
 from flask import Flask, render_template, send_from_directory
 from config import *
@@ -16,12 +17,14 @@ from flask.ext.login import LoginManager
 
 from flask_debugtoolbar import DebugToolbarExtension
 
+USED_CONF = 'config.ProductionConfig'
+
 app = Flask(__name__)
 app.register_blueprint(frontend)
 app.register_blueprint(admin, url_prefix='/admin')
 
 
-app.config.from_object('config.ProductionConfig')
+app.config.from_object(USED_CONF)
 
 login_manager = LoginManager()
 login_manager.login_view = "admin.login"
@@ -49,7 +52,13 @@ db.init_app(app)
 
 define("port", default=8888, help="run on the given port", type=int)
 
+if USED_CONF == 'config.ProductionConfig':
+    env = False
+else:
+    env = True
+
 def main():
+    tornado.web.Application(debug=env)
     http_server = HTTPServer(WSGIContainer(app))
     enable_pretty_logging()
     options.parse_command_line()
