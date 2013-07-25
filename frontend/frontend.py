@@ -207,9 +207,10 @@ def tag_list(tag_name):
         tag: tag_name used for title 
         profile: user object
     """
+    tags = Tag.objects.get_or_404(name=tag_name)
     profile = User.objects.first()
     next_page = False
-    diary_num = len(Tag.objects(name=tag_name)[0].diaries)
+    diary_num = len(tags.diaries)
     if diary_num > 5:
         next_page = True
 

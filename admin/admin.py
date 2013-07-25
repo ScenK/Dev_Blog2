@@ -138,10 +138,11 @@ def diary_edit(diary_id=None):
 
         try:
             diary = Diary.objects(pk=diary_id).first()
-            old_cat = diary.category
         except:
             diary = Diary(title=title)
-            old_cat = None
+
+        old_cat = diary.category
+        old_tags = diary.tags
 
         diary.title = title
         diary.content = content
@@ -158,6 +159,9 @@ def diary_edit(diary_id=None):
             Category.objects(name=category).update_one(push__diaries=diary)
             if old_cat is not None:
                 Category.objects(name=old_cat).update_one(pull__diaries=diary)
+
+        for t in old_tags:
+            Tag.objects(name=t).update_one(pull__diaries=diary)
 
         for i in splited_tags:
             b, tag = Tag.objects.get_or_create(name=i,
