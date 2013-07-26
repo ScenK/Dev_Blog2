@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta charset="utf-8"/>
     <meta name="keywords" content="{{ config['KEYWORDS'] }}">
     <meta name="description" content="{{ config['DESCRIPTION'] }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>{% block title %}{% endblock %} - {{ config['MAIN_TITLE'] }}</title>
     {% if config['DEBUG'] == True %}
       <link rel=stylesheet type=text/css href="{{ url_for('frontend.static', filename='css/frontend.css') }}">

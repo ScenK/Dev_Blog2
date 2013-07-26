@@ -2,10 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8"/>
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+    <meta name="keywords" content="{{ config['KEYWORDS'] }}">
+    <meta name="description" content="{{ config['DESCRIPTION'] }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>没有找到相关页面 - {{ config['MAIN_TITLE'] }}</title>
-    <link rel="stylesheet" href="{{ url_for('frontend.static', filename='css/404.min.css') }}">
+    {% if config['DEBUG'] == True %}
+      <link rel="stylesheet" href="{{ url_for('frontend.static', filename='css/404.css') }}">
+    {% else %}
+      <link rel="stylesheet" href="{{ url_for('frontend.static', filename='css/404.min.css') }}">
+    {% endif %}
   </head>
   <body>
     <div id="wraper">
@@ -60,6 +65,11 @@
         </ul>
       </div>
     </div><!--bottom-->
-    <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/404.js') }}"></script>
+    {% if config['DEBUG'] == True %}
+      <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/404.js') }}"></script>
+    {% else %}
+      <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/404.min.js') }}"></script>
+      {{ config['ANALYTICS']|safe }}
+    {% endif %}
   </body>
 </html>
