@@ -41,7 +41,7 @@
           {% endif %}
         {% endfor %}
     </ol>
-    <h3 id="respond">新增评论:<span class="welcome-back">{% if guest_name %} { 欢迎回来~ <a>{{guest_name}}</a> } {% endif %}</span></h3>
+    <h3 id="respond">新增评论:{% if guest_name %}<span class="welcome-back"> { 欢迎回来~ <a>{{guest_name}}</a> } </span>{% endif %}</h3>
     <form id="comment_add_form">
       <input type="hidden" id="did" value="{{ diary.id }}">
       <p>

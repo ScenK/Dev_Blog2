@@ -39,10 +39,13 @@ def load_user(id):
     user = UserModel.objects.first()
     return User(user.name, user.pk)
 
-@app.errorhandler(500)
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('frontend/404.html'), 404
+
+@app.errorhandler(500)
+def special_exception_handler(error):
+    return render_template('frontend/404.html'), 500
 
 login_manager.init_app(app)
 
