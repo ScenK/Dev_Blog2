@@ -33,19 +33,20 @@ def build():
 
 @task
 def compress():
-    execute(compress_all_js)
     execute(compress_css)
+    execute(compress_all_js)
 
 @task
 def compress_all_js():
-    compress_js('frontend')
-    compress_js('404')
+    compress_js('admin/static', 'backend')
+    compress_js('static', 'frontend')
+    compress_js('static', '404')
 
 @task
-def compress_js(debug_files):
+def compress_js(folder, debug_files):
     js_files = []
 
-    target  = open('static/js/'+debug_files+'.js', "r")
+    target  = open(folder + '/js/' + debug_files + '.js', "r")
     p = re.compile("document.*src=\'/(.*?)\'.*")
     for line in target:
         m = p.match(line)
@@ -53,9 +54,9 @@ def compress_js(debug_files):
             js_files.append(m.group(1))
     target.close()
 
-    local("rm -f static/js/%s.min*.js" % debug_files)
+    local("rm -f %s/js/%s.min*.js" % (folder, debug_files))
 
-    compressed_file = "static/js/%s.min.js" % debug_files
+    compressed_file = "%s/js/%s.min.js" % (folder, debug_files)
     for f in js_files:
         local(
             'java -jar yuicompressor.jar --charset utf-8 --type js %s >> %s' %

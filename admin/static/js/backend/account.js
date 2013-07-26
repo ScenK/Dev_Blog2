@@ -1,9 +1,3 @@
-define(function(require, exports, module) {
-
-   var $      = require('jquery'),
-       tipTip = require('tipTip');
-
-
   //*******************  MENU HEADER  *******************//
   $('#login-trigger').click(function(){
     $(this).next('#login-content').slideToggle('fast');
@@ -34,5 +28,3 @@ define(function(require, exports, module) {
     defaultPosition: "top", 
     delay: 100, 
   });
-
-});

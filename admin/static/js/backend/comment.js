@@ -1,6 +1,3 @@
-define(function(require, exports, module) {
-
-   var $ = require('jquery');
 
   //*******************  Call Comment Reply  *******************//
   $('.comment_back').click(function() {
@@ -57,5 +54,3 @@ define(function(require, exports, module) {
 
   });
   
-});
-

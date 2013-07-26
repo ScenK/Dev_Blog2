@@ -1,8 +1,3 @@
-define(function(require, exports, module) {
-
-   var $            = require('jquery'),
-       alerts       = require('alerts'),
-       uploadifive  = require('uploadifive');
 
   //*******************  Add New Album  *******************//
   $('#add_new_album').click(function(){
@@ -33,4 +28,3 @@ define(function(require, exports, module) {
     }
   });
   
-});

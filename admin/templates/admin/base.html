@@ -42,10 +42,11 @@
   <div class="clear"></div>
   {% block script %}
   {% endblock %}
-  <script 
-      src="{{ url_for('admin.static', filename='lib/seajs/sea.js') }}" 
-      data-config="{{ url_for('admin.static', filename='js/config') }}"
-      data-main="{{ url_for('admin.static', filename='js/main') }}">
-  </script>
+  {% if config['DEBUG'] == True %}
+    <script type="text/javascript" src="{{ url_for('admin.static', filename='js/backend.js') }}"></script>
+  {% else %}
+    <script type="text/javascript" src="{{ url_for('admin.static', filename='js/backend.min.js') }}"></script>
+    {{ config['ANALYTICS']|safe }}
+  {% endif %}
   </body>
 </html>

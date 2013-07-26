@@ -1,8 +1,3 @@
-define(function(require, exports, module) {
-
-   var  u = require('underscore'),
-        $ = require('jquery');
-
    function tabSlide(container) {
      this.container = $(container);
      this.parents = this.container.find('.parent');
@@ -72,6 +67,3 @@ define(function(require, exports, module) {
 
      $(parent_id).find('.children').append(html);
    }
-
-   module.exports = tabSlide;
-});

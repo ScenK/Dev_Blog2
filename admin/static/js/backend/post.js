@@ -1,13 +1,3 @@
-define(function(require, exports, module) {
-
-   var $            = require('jquery'),
-       alerts       = require('alerts'),
-       dataTable    = require('dataTable'),
-       wysiwyg      = require('wysiwyg'),
-       wysiwygLink  = require('wysiwygLink'),
-       AjaxUpload   = require('AjaxUpload'),
-       chosen       = require('chosen');
-
   //********************* TABLE (NEWS) *********************//
   $('#example').dataTable({
     "sPaginationType": "full_numbers"
@@ -72,4 +62,3 @@ define(function(require, exports, module) {
     });
   }
   
-});
