@@ -68,7 +68,6 @@
        - 网站从tornado搭建改为flask版本 而tornado退居后台 只进行作为非阻塞服务器使用
        - Admin后端放弃使用foundation的框架 而使用了一个全新的模版(colorful life)
        - Admin后端放弃使用Markdown的写作方式 而采用了wysiwyg编辑器
-       - Admin后端采用了seajs作为模块化js开发和异步加载器
        - Admin后端放弃使用fineuploader图片上传组建 而采用uploadifive作为替代
        - 第一版数据结构优化
 
@@ -105,8 +104,7 @@
     * sudo pip install tornado
     * cd ~/dev-blog2/
         - 拷贝 Config/config.py.sample 到 Config/config.py 并更改网站相关设置
-        - 执行fab build 进行初始化部属
-        - 执行fab deploy 进行less编译和css js 压缩
+        - 执行fab build 进行初始化部属(此时会默认生成默认的后台管理员账户密码均为'admin' 请登录后自行修改)
         - 执行fab test 开启服务器进程(或者在Supervisor开启python多进程)
         - 每次改动的代码更新都可以使用fab update 进行服务端代码自动更新
 
