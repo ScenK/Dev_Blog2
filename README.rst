@@ -3,6 +3,10 @@
 :Author: Scen.K (http://tuzii.me).
 :License: MIT License.
 
+**展示站点: <http://staging.tuzii.me> 提供试用和测试.**
+
+**后端用户名密码:admin, admin. (单进程站点, 请勿频繁尝试发送邮件以及上传图片).**
+
 文件目录结构:
 ---------
 ::
