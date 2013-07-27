@@ -1,9 +1,12 @@
 <aside id="sideLeft">
   <a href="{{ url_for('admin.index') }}"><span class="categories">仪表盘</span></a>
   <ul class="menu">
-    <li class="expand parent" id="post">
+    <li class="expand">
         <a><span>文章</span></a>
-        <ul class="acitem children hide"></ul>
+        <ul class="acitem">
+          <li><a href="{{ url_for('admin.diary_list') }}">所有文章</a></li>
+          <li><a href="{{ url_for('admin.diary_edit', diary_id='New') }}">写文章</a></li>
+        </ul>
       </li>
       
       <li>
@@ -18,9 +21,12 @@
         <a href="{{ url_for('admin.category_list') }}"><span>分类管理</span></a>
       </li>
 
-      <li class="parent" id="page">
+      <li class="expand">
         <a><span>页面管理</span></a>
-        <ul class="acitem children hide"></ul>
+        <ul class="acitem">
+          <li><a href="{{ url_for('admin.cmspage_list') }}">所有页面</a></li>
+          <li><a href="{{ url_for('admin.cmspage_edit', page_url="New") }}">创建新页面</a></li>
+        </ul>
       </li>
   </ul>
 </aside><!-- #sideLeft -->

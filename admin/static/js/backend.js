@@ -10,8 +10,6 @@ document.write(unescape("%3Cscript src='/admin/static/lib/uploadifive/jquery.upl
 document.write(unescape("%3Cscript src='/admin/static/lib/editor/jquery.wysiwyg.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/lib/editor/wysiwyg.link.js' type='text/javascript'%3E%3C/script%3E"));
 
-document.write(unescape("%3Cscript src='/admin/static/js/backend/helper/tabSlide.js' type='text/javascript'%3E%3C/script%3E"));
-
 document.write(unescape("%3Cscript src='/admin/static/js/backend/main.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/js/backend/account.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/js/backend/comment.js' type='text/javascript'%3E%3C/script%3E"));

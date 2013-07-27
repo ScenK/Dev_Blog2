@@ -614,47 +614,41 @@ def cmspage_edit(page_url):
         return render_template('admin/page/edit.html', page=page)
 
 
-@admin.route('/sidebar', methods=['POST'])
+@admin.route('/cmspage/list', methods=['GET'])
 @login_required
-def sidebar():
-    """SideBar children generate function.
+def cmspage_list():
+    """Admin CmsPage lit page.
 
-    Used for return children nodes depends on parent_id.
+    show all staticPages.
 
     Methods:
-        POST(Ajax only)
+        GET
 
     Args:
-        parent_id: string ('post' or page)
+        none
 
     Returns:
-        json encode for children nodes ==> [{'url': linkurl, 'name': display_name}]
-
+        StaticPage object
     """
-    if request.method == 'POST':
-        parent_id = request.form["parent_id"]
+    pages = StaticPage.objects.order_by('-publish_time')
+    return render_template('admin/page/list.html', pages=pages)
 
-        children = []
 
-        if parent_id == 'post':
-            children = [
-                        {'name': u'全部文章',
-                         'url': url_for("admin.diary_list")
-                        },
-                        {'name': u'写文章',
-                         'url': url_for("admin.diary_edit", diary_id='New')
-                        }
-                       ]
+@admin.route('/cmspage/del/<page_url>', methods=['GET'])
+@login_required
+def cmspage_del(page_url):
+    """Admin StaticPage Delete Action
 
-        elif parent_id == 'page':
-            pages = StaticPage.objects.all()
+    Used for delete Category.
 
-            for p in pages:
-                children.append({'name': p.title,
-                                 'url': url_for("admin.cmspage_edit",
-                                                page_url=p.url)})
-            children.append({'name': u'创建新页面',
-                             'url': url_for("admin.cmspage_edit",
-                                            page_url='new')})
+    Methods:
+        GET
 
-        return json.dumps({'parent_id': parent_id, 'children': children})
+    Args:
+        page_url: string
+
+    Returns:
+        none
+    """
+    StaticPage.objects.get_or_404(url=page_url).delete()
+    return redirect(url_for("admin.cmspage_list"))
