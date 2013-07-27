@@ -606,7 +606,7 @@ def cmspage_edit(page_url):
         page.author = author
         page.save()
 
-        return redirect(url_for('admin.index'))
+        return redirect(url_for('admin.cmspage_list'))
 
     else:
         page = StaticPage.objects(url=page_url).first()

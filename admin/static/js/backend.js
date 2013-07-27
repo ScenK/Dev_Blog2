@@ -15,3 +15,4 @@ document.write(unescape("%3Cscript src='/admin/static/js/backend/account.js' typ
 document.write(unescape("%3Cscript src='/admin/static/js/backend/comment.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/js/backend/gallery.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/js/backend/post.js' type='text/javascript'%3E%3C/script%3E"));
+document.write(unescape("%3Cscript src='/admin/static/js/backend/page.js' type='text/javascript'%3E%3C/script%3E"));
