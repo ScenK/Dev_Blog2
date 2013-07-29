@@ -305,10 +305,10 @@ def comment_add():
                             Config.MAIN_TITLE + u'收到了新的评论, 请查收',
                             content, did, name, diary_title)
 
-            response = make_response(redirect('/'))
+            response = make_response(json.dumps({'success': 'true'}))
             response.set_cookie('guest_name', name) 
             response.set_cookie('guest_email', email) 
-            return json.dumps({'success': 'true'})
+            return response
         except Exception as e:
             return str(e)
 
