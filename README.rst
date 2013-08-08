@@ -25,6 +25,7 @@
         │   │   └── admin
         ├── fabfile
         │   ├── __init__.py                       集成发布Fabric命令
+        │   ├── redirector.py                     301跳转文件生成器
         │   └── dbmover.py                        博客版本数据库迁移助手
         ├── frontend                              前端Blueprint
         │   ├── __init__.py
