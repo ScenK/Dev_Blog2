@@ -17,7 +17,7 @@ from flask.ext.login import LoginManager
 
 from flask_debugtoolbar import DebugToolbarExtension
 
-USED_CONF = 'config.DevelopmentConfig'
+USED_CONF = 'config.ProductionConfig'
 
 app = Flask(__name__)
 app.register_blueprint(frontend)
