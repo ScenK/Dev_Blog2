@@ -17,7 +17,11 @@ class Redirector(object):
         pass
 
     def main(self):
-        local("rm redirect_map.conf")
+        try:
+            local("rm redirect_map.conf")
+        except:
+            pass
+
         local("touch redirect_map.conf")
 
         diaries = Diary.objects.all()
@@ -28,6 +32,7 @@ class Redirector(object):
             record = self.generate_single_line(diary)
             file_object.write(record)
 
+        print 'config file generate done!'
         file_object.close()
 
     def generate_single_line(self, diary):
@@ -36,7 +41,7 @@ class Redirector(object):
             object_id = diary.pk
             diary_title = urllib.quote(diary.title.encode('utf-8'))
 
-            record = 'rewrite ^/diary/detail/' + str(old_id) + ' http://vm.tuzii.me/diary/' + str(object_id) + '/' + diary_title + ' permanent;' + '\n'
+            record = 'rewrite ^/diary/detail/' + str(old_id) + ' ' + str(Config.SITE_URL) +'/diary/' + str(object_id) + '/' + diary_title + ' permanent;' + '\n'
 
             return record
         except Exception as e:
