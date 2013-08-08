@@ -10,6 +10,7 @@ from mongoengine import *
 from Model.models import User
 from werkzeug.security import generate_password_hash
 from dbmover import DbMover
+from redirector import Redirector
 
 connect(Config.MONGODB_SETTINGS.get('DB'))
 
@@ -130,3 +131,7 @@ def read_line_count(fname):
 @task
 def dbmove():
     DbMover().main()
+
+@task
+def g():
+    Redirector().main()
