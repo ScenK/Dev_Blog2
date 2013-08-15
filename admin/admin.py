@@ -264,6 +264,33 @@ def category_del(category_name):
     return redirect(url_for("admin.category_list"))
 
 
+@admin.route('/comment/del/<comment_id>')
+@login_required
+def comment_del(comment_id):
+    """Admin Comment Delete Action
+
+    Used for delete Comment.Del comment from DiaryCommentEm and CommentDB
+
+    Methods:
+        GET
+
+    Args:
+        comment_id: CommentObjectedID
+
+    Returns:
+        none
+    """
+    comment = Comment.objects.get_or_404(pk=comment_id)
+
+    diary = Diary.objects(pk=comment.diary.pk)
+
+    diary.update_one(pull__comments={'content': comment.content})
+
+    comment.delete()
+
+    return redirect(url_for("admin.comment_list"))
+
+
 @admin.route('/comment/list')
 @login_required
 def comment_list():
