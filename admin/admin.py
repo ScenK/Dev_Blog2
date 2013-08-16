@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import re
 from werkzeug import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
@@ -13,6 +14,7 @@ from Model.models import User as UserModel
 from utils.email_util import send_reply_mail
 from utils.helper.html_helper import MyHTMLParser
 from utils.helper.upyun_helper import UpYunHelper
+from utils.helper.re_helper import ReHelper
 
 admin = Blueprint('admin', __name__, template_folder='templates',
                   static_folder='static')
@@ -90,6 +92,7 @@ def index():
 
     only display static page.
     """
+
     return render_template('admin/dashboard.html')
 
 
@@ -122,9 +125,11 @@ def diary_edit(diary_id=None):
         author: current_user_object
     """
     if request.method == 'POST' and 'title' and 'content' in request.form:
-        title = request.form["title"]
+        re_helper = ReHelper()
+
+        title = re_helper.r_slash(request.form["title"])
         html = request.form["content"]
-        category = request.form["category"]
+        category = re_helper.r_slash(request.form["category"])
         tags = request.form["tags"]
 
         ''' save simple data for further use'''
@@ -609,7 +614,9 @@ def cmspage_edit(page_url):
         author: current_user_object
     """
     if request.method == 'POST':
-        title = request.form["title"]
+        re_helper = ReHelper()
+
+        title = re_helper.r_slash(request.form["title"])
         html = request.form["content"]
         url = request.form["url"]
 
@@ -619,13 +626,12 @@ def cmspage_edit(page_url):
 
         author = UserModel.objects.first()
 
-
         created = StaticPage.objects(url=url)
 
         if created:
             page = created[0]
         else:
-            page = StaticPage(title=title, url=url)
+            page = StaticPage(title=title, url=re_helper.r_slash(url))
 
         page.content = content
         page.summary = content[0:80] + '...'
