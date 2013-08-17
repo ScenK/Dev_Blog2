@@ -47,10 +47,22 @@
         did     : did,
         content : content
       },
-      success: function(){
-        $('.admin-reply-area').fadeOut();
+      success: function(e){
+        console.log(e);
       }
     });
 
+    $('.admin-reply-area').fadeOut();
+
+    var html =  $('#example tbody').find('tr:first-child').clone().addClass('ajax-new-comment hide');
+
+    $(html.find('td')[1]).text('博主回复');
+    $(html.find('td')[2]).text(content);
+    $(html.find('td')[3]).text(title);
+    $(html.find('td')[4]).text(Helper.getTime());
+    $(html.find('td')[5]).text('');
+
+    html.prependTo('#example');
+    $('body').animate({ scrollTop: $('.ajax-new-comment').offset().top - 200}, 900);
+    $('.ajax-new-comment').fadeIn(1000);
   });
-  
