@@ -345,7 +345,7 @@ def rss():
         description = Config.DESCRIPTION,
         lastBuildDate = datetime.datetime.now(),
         items = items
-    ).to_xml()
+    ).to_xml('utf-8')
     return rss
 
 
