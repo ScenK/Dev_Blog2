@@ -1,5 +1,7 @@
+tornado
 flask
 flask_debugtoolbar
 mongoengine
 flask-mongoengine
 flask-login
+PyRSS2Gen
