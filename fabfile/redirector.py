@@ -45,7 +45,7 @@ class Redirector(object):
             object_id = diary.pk
             diary_title = urllib.quote(helper.r_slash(diary.title.encode('utf-8')))
 
-            record = 'rewrite ^/diary/detail/' + str(old_id) + ' ' + str(Config.SITE_URL) +'/diary/' + str(object_id) + '/' + diary_title + ' permanent;' + '\n'
+            record = 'rewrite ^/diary/detail/' + str(old_id) + '$  ' + str(Config.SITE_URL) +'/diary/' + str(object_id) + '/' + diary_title + ' permanent;' + '\n'
 
             return record
         except Exception as e:
