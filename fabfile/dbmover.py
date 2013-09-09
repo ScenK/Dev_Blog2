@@ -13,7 +13,7 @@ class DbMover(object):
     """DbMover helper for transmit dev_blog ver1.0 to ver2.0.
 
     This helper will help moving old data to new database.
-    Version: 1.0.
+    Version: 1.0.1
 
     Attributes:
         sourse_db: default=dev_blog and you should change it if you used another
@@ -43,6 +43,9 @@ class DbMover(object):
         profile = accounts.find_one()
 
         """target_db"""
+        # delete old admin if exist
+        User.objects.all().delete()
+
         user = User(name=admin.get('user'))
         user.password = generate_password_hash(password=admin.get('password'))
         user.avatar = profile.get('avatar')
