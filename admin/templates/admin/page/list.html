@@ -16,7 +16,7 @@
     {% for p in pages %}
     <tr class="item">
         <td><input type="checkbox" name="id[]" value="1" /></td>
-        <td>{{ p.title }}</td>
+        <td><a href="{{ url_for('admin.cmspage_edit', page_url = p.url) }}" title="编辑页面内容">{{ p.title }}</a></td>
         <td>{{ p.url }}</td>
         <td>{{ p.publish_time.strftime('%Y-%m-%d %H:%M') }}</td>
         <td class="action"><a href="{{ url_for('admin.cmspage_del', page_url = p.url) }}" title="删除页面"><img src="../static/images/del.png" alt="delete"></a></td>
