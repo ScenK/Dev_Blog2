@@ -7,12 +7,12 @@
 <!--Big Image Gallery -->
 <ul class="gallery-3">
     {% for i in albums %}
-    <li><a class="fancybox" href="{{ url_for('admin.album_detail', album_id=i.id) }}">  <img src="{{ i.index }}" alt="{{ i.title }}" /></a>
+    <li><a href="{{ url_for('admin.album_detail', album_id=i.id) }}">  <img src="{{ i.index }}" alt="{{ i.title }}" /></a>
     <ul class="img_options-3">
         <li>相册名称: {{ i.title }}</li>
         <li>创建时间: {{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}</li>
         <li>图片数量: {{ i.content|count }}</li>
-        <li class="ins"><a href="{{ url_for('admin.album_detail', album_id=i.id) }}" class="zoom-3 fancybox">zoom</a></li>
+        <li class="ins"><a href="{{ url_for('admin.album_detail', album_id=i.id) }}" class="zoom-3">zoom</a></li>
         <li><a href="{{ url_for('admin.album_del', album_id=i.id) }}" class="delete-3">delete</a></li>
     </ul>
     </li>

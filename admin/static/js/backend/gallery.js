@@ -27,4 +27,14 @@
       window.location.reload();
     }
   });
-  
+
+  //*******************  Fancybox  *******************//
+  $(document).ready(function() {
+    $("a.fancybox").fancybox({
+      'titlePosition'   : 'outside',
+      'overlayColor'    : '#000',
+      'overlayOpacity'  : 0.8
+    });
+  });
+
+
