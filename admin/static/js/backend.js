@@ -6,9 +6,9 @@ document.write(unescape("%3Cscript src='/admin/static/lib/jquery.alerts.js' type
 document.write(unescape("%3Cscript src='/admin/static/lib/chosen.jquery.min.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/lib/ajaxupload.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/lib/uploadifive/jquery.uploadifive.min.js' type='text/javascript'%3E%3C/script%3E"));
-document.write(unescape("%3Cscript src='/admin/static/lib/uploadifive/jquery.uploadifive.min.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/lib/editor/jquery.wysiwyg.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/lib/editor/wysiwyg.link.js' type='text/javascript'%3E%3C/script%3E"));
+document.write(unescape("%3Cscript src='/admin/static/lib/fancybox/fancybox.js' type='text/javascript'%3E%3C/script%3E"));
 
 document.write(unescape("%3Cscript src='/admin/static/js/backend/main.js' type='text/javascript'%3E%3C/script%3E"));
 document.write(unescape("%3Cscript src='/admin/static/js/backend/account.js' type='text/javascript'%3E%3C/script%3E"));
