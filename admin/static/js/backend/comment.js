@@ -8,7 +8,7 @@
 
     var target = self.parent().parent();
     $(reply_html).insertAfter(target);
-    $('body').animate({ scrollTop: $('.admin-reply-area').offset().top - 200}, 900);
+    $('body, html').animate({ scrollTop: $('.admin-reply-area').offset().top - 200}, 900);
 
   });
 
@@ -63,6 +63,6 @@
     $(html.find('td')[5]).text('');
 
     html.prependTo('#example');
-    $('body').animate({ scrollTop: $('.ajax-new-comment').offset().top - 200}, 900);
+    $('body, html').animate({ scrollTop: $('.ajax-new-comment').offset().top - 200}, 900);
     $('.ajax-new-comment').fadeIn(1000);
   });

@@ -37,7 +37,7 @@
         var time = Tools.getTime();
         var html = Tools.buildCommentHtml(name, time, comment);
         $('<li class="alt new-comment"></li>').appendTo('.commentlist');
-        $('body').animate({ scrollTop: $('.new-comment:last-child').offset().top - 200}, 900);
+        $('body, html').animate({ scrollTop: $('.new-comment:last-child').offset().top - 200}, 900);
         $('.new-comment:last-child').hide().append(html).fadeIn(4000);
         u_comment.val('');
       }
@@ -54,7 +54,7 @@
   });
 
   $(document).on('click', '#back_to_top', function() {
-    $('body').animate({ scrollTop: $('#nav').offset().top }, 200);
+    $('body, html').animate({ scrollTop: $('#nav').offset().top }, 200);
   });
 
   $(document).ready(function() {
