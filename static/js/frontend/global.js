@@ -7,7 +7,7 @@
         u_name = u_form.find('.username'),
         u_email = u_form.find('.email'),
         u_comment = u_form.find('.comment');
-    
+
       var flag1 = Tools.emptyCheck([u_name, u_email, u_comment]);
       var flag2 = Tools.emailCheck(u_email);
 
@@ -72,12 +72,12 @@
       $('code').parent().addClass('prettyprint');
       prettyPrint();
     };
-    
+
     // replace non-unicode guest name
     if($('.welcome-back').length > 0) {
       var pos1 = $('.welcome-back').find('a'),
           pos2 = $('.username');
-      
+
       var guest_name = Tools.getCookie('guest_name').replace(/"/g, '');
       var guest_email = Tools.getCookie('guest_email').replace(/"/g, '');
 
@@ -86,6 +86,17 @@
 
     }
 
-  }); 
+    $("img").each(function () {
+      var self = $(this);
+      self.parent().attr('href', self.attr('src'));
+      self.parent().addClass('fancybox');
+    });
+
+    $('.fancybox').fancybox({
+      'titlePosition'   : 'outside',
+      'overlayColor'    : '#000',
+      'overlayOpacity'  : 0.8
+    });
+  });
 
 })(jQuery);

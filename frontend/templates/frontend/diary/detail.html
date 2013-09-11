@@ -23,9 +23,9 @@
         {% for c in diary.comments %}
           {% if c.author == '博主回复' %}
           <li class="admin-reply">
-            <img class="avatar-image" src="{{ profile.avatar}}">    
+            <img class="avatar-image" src="{{ profile.avatar}}">
             <small class="commentmetadata"><a>{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</a></small>
-            <cite>{{ c.author }} <span>:</span></cite> 
+            <cite>{{ c.author }} <span>:</span></cite>
             <div class="comment-content">
               <p>{{ c.content }}</p>
             </div>
@@ -33,7 +33,7 @@
           {% else %}
           <li class="alt">
             <small class="commentmetadata"><a>{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</a></small>
-            <cite>{{ c.author }} <span>:</span></cite> 
+            <cite>{{ c.author }} <span>:</span></cite>
             <div class="comment-content">
               <p>{{ c.content }}</p>
             </div>
