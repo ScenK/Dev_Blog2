@@ -2,65 +2,73 @@
 {% block title %}{{ diary.title }}{% endblock %}
 {% block content %}
 <div id="content-container">
-  <div class="post">
-      <h1><a class="post-title" href="/diary/{{ diary.id }}/{{ diary.title }}" title="{{ diary.title }}">{{ diary.title }}</a></h1>
-      <div class="author"><span>作者: </span> <a>{{ diary.author.name }}</a>&nbsp;<span>日期:</span> {{ diary.publish_time.strftime('%Y-%m-%d %H:%M') }}&nbsp;<span>标签:</span> {% for t in diary.tags %}<a href="/tag/{{ t }}" title="{{ t }}">{{ t }}</a> {% endfor %}</div>
-    <p></p>
-    <div class="summary">
-      {{ diary.html|safe }}
+    <div class="post">
+        <h1><a class="post-title" href="/diary/{{ diary.id }}/{{ diary.title }}" title="{{ diary.title }}">{{ diary.title }}</a></h1>
+        <div class="author"><span>作者: </span> <a>{{ diary.author.name }}</a>&nbsp;<span>日期:</span> {{ diary.publish_time.strftime('%Y-%m-%d %H:%M') }}&nbsp;<span>标签:</span> {% for t in diary.tags %}<a href="/tag/{{ t }}" title="{{ t }}">{{ t }}</a> {% endfor %}</div>
+        <p></p>
+        <div class="summary">
+            {{ diary.html|safe }}
+        </div>
+        <div class="post-meta">
+            <span>文章分类:
+                <ul class="post-categories">
+                    <li><a title="{{ diary.category }}" rel="category tag">{{ diary.category }}</a></li>
+                </ul>
+            </span>
+            <span class="post-comments">&nbsp;&nbsp;评论: <a>( {{ diary.comments|count }} )</a></span>
+        </div>
+        <div class="post-meta clearfix">
+            {% if prev %}
+            <a class="pull-left" href="{{ url_for('frontend.diary_prev_or_next', prev_or_next='prev', diary_id=diary.pk) }}"><<上一篇</a>
+            {% endif %}
+            {% if next %}
+            <a class="pull-right" href="{{ url_for('frontend.diary_prev_or_next', prev_or_next='next', diary_id=diary.pk) }}">下一篇>></a>
+            {% endif %}
+        </div>
     </div>
-    <div class="post-meta">
-      <span>文章分类:
-        <ul class="post-categories">
-            <li><a title="{{ diary.category }}" rel="category tag">{{ diary.category }}</a></li>
-        </ul>
-      </span>
-      <span class="post-comments">&nbsp;&nbsp;评论: <a>( {{ diary.comments|count }} )</a></span>
-      </div>
-  </div>
-  <h3 id="comments"> {{ diary.comments|count }} 个回复给 《<span>{{ diary.title }}</span>》</h3>
+    <h3 id="comments"> {{ diary.comments|count }} 个回复给 《<span>{{ diary.title }}</span>》</h3>
     <ol class="commentlist">
         {% for c in diary.comments %}
-          {% if c.author == '博主回复' %}
-          <li class="admin-reply">
+        {% if c.author == '博主回复' %}
+        <li class="admin-reply">
             <img class="avatar-image" src="{{ profile.avatar}}">
             <small class="commentmetadata"><a>{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</a></small>
             <cite>{{ c.author }} <span>:</span></cite>
             <div class="comment-content">
-              <p>{{ c.content }}</p>
+                <p>{{ c.content }}</p>
             </div>
-          </li>
-          {% else %}
-          <li class="alt">
+        </li>
+        {% else %}
+        <li class="alt">
             <small class="commentmetadata"><a>{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</a></small>
             <cite>{{ c.author }} <span>:</span></cite>
             <div class="comment-content">
-              <p>{{ c.content }}</p>
+                <p>{{ c.content }}</p>
             </div>
-          </li>
-          {% endif %}
+        </li>
+        {% endif %}
         {% endfor %}
     </ol>
     <h3 id="respond">新增评论:{% if guest_name %}<span class="welcome-back"> { 欢迎回来~ <a>{{guest_name}}</a> } </span>{% endif %}</h3>
     <form id="comment_add_form">
-      <input type="hidden" id="did" value="{{ diary.id }}">
-      <p>
-        <input type="text" class="username" value="{% if guest_name %}{{ guest_name|string }}{% endif %}" size="22" tabindex="1">
-        <label for="author"><small><strong>称呼</strong> (必填)</small></label>
-      </p>
-      <p>
-        <input type="text" class="email" value="{% if guest_email %}{{ guest_email }}{% endif %}" size="22" tabindex="2">
-        <label for="email"><small>邮箱 (用于接收回复邮件) (必填)</small></label>
-      </p>
-      <p>
-        <textarea class="comment" cols="100%" rows="10" tabindex="4"></textarea>
-      </p>
-      <p>
-        <input type="button" id="comment_add_form_btn" tabindex="5" value="提交" class="small blue-button">
-      </p>
+        <input type="hidden" id="did" value="{{ diary.id }}">
+        <p>
+            <input type="text" class="username" value="{% if guest_name %}{{ guest_name|string }}{% endif %}" size="22" tabindex="1">
+            <label for="author"><small><strong>称呼</strong> (必填)</small></label>
+        </p>
+        <p>
+            <input type="text" class="email" value="{% if guest_email %}{{ guest_email }}{% endif %}" size="22" tabindex="2">
+            <label for="email"><small>邮箱 (用于接收回复邮件) (必填)</small></label>
+        </p>
+        <p>
+            <textarea class="comment" cols="100%" rows="10" tabindex="4"></textarea>
+        </p>
+        <p>
+            <input type="button" id="comment_add_form_btn" tabindex="5" value="提交" class="small blue-button">
+        </p>
     </form>
 </div>
 {% endblock %}
 {% block script %}
-  <a href="javascript:void(0);" class="hide" id="back_to_top" title="走你!"></a>
+<a href="javascript:void(0);" class="hide" id="back_to_top" title="走你!"></a>
 {% endblock %}

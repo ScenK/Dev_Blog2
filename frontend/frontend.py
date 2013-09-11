@@ -3,7 +3,8 @@ import json
 import datetime
 from operator import attrgetter
 import PyRSS2Gen
-from flask import Blueprint, render_template, redirect, request, url_for, make_response
+from flask import (Blueprint, render_template, redirect, request, url_for,
+                  make_response, abort)
 from jinja2 import TemplateNotFound
 from Model.models import (User, Diary, Category, CommentEm, Comment, Tag,
                           Gallery, StaticPage)
@@ -19,7 +20,7 @@ def home():
 
      list newest 5 diaries.
 
-    Args: 
+    Args:
         none
 
     Return:
@@ -39,7 +40,7 @@ def home():
         next_page = False
 
     categories = Category.objects.order_by('-publish_time')
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
 
     return render_template('frontend/home.html', diaries=diaries,
                            categories=categories, pages=pages, profile=profile,
@@ -48,7 +49,7 @@ def home():
 
 @frontend.route('/diary/<diary_id>/<diary_title>')
 def diary_detail(diary_id, diary_title=None):
-    """ Diary Detail Page. 
+    """ Diary Detail Page.
 
     show diary details.
 
@@ -63,18 +64,63 @@ def diary_detail(diary_id, diary_title=None):
         guest_email: string cookie for guest comment auto complete filed
         pages: used for top-nav
         profile: user object
+        prev: if has previous diary
+        next: if has next diary
     """
     profile = User.objects.first()
-    diary = Diary.objects(pk=diary_id)[0]
+    diary = Diary.objects(pk=diary_id).first()
     categories = Category.objects.order_by('-publish_time')
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
 
-    guest_name = request.cookies.get('guest_name') 
+    diary_first = Diary.objects.order_by('-publish_time').first()
+    diary_last = Diary.objects.order_by('publish_time').first()
+
+    if diary_first == diary:
+        prev = False
+    else:
+        prev = True
+
+    if diary_last == diary:
+        next = False
+    else:
+        next = True
+
+    guest_name = request.cookies.get('guest_name')
     guest_email = request.cookies.get('guest_email')
-    
+
     return render_template('frontend/diary/detail.html', diary=diary,
                            categories=categories, guest_name=guest_name,
-                           guest_email=guest_email, pages=pages, profile=profile)
+                           guest_email=guest_email, pages=pages, profile=profile,
+                           prev=prev, next=next)
+
+
+@frontend.route('/diary/route/<prev_or_next>/<diary_id>')
+def diary_prev_or_next(prev_or_next, diary_id):
+    """ Diary Next_Or_Prev page function.
+
+    show next or previous diary details.
+
+    Args:
+        prev_or_next: string 'next' or 'prev'
+        diary_id: ObjectedId
+
+    Return:
+        redirect: diary_detail_page
+    """
+    if prev_or_next == 'next':
+        diary = Diary.objects(pk=diary_id).first()
+        next_diary = Diary.objects(publish_time__lt=diary.publish_time
+                                       ).order_by('-publish_time').first()
+    elif prev_or_next == 'prev':
+        diary = Diary.objects(pk=diary_id).first()
+        next_diary = Diary.objects(publish_time__gt=diary.publish_time
+                                   ).first()
+
+    try:
+        return redirect(url_for('frontend.diary_detail', diary_id=next_diary.pk,
+                                diary_title=next_diary.title))
+    except:
+        abort (404)
 
 
 @frontend.route('/diary/list/<page_num>')
@@ -98,15 +144,15 @@ def diary_list(page_num):
     diary_num = len(Diary.objects)
     categories = Category.objects.order_by('-publish_time')
     profile = User.objects.first()
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
 
     diaries = Diary.objects.order_by('-publish_time')[(int(page_num) - 1) * 5
-                                                      :int(page_num) * 5] 
+                                                      :int(page_num) * 5]
 
     if diary_num > int(page_num) * 5:
         next_page = True
 
-    return render_template('frontend/diary/list.html', diaries=diaries, 
+    return render_template('frontend/diary/list.html', diaries=diaries,
                            categories=categories, next_page=next_page,
                            page_num=page_num, pages=pages, profile=profile)
 
@@ -137,11 +183,11 @@ def category_list(category_id, category_name=None):
 
     profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
     diaries = sorted(Category.objects(pk=category_id)[0].diaries,
                      key=attrgetter('publish_time'),
                      reverse=True)[:5]
-    
+
 
     return render_template('frontend/category/list.html',
                            category=category_name, diaries=diaries,
@@ -178,7 +224,7 @@ def category_paging(category_id, page_num, category_name=None):
 
     profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
     diaries = sorted(Category.objects(pk=category_id)[0].diaries,
                      key=attrgetter('publish_time'),
                      reverse=True)[(int(page_num) - 1) * 5 :int(page_num) * 5]
@@ -196,7 +242,7 @@ def tag_list(tag_name):
 
     used for list diaries with the same tag_name with 5 diaries each page.
 
-    Args: 
+    Args:
         tag_name: string
 
     Return:
@@ -204,7 +250,7 @@ def tag_list(tag_name):
         pages: used for top-nav
         diaries: sorted diaries_object by publish_time
         page_num: 1
-        tag: tag_name used for title 
+        tag: tag_name used for title
         profile: user object
     """
     tags = Tag.objects.get_or_404(name=tag_name)
@@ -215,7 +261,7 @@ def tag_list(tag_name):
         next_page = True
 
     categories = Category.objects.order_by('-publish_time')
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
     diaries = sorted(Tag.objects(name=tag_name)[0].diaries,
                      key=attrgetter('publish_time'),
                      reverse=True)[:5]
@@ -232,7 +278,7 @@ def tag_paging(tag_name, page_num):
 
     used for list diaries with the same tag_name with 5 diaries each page.
 
-    Args: 
+    Args:
         tag_name: string
         page_num: page_num
 
@@ -241,7 +287,7 @@ def tag_paging(tag_name, page_num):
         next_page: bool True or False
         diaries: sorted diaries_object by publish_time with 5 each page
         page_num: now page_num
-        tag: tag_name used for title 
+        tag: tag_name used for title
         pages: used for top-nav
         profile: user object
     """
@@ -252,7 +298,7 @@ def tag_paging(tag_name, page_num):
 
     profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
     diaries = sorted(Tag.objects(name=tag_name)[0].diaries,
                      key=attrgetter('publish_time'),
                      reverse=True)[(int(page_num) - 1) * 5 :int(page_num) * 5]
@@ -301,13 +347,13 @@ def comment_add():
         comment.save(validate=False)
 
         try:
-            send_reply_mail(Config.EMAIL, 
+            send_reply_mail(Config.EMAIL,
                             Config.MAIN_TITLE + u'收到了新的评论, 请查收',
                             content, did, name, diary_title)
 
             response = make_response(json.dumps({'success': 'true'}))
-            response.set_cookie('guest_name', name) 
-            response.set_cookie('guest_email', email) 
+            response.set_cookie('guest_name', name)
+            response.set_cookie('guest_email', email)
             return response
         except Exception as e:
             return str(e)
@@ -316,7 +362,7 @@ def comment_add():
 @frontend.route('/feed')
 def rss():
     """ RSS2 Support.
-    
+
         support xml for RSSItem with 12 diaries.
 
     Args:
@@ -354,7 +400,7 @@ def gallery():
     """GalleryPage.
      list all photo.
 
-    Args: 
+    Args:
         none
 
     Return:
@@ -366,7 +412,7 @@ def gallery():
     albums = Gallery.objects.order_by('-publish_time')
     categories = Category.objects.order_by('-publish_time')
     profile = User.objects.first()
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
 
     return render_template('frontend/gallery/index.html', albums=albums,
                            categories=categories, profile=profile, pages=pages)
@@ -391,7 +437,7 @@ def page(page_url):
     """
     profile = User.objects.first()
     categories = Category.objects.order_by('-publish_time')
-    pages = StaticPage.objects.all() 
+    pages = StaticPage.objects.all()
     page = StaticPage.objects.get_or_404(url=page_url)
 
     return render_template('frontend/page/index.html', page=page,
