@@ -398,6 +398,7 @@ def account_settings():
         pass2 = request.form['pass2']
         signature = request.form['signature']
         email = request.form['email']
+        avatar = request.form['avatar']
 
         if pass1 and pass2 and pass1 == pass2:
             user.password = generate_password_hash(password=pass1)
@@ -411,6 +412,9 @@ def account_settings():
         if email:
             user.email = email
 
+        if avatar:
+            user.avatar = avatar
+
         user.save()
 
         if pass1 or username:
@@ -421,6 +425,33 @@ def account_settings():
         return redirect(url_for("admin.account_settings"))
     else:
         return render_template('admin/account/settings.html', user=user)
+
+
+@admin.route('/account/settings/upload_avatar', methods=['POST'])
+@login_required
+def account_upload_avatar():
+    """Admin Account Upload Avatar Action.
+
+    *for Ajax only.
+
+    Methods:
+        POST
+
+    Args:
+        files: [name: 'userfile']
+
+    Returns:
+        status: {success: true/false}
+    """
+    if request.method == 'POST':
+        data = request.files['userfile']
+        filename = secure_filename(data.filename)
+        helper = UpYunHelper()
+        url = helper.up_to_upyun('account', data, filename)
+        if url:
+          return json.dumps({'success': 'true', 'url': url})
+        else:
+          return json.dumps({'success': 'false'})
 
 
 @admin.route('/diary/add-photo', methods=['POST'])

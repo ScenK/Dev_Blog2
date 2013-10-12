@@ -28,3 +28,17 @@
     defaultPosition: "top", 
     delay: 100, 
   });
+
+  //*********************  FORMS   *********************//
+  if($('#up_avatar_btn').length > 0){
+    new AjaxUpload($('#up_avatar_btn'), {
+      action: '/admin/account/settings/upload_avatar',
+      onSubmit: function () {
+        $('.filename').val('uploading...');
+      },
+      onComplete: function(file, responseJSON){
+        var obj = $.parseJSON(responseJSON);
+        $('.filename').val(obj.url);
+      }
+    });
+  }

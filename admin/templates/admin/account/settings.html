@@ -27,14 +27,17 @@
         <div class="elem">
             <label>重复密码:</label>
             <div class="indent">
-                <input type="password" id="pass2" name="pass2" class="medium tip-top" title="确保两次输入的密码一致"/> 
+                <input type="password" id="pass2" name="pass2" class="medium tip-top" title="确保两次输入的密码一致"/>
             </div>
         </div>
 
         <div class="elem">
             <label>头像:</label>
             <div class="indent">
-                <input type="text" class="medium"> 
+                <div class="uploader black">
+                    <input type="text"  class="filename" name="avatar" placeholder="{{ user.avatar }}"/>
+                    <input type="button" class="button_files" value="Browse..." id="up_avatar_btn"/>
+                </div>
             </div>
         </div>
 
