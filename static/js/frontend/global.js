@@ -69,7 +69,7 @@
 
     // load code prettyprint
     if($('code').length>0){
-      $('code').parent().addClass('prettyprint');
+      $('code').addClass('prettyprint');
       prettyPrint();
     };
 
