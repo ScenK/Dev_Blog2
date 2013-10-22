@@ -27,7 +27,7 @@
   if($('#categories_select').val() === '创建新分类') {
       $('#categories_select').trigger('change');
   }
-  
+
 
   //*******************  EDITOR  *******************//
   $('#wysiwyg_target').wysiwyg({
@@ -43,9 +43,10 @@
       insertOrderedList   : { visible : true },
       insertUnorderedList : { visible : true },
       createLink          : { visible : true },
-      insertImage         : { 
+      removeFormat        : { visible : true },
+      insertImage         : {
         visible : true,
-        exec: function () { 
+        exec: function () {
         }
       }
     }
