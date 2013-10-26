@@ -44,12 +44,22 @@
       insertUnorderedList : { visible : true },
       createLink          : { visible : true },
       removeFormat        : { visible : true },
+      html                : { visible : true },
       insertImage         : {
         visible : true,
         exec: function () {
         }
       }
     }
+  });
+
+  // always make editor toolbar visible
+  $(window).scroll(function () {
+    var top = $(document).scrollTop();
+    if ( top > 279 )
+      $('.toolbar').css('top', top - 279 );
+    else
+      $('.toolbar').removeAttr('style');
   });
 
   //*************  PHOTO ADD ALERT  ***************//

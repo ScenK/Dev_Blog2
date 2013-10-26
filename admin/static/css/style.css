@@ -2400,3 +2400,10 @@ footer {
   color:#fafcfb;
   margin-right:20px;
 }
+
+.toolbar {
+  position: relative;
+  background: #242622;
+  border-radius: 4px;
+  box-shadow: 3px 3px 3px #ccc;
+}
