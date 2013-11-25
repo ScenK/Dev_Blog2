@@ -9,7 +9,7 @@ from jinja2 import TemplateNotFound
 from Model.models import (User, Diary, Category, CommentEm, Comment, Tag,
                           Gallery, StaticPage)
 from config import *
-from utils.email_util import send_reply_mail
+from tasks.email_tasks import send_email_task
 
 frontend = Blueprint('frontend', __name__, template_folder='templates',
                      static_folder='static')
@@ -347,7 +347,7 @@ def comment_add():
         comment.save(validate=False)
 
         try:
-            send_reply_mail(Config.EMAIL,
+            send_email_task(Config.EMAIL,
                             Config.MAIN_TITLE + u'收到了新的评论, 请查收',
                             content, did, name, diary_title)
 

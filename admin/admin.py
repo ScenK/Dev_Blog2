@@ -11,7 +11,7 @@ from jinja2 import TemplateNotFound
 from Model.models import (Diary, Category, Comment, Tag, Gallery, StaticPage,
                           CommentEm, PhotoEm)
 from Model.models import User as UserModel
-from utils.email_util import send_reply_mail
+from tasks.email_tasks import send_email_task
 from utils.helper.html_helper import MyHTMLParser
 from utils.helper.upyun_helper import UpYunHelper
 from utils.helper.re_helper import ReHelper
@@ -357,7 +357,7 @@ def comment_reply():
         comment.save(validate=False)
 
         try:
-            send_reply_mail(email, u'您评论的文章《' + title + u'》收到了来自\
+            send_email_task(email, u'您评论的文章《' + title + u'》收到了来自\
                             博主的回复, 请查收', content, did, author, title)
             return json.dumps({'success': 'true'})
         except Exception as e:

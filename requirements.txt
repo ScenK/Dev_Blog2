@@ -5,3 +5,4 @@ mongoengine
 flask-mongoengine
 flask-login
 PyRSS2Gen
+celery
