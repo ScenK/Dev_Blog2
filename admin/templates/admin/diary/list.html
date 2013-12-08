@@ -17,7 +17,7 @@
     {% for i in diaries %}
     <tr class="item">
         <td><input type="checkbox" name="id[]" value="1" /></td>
-        <td class="subject"><a href="{{ url_for('admin.diary_edit', diary_id = i.id) }}" titl"编辑日志">{{ i.title }}</a></td>
+        <td class="subject"><a href="{{ url_for('admin.diary_edit', diary_id = i.id) }}" title="编辑日志">{{ i.title }}</a></td>
         <td><span class="published">{{ i.comments|count }}</span></td>
         <td>{{ i.summary }}</td>
         <td class="name">{{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}</td>
