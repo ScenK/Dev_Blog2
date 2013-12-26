@@ -7,7 +7,7 @@ from fabric.api import *
 import datetime
 from config import *
 from mongoengine import *
-from Model.models import User
+from model.models import User
 from werkzeug.security import generate_password_hash
 from dbmover import DbMover
 from redirector import Redirector

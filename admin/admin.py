@@ -8,9 +8,9 @@ from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
 
-from Model.models import (Diary, Category, Comment, Tag, Gallery, StaticPage,
+from model.models import (Diary, Category, Comment, Tag, Gallery, StaticPage,
                           CommentEm, PhotoEm)
-from Model.models import User as UserModel
+from model.models import User as UserModel
 from tasks.email_tasks import send_email_task
 from utils.helper.html_helper import MyHTMLParser
 from utils.helper.upyun_helper import UpYunHelper
@@ -350,7 +350,7 @@ def comment_reply():
                 )
         post.update_one(push__comments=commentEm)
 
-        ''' Save in Comment Model for admin manage'''
+        ''' Save in Comment model for admin manage'''
         comment = Comment(content=content)
         comment.diary = post[0]
         comment.author = current_user.name

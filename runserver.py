@@ -10,8 +10,8 @@ from flask import Flask, render_template, send_from_directory
 from config import *
 from frontend.frontend import frontend
 from admin.admin import admin, User
-from Model.models import db
-from Model.models import User as UserModel
+from model.models import db
+from model.models import User as Usermodel
 
 from flask.ext.login import LoginManager
 
@@ -36,7 +36,7 @@ def static_from_root():
 
 @login_manager.user_loader
 def load_user(id):
-    user = UserModel.objects.first()
+    user = Usermodel.objects.first()
     return User(user.name, user.pk)
 
 @app.errorhandler(404)

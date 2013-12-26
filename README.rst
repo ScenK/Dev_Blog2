@@ -1,11 +1,7 @@
-:Info: Dev_Blog Python-Release Based On Flask and MongoDB.
+:Info: Dev_Blog Python-Release Based On Flask, Tornado and MongoDB.
 :Repository: https://github.com/ScenK/Dev_Blog2
 :Author: Scen.K (http://tuzii.me).
 :License: MIT License.
-
-**展示站点: <http://staging.tuzii.me> 提供试用和测试.**
-
-**后端用户名密码:admin, admin. (单进程站点, 请勿频繁尝试发送邮件以及上传图片, 更改用户名密码功能已被禁用).**
 
 文件目录结构:
 ---------
@@ -32,9 +28,9 @@
         │   ├── frontend.py                       前端Handler
         │   ├── templates                         页面文件夹
         │   │   └── frontend
-        ├── Model
+        ├── model
         │   ├── __init__.py
-        │   └── models.py
+        │   └── models.py                         数据模型
         ├── static                                静态文件夹
         │   ├── css
         │   ├── less
@@ -70,7 +66,7 @@
    在完成第一版本之后 在更多的对python的进一步认识的基础上 考虑到之前第一版继续开发的扩展性受到很大限制 于是开发第二个博客代码版本
 
     * 技术改进:
-       - 第二个版本后端上仍然采用MongoDB作为数据库 但是增加了新的MongnEngine作为Orm 提供强大的Model层
+       - 第二个版本后端上仍然采用MongoDB作为数据库 但是增加了新的MongnEngine作为Orm 提供强大的model层
        - 网站从tornado搭建改为flask版本 而tornado退居后台 只进行作为非阻塞服务器使用
        - Admin后端放弃使用foundation的框架 而使用了一个全新的模版(colorful life)
        - Admin后端放弃使用Markdown的写作方式 而采用了wysiwyg编辑器
@@ -87,6 +83,10 @@
        - 导入数据库: mongorestore -d dev_blog --drop ~/mongobak/dev_blog
        - 执行迁移命令: fab dbmove
        - 等待脚本结束
+
+    * 旧版url 301跳转生成新版:
+       - fab g
+       - 生成的redirect file放到nginx的配置目录下方
 
 + 安装须知:
 

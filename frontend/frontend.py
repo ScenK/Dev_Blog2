@@ -6,7 +6,7 @@ import PyRSS2Gen
 from flask import (Blueprint, render_template, redirect, request, url_for,
                   make_response, abort)
 from jinja2 import TemplateNotFound
-from Model.models import (User, Diary, Category, CommentEm, Comment, Tag,
+from model.models import (User, Diary, Category, CommentEm, Comment, Tag,
                           Gallery, StaticPage)
 from config import *
 from tasks.email_tasks import send_email_task

@@ -3,7 +3,7 @@
 import urllib
 from fabric.api import *
 from mongoengine import *
-from Model.models import Diary
+from model.models import Diary
 from config import *
 from utils.helper.re_helper import ReHelper
 

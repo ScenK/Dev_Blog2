@@ -4,7 +4,7 @@ from fabric.api import *
 from pymongo import Connection
 from mongoengine import *
 from werkzeug.security import generate_password_hash
-from Model.models import *
+from model.models import *
 from config import *
 
 connect(Config.MONGODB_SETTINGS.get('DB'))
