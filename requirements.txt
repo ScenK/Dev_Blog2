@@ -6,3 +6,4 @@ flask-mongoengine
 flask-login
 PyRSS2Gen
 celery
+fabric

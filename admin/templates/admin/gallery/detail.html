@@ -1,26 +1,21 @@
 {% extends "admin/base.html" %}
-{% block title %}{{ album.title }}{% endblock %}
+{% block title %}图片管理{% endblock %}
 
 {% block content %}
-<a class="button-a red" href="javascript:void(0);" id="add_new_photo" data-albumid="{{ album.pk }}"><span class="picture icon-white-text">上传新相片</span></a>
 
-    {% if album.content %}
-    <hr/>
-    <!--Medium Image Gallery -->
-    <ul class="gallery-2">
-      {% for i in album.content %}
-      <li><a class="fancybox" href="{{ i.path }}">  <img src="{{ i.path }}" alt=""  /></a>
-      <ul class="img_options-2">
-        <li>Type: JPEG</li>
-        <li>Sizes: 1600x700</li>
-        <li>Size: 327kb</li>
-        <li class="ins"><a href="{{ i.path }}" class="zoom-2 fancybox">zoom</a></li>
-        <li><a href="{{ url_for('admin.photo_del', album_id=album.pk, photo_title=i.title) }}" class="delete-2">delete</a></li>
-      </ul>
-      </li>
-      {% endfor %}
+<a class="button-a red" href="javascript:void(0);" id="add_new_photo"><span class="picture icon-white-text">上传组件加载中...</span></a>
+
+<hr/>
+<!--Medium Image Gallery -->
+<ul class="gallery-2">
+  {% for i in photos %}
+  <li><a class="fancybox" href="{{ i.url }}">  <img src="{{ i.url }}" alt=""  /></a>
+    <ul class="img_options-2">
+      <li class="ins"><a href="{{ i.url }}" class="zoom-2 fancybox">zoom</a></li>
+      <li><a href="{{ url_for('admin.photo_del', photo_id=i.pk) }}" class="delete-2">delete</a></li>
     </ul>
-    {% else %}
-    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
 <!--Medium Image Gallery end-->
 {% endblock %}

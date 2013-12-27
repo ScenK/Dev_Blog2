@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 import json
 import re
-from werkzeug import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
 
-from Model.models import (Diary, Category, Comment, Tag, Gallery, StaticPage,
-                          CommentEm, PhotoEm)
-from Model.models import User as UserModel
+from model.models import (Diary, Category, Comment, Tag, Photo, StaticPage,
+                          CommentEm)
+from model.models import User as UserModel
 from tasks.email_tasks import send_email_task
 from utils.helper.html_helper import MyHTMLParser
 from utils.helper.upyun_helper import UpYunHelper
@@ -350,7 +349,7 @@ def comment_reply():
                 )
         post.update_one(push__comments=commentEm)
 
-        ''' Save in Comment Model for admin manage'''
+        ''' Save in Comment model for admin manage'''
         comment = Comment(content=content)
         comment.diary = post[0]
         comment.author = current_user.name
@@ -444,8 +443,9 @@ def account_upload_avatar():
         status: {success: true/false}
     """
     if request.method == 'POST':
+        re_helper = ReHelper()
         data = request.files['userfile']
-        filename = secure_filename(data.filename)
+        filename = re_helper.r_slash(data.filename.encode('utf-8'))
         helper = UpYunHelper()
         url = helper.up_to_upyun('account', data, filename)
         if url:
@@ -471,8 +471,9 @@ def diary_add_photo():
         status: {success: true/false}
     """
     if request.method == 'POST':
+        re_helper = ReHelper()
         data = request.files['userfile']
-        filename = secure_filename(data.filename)
+        filename = re_helper.r_slash(data.filename.encode('utf-8'))
         helper = UpYunHelper()
         url = helper.up_to_upyun('diary', data, filename)
         if url:
@@ -481,12 +482,12 @@ def diary_add_photo():
           return json.dumps({'success': 'false'})
 
 
-@admin.route('/gallery/list', methods=['GET', 'POST'])
+@admin.route('/gallery', methods=['GET', 'POST'])
 @login_required
-def gallery_list():
-    """Admin Gallery list Page.
+def gallery():
+    """Gallery Admin Page.
 
-    for look up all albums and create a new album.
+    Used for upload new photos to UpYun.
 
     Methods:
         GET and POST
@@ -495,101 +496,40 @@ def gallery_list():
         GET:
             none
 
-        POST:
-            title: string of album title
-
-    Returns:
-        GET:
-            all albums
-
-        POST:
-            status: {status: success}
-    """
-    if request.method == 'POST':
-        title = request.form['title']
-
-        album = Gallery(title=title)
-        album.save()
-
-        return json.dumps({'success': 'true'})
-    else:
-        albums = Gallery.objects.order_by('-publish_time')
-
-        return render_template('admin/gallery/list.html', albums=albums)
-
-
-
-@admin.route('/album/detail/<album_id>', methods=['GET', 'POST'])
-@login_required
-def album_detail(album_id):
-    """Album Detail Admin Page.
-
-    Used for upload new photos to UpYun and set deail about album.Also, if
-    the album index is not set, use the first photo.
-
-    Methods:
-        GET and POST
-
-    Args:
-        GET:
-            album ObjectID
-
         PSOT(*for ajax only):
             files: [name: 'Filedata']
-            album_id: album ObjectID
 
     Returns:
         GET:
-            album data
+            photos
 
         POST:
             status: {success: true/false, url: url}
     """
     if request.method == 'POST':
+        re_helper = ReHelper()
         data = request.files['Filedata']
-        album_id = request.form['album_id']
-        filename = secure_filename(data.filename)
+        filename = re_helper.r_slash(data.filename.encode('utf-8'))
         helper = UpYunHelper()
         url = helper.up_to_upyun('gallery', data, filename)
+
         if url:
-          photo = PhotoEm(
-                    path = url,
-                    title = filename
-                  )
-          Gallery.objects(pk=album_id).update(set__index=url)
-          Gallery.objects(pk=album_id).update_one(push__content=photo)
-          return json.dumps({'success': 'true', 'url': url})
+            photo = Photo(url=url)
+            photo.title = filename
+            photo.save()
+
+            return json.dumps({'success': 'true', 'url': url})
         else:
-          return json.dumps({'success': 'false'})
+            return json.dumps({'success': 'false'})
     else:
-        album = Gallery.objects(pk=album_id)[0]
+        photos = Photo.objects.order_by('-publish_time')
 
-        return render_template('admin/gallery/detail.html', album=album)
+        return render_template('admin/gallery/detail.html', photos=photos)
 
 
-@admin.route('/album/del/<album_id>')
+@admin.route('/photo/del/<photo_id>')
 @login_required
-def album_del(album_id):
-    """Admin Album Delete Action
-
-    Used for delete Album.
-
-    Methods:
-        GET
-
-    Args:
-        album_id: album ObjectID
-
-    Returns:
-        none
-    """
-    Gallery.objects.get_or_404(pk=album_id).delete()
-    return redirect(url_for("admin.gallery_list"))
-
-
-@admin.route('/photo/del/<album_id>/<photo_title>')
-@login_required
-def photo_del(album_id, photo_title):
+def photo_del(photo_id):
     """Admin Photo Delete Action
 
     Used for delete Photo.
@@ -598,15 +538,14 @@ def photo_del(album_id, photo_title):
         GET
 
     Args:
-        album_id: album_id ObjectID
-        photo_title: string title of photo
+        photo_id: photo_id ObjectID
 
     Returns:
         none
     """
-    Gallery.objects(pk=album_id).update_one(pull__content={'title': photo_title})
+    Photo.objects(pk=photo_id).delete()
 
-    return redirect(url_for('admin.album_detail', album_id=album_id))
+    return redirect(url_for('admin.gallery'))
 
 
 @admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])

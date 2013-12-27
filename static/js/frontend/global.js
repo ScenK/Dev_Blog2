@@ -1,4 +1,45 @@
 (function($){
+  // Gallery get more photos
+  $(document).on('click', '#load_more_photo', function(){
+    var self = $(this),
+        offset = self.data('offset');
+
+    $.ajax({
+      type: 'POST',
+      url: "/gallery",
+      dataType: 'JSON',
+      data: { offset : offset },
+      success: function(data){
+        if (data.length === 0) {
+          self.text('没有了').removeAttr('id');
+        } else {
+          var target = $('#colum-container'),
+              last_photo = target.find('.single-photo').last();
+
+          for (var i = 0; i < data.length; i++) {
+            var url = data[i].url,
+                title = data[i].title,
+                time = data[i].publish_time.$date;
+
+            var new_photo = last_photo.clone(); 
+
+            new_photo.find('.pin-image').attr('title', title);
+            new_photo.find('.pin-image img').attr('src', url);
+            new_photo.find('.time').text(time);
+
+            $(new_photo).insertAfter(last_photo);
+          }
+
+          target.waitForImages(function() {
+            target.BlocksIt();
+            activeFancyBox();
+          });
+
+          self.data('offset', offset + data.length);
+        }       
+      }
+    });
+  });
 
   // Comment Add Check
   $(document).on('click', '#comment_add_form_btn', function(){
@@ -86,6 +127,10 @@
 
     }
 
+    activeFancyBox();
+  });
+
+  function activeFancyBox() {
     $("img").each(function () {
       var self = $(this);
       self.parent().attr('href', self.attr('src'));
@@ -97,6 +142,5 @@
       'overlayColor'    : '#000',
       'overlayOpacity'  : 0.8
     });
-  });
-
+  }
 })(jQuery);

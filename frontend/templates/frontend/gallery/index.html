@@ -3,19 +3,21 @@
 {% block content %}
 <div class="board-layout">
   <div id="colum-container">
-    {% for i in albums|sort(attribute='publish_time', reverse=True) %}
-        {% for c in i.content|sort(attribute="publish_time", reverse=True) %}
-        <div class="single-photo">
-          <a class="pin-image" title="{{ c.title }}"><img src="{{ c.path }}"></a>
-          <div class="desc">
-              <a class="avatar"><img src='{{ profile.avatar }}'/></a>
-            <div class="no-image">
-                <div class="name"><a>{{ profile.name }}</a></div>
-              <div class="time">{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</div></div>
-            </div>
+    {% for p in photos %}
+    <div class="single-photo">
+      <a class="pin-image" title="{{ p.title }}"><img src="{{ p.url }}"></a>
+      <div class="desc">
+        <a class="avatar"><img src='{{ profile.avatar }}'/></a>
+        <div class="no-image">
+          <div class="name"><a>{{ profile.name }}</a></div>
+          <div class="time">{{ p.publish_time.strftime('%Y-%m-%d %H:%M') }}</div>
         </div>
-      {% endfor %}
+      </div>
+    </div>
     {% endfor %}
+  </div>
+  <div id="bottom-paging">
+    <a href="javascript:void(0);" id="load_more_photo" data-offset="5">获取更多</a>
   </div>
 </div>
 {% endblock %}

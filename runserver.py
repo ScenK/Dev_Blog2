@@ -10,8 +10,8 @@ from flask import Flask, render_template, send_from_directory
 from config import *
 from frontend.frontend import frontend
 from admin.admin import admin, User
-from Model.models import db
-from Model.models import User as UserModel
+from model.models import db
+from model.models import User as UserModel
 
 from flask.ext.login import LoginManager
 
