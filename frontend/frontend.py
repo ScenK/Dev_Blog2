@@ -7,7 +7,7 @@ from flask import (Blueprint, render_template, redirect, request, url_for,
                   make_response, abort)
 from jinja2 import TemplateNotFound
 from model.models import (User, Diary, Category, CommentEm, Comment, Tag,
-                          Gallery, StaticPage)
+                          Photo, StaticPage)
 from config import *
 from tasks.email_tasks import send_email_task
 
@@ -409,12 +409,12 @@ def gallery():
         profile: user object
         pages: used for top-nav
     """
-    albums = Gallery.objects.order_by('-publish_time')
+    photos = Photo.objects.order_by('-publish_time')
     categories = Category.objects.order_by('-publish_time')
     profile = User.objects.first()
     pages = StaticPage.objects.all()
 
-    return render_template('frontend/gallery/index.html', albums=albums,
+    return render_template('frontend/gallery/index.html', photos=photos,
                            categories=categories, profile=profile, pages=pages)
 
 

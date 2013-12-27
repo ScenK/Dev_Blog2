@@ -28,22 +28,25 @@ class Diary(db.Document):
 
     meta = {'allow_inheritance': True}
     
-class Gallery(db.Document):
+class Photo(db.Document):
     title        = db.StringField(required=True)
-    index        = db.StringField() 
+    album_name   = db.StringField(default=u'未分类')
+    url          = db.StringField()     
     description  = db.StringField()
-    content      = db.SortedListField(db.EmbeddedDocumentField('PhotoEm'))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+
 
 class Tag(db.Document):
     name         = db.StringField(max_length=120, required=True)
     diaries      = db.SortedListField(db.ReferenceField(Diary))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 
+
 class Category(db.Document):
     name         = db.StringField(max_length=120, required=True)
     diaries      = db.SortedListField(db.ReferenceField(Diary))
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+
 
 class Comment(db.Document):
     content      = db.StringField(required=True)
@@ -51,6 +54,7 @@ class Comment(db.Document):
     email        = db.EmailField()
     diary        = db.ReferenceField(Diary)
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
+
 
 class Page(db.Document):
     url          = db.StringField(required=True, unique=True)
@@ -65,17 +69,13 @@ class Page(db.Document):
 
     meta = {'allow_inheritance': True}
 
+
 class StaticPage(Page):
     pass
+
 
 class CommentEm(db.EmbeddedDocument):
     content      = db.StringField(required=True)
     author       = db.StringField(max_length=120, required=True)
     email        = db.EmailField()
-    publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
-
-class PhotoEm(db.EmbeddedDocument):
-    path         = db.StringField(required=True)
-    title        = db.StringField()
-    description  = db.StringField()
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)

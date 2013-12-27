@@ -1,29 +1,12 @@
-
-  //*******************  Add New Album  *******************//
-  $('#add_new_album').click(function(){
-    jPrompt('新相册名称:', '', '添加新相册', function(r) {
-      if(r) {
-        $.ajax({
-          type   : 'POST',
-          url    : '/admin/gallery/list',
-          data   : {'title': r},
-          success: function(e) {
-            window.location.reload();
-          }
-        });
-      }
-    });
-  });
-
   //*************  PHOTO ADD ALERT  ***************//
-  var album_id = $('#add_new_photo').data('albumid');
+  var album_name = '未分类';
   $('#add_new_photo').uploadifive({
     method       : 'post',
     dnd          : false,
     fileType     : 'image',
-    formData     : {'album_id' : album_id},
-    uploadScript : '/admin/album/detail/' + album_id,
-    onQueueComplete: function() {
+    formData     : {'album_name' : album_name},
+    uploadScript : '/admin/album/detail/' + album_name,
+    onQueueComplete: function(e) {
       window.location.reload();
     }
   });
@@ -36,5 +19,3 @@
       'overlayOpacity'  : 0.8
     });
   });
-
-

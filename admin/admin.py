@@ -8,8 +8,8 @@ from flask.ext.login import (current_user, login_required,
                             login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
 
-from model.models import (Diary, Category, Comment, Tag, Gallery, StaticPage,
-                          CommentEm, PhotoEm)
+from model.models import (Diary, Category, Comment, Tag, Photo, StaticPage,
+                          CommentEm)
 from model.models import User as UserModel
 from tasks.email_tasks import send_email_task
 from utils.helper.html_helper import MyHTMLParser
@@ -481,47 +481,9 @@ def diary_add_photo():
           return json.dumps({'success': 'false'})
 
 
-@admin.route('/gallery/list', methods=['GET', 'POST'])
+@admin.route('/album/detail/<album_name>', methods=['GET', 'POST'])
 @login_required
-def gallery_list():
-    """Admin Gallery list Page.
-
-    for look up all albums and create a new album.
-
-    Methods:
-        GET and POST
-
-    Args:
-        GET:
-            none
-
-        POST:
-            title: string of album title
-
-    Returns:
-        GET:
-            all albums
-
-        POST:
-            status: {status: success}
-    """
-    if request.method == 'POST':
-        title = request.form['title']
-
-        album = Gallery(title=title)
-        album.save()
-
-        return json.dumps({'success': 'true'})
-    else:
-        albums = Gallery.objects.order_by('-publish_time')
-
-        return render_template('admin/gallery/list.html', albums=albums)
-
-
-
-@admin.route('/album/detail/<album_id>', methods=['GET', 'POST'])
-@login_required
-def album_detail(album_id):
+def album_detail(album_name):
     """Album Detail Admin Page.
 
     Used for upload new photos to UpYun and set deail about album.Also, if
@@ -532,11 +494,11 @@ def album_detail(album_id):
 
     Args:
         GET:
-            album ObjectID
+            album_name: string 
 
         PSOT(*for ajax only):
             files: [name: 'Filedata']
-            album_id: album ObjectID
+            album_name: string 
 
     Returns:
         GET:
@@ -546,50 +508,34 @@ def album_detail(album_id):
             status: {success: true/false, url: url}
     """
     if request.method == 'POST':
+        re_helper = ReHelper()
         data = request.files['Filedata']
-        album_id = request.form['album_id']
+        album_name = re_helper.r_slash(request.form['album_name'])
         filename = secure_filename(data.filename)
         helper = UpYunHelper()
         url = helper.up_to_upyun('gallery', data, filename)
+
         if url:
-          photo = PhotoEm(
-                    path = url,
-                    title = filename
-                  )
-          Gallery.objects(pk=album_id).update(set__index=url)
-          Gallery.objects(pk=album_id).update_one(push__content=photo)
-          return json.dumps({'success': 'true', 'url': url})
+            photo = Photo(title=filename)
+            photo.url = url
+            photo.album_name = album_name
+            photo.save()
+
+            return json.dumps({'success': 'true', 'url': url})
         else:
-          return json.dumps({'success': 'false'})
+            return json.dumps({'success': 'false'})
     else:
-        album = Gallery.objects(pk=album_id)[0]
+        if album_name == 'undefined':
+            photos = Photo.objects(album_name=u'未分类')
+        else:
+            photos = Photo.objects(album_name=album_name)
 
-        return render_template('admin/gallery/detail.html', album=album)
+        return render_template('admin/gallery/detail.html', photos=photos)
 
 
-@admin.route('/album/del/<album_id>')
+@admin.route('/photo/del/<album_name>/<photo_id>')
 @login_required
-def album_del(album_id):
-    """Admin Album Delete Action
-
-    Used for delete Album.
-
-    Methods:
-        GET
-
-    Args:
-        album_id: album ObjectID
-
-    Returns:
-        none
-    """
-    Gallery.objects.get_or_404(pk=album_id).delete()
-    return redirect(url_for("admin.gallery_list"))
-
-
-@admin.route('/photo/del/<album_id>/<photo_title>')
-@login_required
-def photo_del(album_id, photo_title):
+def photo_del(album_name, photo_id):
     """Admin Photo Delete Action
 
     Used for delete Photo.
@@ -598,15 +544,15 @@ def photo_del(album_id, photo_title):
         GET
 
     Args:
-        album_id: album_id ObjectID
-        photo_title: string title of photo
+        album_name: string
+        photo_id: photo_id ObjectID
 
     Returns:
         none
     """
-    Gallery.objects(pk=album_id).update_one(pull__content={'title': photo_title})
+    Photo.objects(pk=photo_id).delete()
 
-    return redirect(url_for('admin.album_detail', album_id=album_id))
+    return redirect(url_for('admin.album_detail', album_name=album_name))
 
 
 @admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])
