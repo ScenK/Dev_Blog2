@@ -11,7 +11,7 @@ from config import *
 from frontend.frontend import frontend
 from admin.admin import admin, User
 from model.models import db
-from model.models import User as Usermodel
+from model.models import User as UserModel
 
 from flask.ext.login import LoginManager
 
@@ -36,7 +36,7 @@ def static_from_root():
 
 @login_manager.user_loader
 def load_user(id):
-    user = Usermodel.objects.first()
+    user = UserModel.objects.first()
     return User(user.name, user.pk)
 
 @app.errorhandler(404)
