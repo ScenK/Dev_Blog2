@@ -395,27 +395,40 @@ def rss():
     return rss
 
 
-@frontend.route('/gallery')
+@frontend.route('/gallery', methods=['GET','POST'])
 def gallery():
     """GalleryPage.
      list all photo.
 
+     Methods:
+        GET and POST
+
     Args:
-        none
+        GET:
+            none
+        POST:
+            offset
 
     Return:
-        albums : all photos
+        photos : 5 photos
         categories: used for sidebar
         profile: user object
         pages: used for top-nav
     """
-    photos = Photo.objects.order_by('-publish_time')
-    categories = Category.objects.order_by('-publish_time')
-    profile = User.objects.first()
-    pages = StaticPage.objects.all()
+    if request.method == 'POST':
+        offset = int(request.form["offset"])
+        photos = Photo.objects.order_by('-publish_time')[offset: offset + 5]
 
-    return render_template('frontend/gallery/index.html', photos=photos,
-                           categories=categories, profile=profile, pages=pages)
+        return photos.to_json()
+    else:
+        photos = Photo.objects.order_by('-publish_time')[0: 5]
+        categories = Category.objects.order_by('-publish_time')
+        profile = User.objects.first()
+        pages = StaticPage.objects.all()
+
+        return render_template('frontend/gallery/index.html', photos=photos,
+                               categories=categories, profile=profile,
+                               pages=pages)
 
 
 @frontend.route('/page/<page_url>')

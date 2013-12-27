@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 import re
-from werkzeug import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
@@ -444,8 +443,9 @@ def account_upload_avatar():
         status: {success: true/false}
     """
     if request.method == 'POST':
+        re_helper = ReHelper()
         data = request.files['userfile']
-        filename = secure_filename(data.filename)
+        filename = re_helper.r_slash(data.filename.encode('utf-8'))
         helper = UpYunHelper()
         url = helper.up_to_upyun('account', data, filename)
         if url:
@@ -471,8 +471,9 @@ def diary_add_photo():
         status: {success: true/false}
     """
     if request.method == 'POST':
+        re_helper = ReHelper()
         data = request.files['userfile']
-        filename = secure_filename(data.filename)
+        filename = re_helper.r_slash(data.filename.encode('utf-8'))
         helper = UpYunHelper()
         url = helper.up_to_upyun('diary', data, filename)
         if url:
@@ -481,28 +482,26 @@ def diary_add_photo():
           return json.dumps({'success': 'false'})
 
 
-@admin.route('/album/detail/<album_name>', methods=['GET', 'POST'])
+@admin.route('/gallery', methods=['GET', 'POST'])
 @login_required
-def album_detail(album_name):
-    """Album Detail Admin Page.
+def gallery():
+    """Gallery Admin Page.
 
-    Used for upload new photos to UpYun and set deail about album.Also, if
-    the album index is not set, use the first photo.
+    Used for upload new photos to UpYun.
 
     Methods:
         GET and POST
 
     Args:
         GET:
-            album_name: string 
+            none
 
         PSOT(*for ajax only):
             files: [name: 'Filedata']
-            album_name: string 
 
     Returns:
         GET:
-            album data
+            photos
 
         POST:
             status: {success: true/false, url: url}
@@ -510,32 +509,27 @@ def album_detail(album_name):
     if request.method == 'POST':
         re_helper = ReHelper()
         data = request.files['Filedata']
-        album_name = re_helper.r_slash(request.form['album_name'])
-        filename = secure_filename(data.filename)
+        filename = re_helper.r_slash(data.filename.encode('utf-8'))
         helper = UpYunHelper()
         url = helper.up_to_upyun('gallery', data, filename)
 
         if url:
-            photo = Photo(title=filename)
-            photo.url = url
-            photo.album_name = album_name
+            photo = Photo(url=url)
+            photo.title = filename
             photo.save()
 
             return json.dumps({'success': 'true', 'url': url})
         else:
             return json.dumps({'success': 'false'})
     else:
-        if album_name == 'undefined':
-            photos = Photo.objects(album_name=u'未分类')
-        else:
-            photos = Photo.objects(album_name=album_name)
+        photos = Photo.objects.order_by('-publish_time')
 
         return render_template('admin/gallery/detail.html', photos=photos)
 
 
-@admin.route('/photo/del/<album_name>/<photo_id>')
+@admin.route('/photo/del/<photo_id>')
 @login_required
-def photo_del(album_name, photo_id):
+def photo_del(photo_id):
     """Admin Photo Delete Action
 
     Used for delete Photo.
@@ -544,7 +538,6 @@ def photo_del(album_name, photo_id):
         GET
 
     Args:
-        album_name: string
         photo_id: photo_id ObjectID
 
     Returns:
@@ -552,7 +545,7 @@ def photo_del(album_name, photo_id):
     """
     Photo.objects(pk=photo_id).delete()
 
-    return redirect(url_for('admin.album_detail', album_name=album_name))
+    return redirect(url_for('admin.gallery'))
 
 
 @admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])

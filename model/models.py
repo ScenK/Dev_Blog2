@@ -29,9 +29,9 @@ class Diary(db.Document):
     meta = {'allow_inheritance': True}
     
 class Photo(db.Document):
+    url          = db.StringField(required=True)     
     title        = db.StringField(required=True)
     album_name   = db.StringField(default=u'未分类')
-    url          = db.StringField()     
     description  = db.StringField()
     publish_time = db.DateTimeField(default=datetime.datetime.now, required=True)
 

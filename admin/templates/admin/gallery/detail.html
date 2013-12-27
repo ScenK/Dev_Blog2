@@ -12,7 +12,7 @@
   <li><a class="fancybox" href="{{ i.url }}">  <img src="{{ i.url }}" alt=""  /></a>
     <ul class="img_options-2">
       <li class="ins"><a href="{{ i.url }}" class="zoom-2 fancybox">zoom</a></li>
-      <li><a href="{{ url_for('admin.photo_del', album_name='undefined', photo_id=i.pk) }}" class="delete-2">delete</a></li>
+      <li><a href="{{ url_for('admin.photo_del', photo_id=i.pk) }}" class="delete-2">delete</a></li>
     </ul>
   </li>
   {% endfor %}
