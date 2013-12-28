@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import random
+
 class Config(object):
     DEBUG = False
     MONGODB_SETTINGS = {'DB': 'dev_blog2'}
