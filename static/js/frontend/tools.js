@@ -62,6 +62,17 @@ var Tools = {
     return time<10 ? "0"+time : time;
   },
 
+  formatUTCTime: function (seconds) {
+    // exap: "Fri Oct 25 2013 05:27:15 GMT+0800 (CST)"
+    var r = new Date(parseInt(seconds));
+
+    // exap: "Fri Oct 25 2013"
+    r = r.toDateString();
+
+    // exap: "Oct 25 2013"
+    return r;
+  },
+
   buildCommentHtml: function (name, time, content) {
     var html="";
     html += '<small class="commentmetadata"><a>' +

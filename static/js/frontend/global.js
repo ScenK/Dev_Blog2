@@ -25,7 +25,7 @@
 
             new_photo.find('.pin-image').attr('title', title);
             new_photo.find('.pin-image img').attr('src', url);
-            new_photo.find('.time').text(time);
+            new_photo.find('.time').text(Tools.formatUTCTime(time));;
 
             $(new_photo).insertAfter(last_photo);
           }
