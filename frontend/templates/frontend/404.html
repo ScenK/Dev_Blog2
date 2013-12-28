@@ -9,7 +9,7 @@
     {% if config['DEBUG'] == True %}
       <link rel="stylesheet" href="{{ url_for('frontend.static', filename='css/404.css') }}">
     {% else %}
-      <link rel="stylesheet" href="{{ url_for('frontend.static', filename='css/404.min.css') }}">
+      <link rel=stylesheet type=text/css href="{{ config['ERROR_MIN_CSS'] }}">
     {% endif %}
   </head>
   <body>
@@ -68,7 +68,7 @@
     {% if config['DEBUG'] == True %}
       <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/404.js') }}"></script>
     {% else %}
-      <script type="text/javascript" src="{{ url_for('frontend.static', filename='js/404.min.js') }}"></script>
+      <script type="text/javascript" src="{{ config['ERROR_MIN_JS'] }}"></script>
       {{ config['ANALYTICS']|safe }}
     {% endif %}
   </body>
