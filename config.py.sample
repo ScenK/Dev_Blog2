@@ -11,9 +11,15 @@ class Config(object):
 
 class ProductionConfig(Config):
     SECRET_KEY = ''
-    ANALYTICS = '''<script type="text/javascript">                     
-                    </script>                                          
-                '''    
+    FRONTEND_MIN_JS = '/static/js/frontend.min.js?v=%s' % random.choice(xrange(100))
+    FRONTEND_MIN_CSS = '/static/css/frontend.min.css?v=%s' % random.choice(xrange(100))
+    ERROR_MIN_JS = '/static/js/404.min.js?v=%s' % random.choice(xrange(100))
+    ERROR_MIN_CSS = '/static/css/404.min.css?v=%s' % random.choice(xrange(100))
+    ADMIN_MIN_JS = '/admin/static/js/backend.min.js?v=%s' % random.choice(xrange(100))
+    ADMIN_MIN_CSS = '/admin/static/css/admin.min.css?v=%s' % random.choice(xrange(100))
+    ANALYTICS = '''<script type="text/javascript">
+                    </script>
+                '''
 
 class DevelopmentConfig(Config):
     DEBUG = True

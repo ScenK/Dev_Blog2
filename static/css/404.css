@@ -1,0 +1,760 @@
+@charset "utf-8";
+/* CSS Document */
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+body {
+  line-height: 1;
+  background: url(../img/bg.jpg) repeat top left;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+nav ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  outline: none;
+}
+/* change colours to suit your needs */
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+/* change colours to suit your needs */
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+del {
+  text-decoration: line-through;
+}
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* change border colour to suit your needs */
+hr {
+  display: block;
+  color: #ff9;
+  border: none;
+  background: none;
+  margin: 0;
+  padding: 0;
+}
+button,
+input,
+select,
+textarea {
+  vertical-align: middle;
+  resize: none;
+  margin: 0;
+  padding: 0;
+}
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+@charset "utf-8";
+/* CSS Document */
+/*CSS ANIMATION
+======================*/
+#wraper #head,
+#wraper #wing-one span,
+#wraper #wing-two span,
+#left-eye .eyebrow span,
+#right-eye .eyebrow span,
+#wraper .eye-pupil,
+#wraper .legs-a,
+#wraper .legs-b {
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+@-webkit-keyframes rotate-wing-left {
+  0% {
+    -webkit-transform: rotate(-20deg);
+  }
+  100% {
+    -webkit-transform: rotate(15deg);
+  }
+}
+@-webkit-keyframes rotate-wing-right {
+  0% {
+    -webkit-transform: rotate(15deg);
+  }
+  100% {
+    -webkit-transform: rotate(-10deg);
+  }
+}
+@-webkit-keyframes rotate-eyebrow {
+  0% {
+    -webkit-transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    -webkit-transform: translate(2px, -2px) rotate(15deg);
+  }
+}
+@-webkit-keyframes rotate-eyebrow-right {
+  0% {
+    -webkit-transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    -webkit-transform: translate(2px, -2px) rotate(-15deg);
+  }
+}
+@-webkit-keyframes eye-pupil {
+  0% {
+    -webkit-transform: translate(3px, 0px);
+  }
+  100% {
+    -webkit-transform: translate(-8px, -2px);
+  }
+}
+@-webkit-keyframes eye-pupil-r {
+  0% {
+    -webkit-transform: translate(8px, -2px);
+  }
+  100% {
+    -webkit-transform: translate(-3px, 0px);
+  }
+}
+@-webkit-keyframes leg-a {
+  0% {
+    -webkit-transform: translate(3px, 1px) rotate(-1deg);
+  }
+  100% {
+    -webkit-transform: translate(-3px, -1px) rotate(1deg);
+  }
+}
+@-webkit-keyframes leg-b {
+  0% {
+    -webkit-transform: translate(3px, 1px) rotate(1deg);
+  }
+  100% {
+    -webkit-transform: translate(-3px, -1px) rotate(-1deg);
+  }
+}
+/*
+#wraper #head {
+	-webkit-animation-name: rotate-head;
+	-webkit-animation-duration: 4s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-transform-origin: 50% 50%;
+ -webkit-animation-timing-function: linear;
+
+
+}*/
+#wraper #wing-one span {
+  -webkit-transform: rotate(20deg);
+  -webkit-transform-origin: 100% 100%;
+  -webkit-animation: rotate-wing-left 800ms ease-in-out infinite alternate;
+  z-index: 1;
+}
+#wraper #wing-two span {
+  -webkit-transform: rotate(-15deg);
+  -webkit-transform-origin: left bottom;
+  -webkit-animation: rotate-wing-right 800ms ease-in-out infinite alternate;
+  z-index: 1;
+}
+#left-eye .eyebrow span {
+  -webkit-transform: rotate(5deg);
+  -webkit-transform-origin: right 50%;
+  -webkit-animation: rotate-eyebrow 2s ease-in-out infinite alternate;
+}
+#right-eye .eyebrow span {
+  -webkit-transform: rotate(-5deg);
+  /*-webkit-animation-name: rotate-eyebrow-right;
+	-webkit-animation-duration: 7s;
+	-webkit-animation-iteration-count: infinite;*/
+
+  -webkit-transform-origin: left 50%;
+  -webkit-animation: rotate-eyebrow-right 2s ease-in-out infinite alternate;
+}
+#wraper .eye-pupil {
+  /*-webkit-animation-name: eye-pupil;
+	-webkit-animation-duration: 7s;
+	-webkit-animation-iteration-count: infinite;*/
+
+  -webkit-transform-origin: 0 0;
+  -webkit-animation: eye-pupil 2s linear infinite alternate;
+}
+#wraper #right-eye .eye-pupil {
+  /*-webkit-animation-name: eye-pupil;
+	-webkit-animation-duration: 7s;
+	-webkit-animation-iteration-count: infinite;*/
+
+  -webkit-transform-origin: 0 0;
+  -webkit-animation: eye-pupil-r 2s linear infinite alternate;
+}
+#wraper .legs-a {
+  /*	-webkit-animation-name: leg-a;
+	-webkit-animation-duration: 5s;
+	-webkit-animation-iteration-count: infinite;*/
+
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: translate(5px, 0) rotate(1deg);
+  -webkit-animation: leg-a 2s linear infinite alternate;
+}
+#wraper .legs-b {
+  /*-webkit-animation-name: leg-b;
+	-webkit-animation-duration: 5s;
+	-webkit-animation-iteration-count: infinite;*/
+
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: translate(5px, 0) rotate(-1deg);
+  -webkit-animation: leg-b 2s linear infinite alternate;
+}
+/*CSS STYLES
+======================*/
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 806px;
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font: normal 12px/20px Arial, Helvetica, sans-serif;
+  color: #000;
+  min-height: 806px;
+  position: relative;
+  height: 100%;
+}
+#wraper {
+  position: relative;
+  height: 712px;
+  padding-top: 20px;
+}
+.content {
+  width: 712px;
+  height: 712px;
+  position: relative;
+  padding: 0;
+  margin: 0 auto;
+  background: url(../img/404/bg.png) no-repeat center 0;
+}
+#head {
+  width: 682px;
+  height: 500px;
+  margin-left: 20px;
+  position: relative;
+  padding: 0;
+  z-index: 10;
+}
+#skull {
+  background: url(../img/404/head.png) no-repeat 0 0;
+  width: 241px;
+  height: 310px;
+  position: relative;
+  top: 50px;
+  left: 221px;
+  z-index: 300;
+  display: block;
+}
+#wing-one span {
+  width: 204px;
+  height: 131px;
+  position: absolute;
+  top: 160px;
+  left: 84px;
+  background: url(../img/404/wing-l.png) no-repeat 0 0;
+}
+#wing-two span {
+  width: 204px;
+  height: 131px;
+  position: absolute;
+  top: 160px;
+  right: 87px;
+  background: url(../img/404/wing-r.png) no-repeat 0 0;
+}
+#left-eye {
+  left: 54px;
+  position: absolute;
+  top: 223px;
+  z-index: 301;
+}
+#right-eye {
+  position: absolute;
+  right: 57px;
+  top: 223px;
+  z-index: 301;
+}
+.eyebrow span {
+  position: absolute;
+  top: -20px;
+  height: 25px;
+  width: 51px;
+}
+#left-eye .eyebrow span {
+  background: url(../img/404/eyebrow-l.png) no-repeat 0 0;
+  left: 5px;
+}
+#right-eye .eyebrow span {
+  background: url(../img/404/eyebrow-r.png) no-repeat 0 0;
+  left: -3px;
+}
+.eyeball {
+  height: 31px;
+  width: 54px;
+  position: relative;
+}
+#left-eye .eyeball {
+  background: url(../img/404/eye-l.png) no-repeat 0 0;
+}
+#right-eye .eyeball {
+  background: url(../img/404/eye-r.png) no-repeat 0 0;
+}
+.eye-pupil {
+  position: absolute;
+  top: 8px;
+  height: 21px;
+  width: 17px;
+}
+#left-eye .eye-pupil {
+  background: url(../img/404/eye.png) no-repeat 0 0;
+}
+#right-eye .eye-pupil {
+  background: url(../img/404/eye-two.png) no-repeat 0 0;
+}
+#left-eye .eye-pupil {
+  left: 26px;
+}
+#right-eye .eye-pupil {
+  left: 10px;
+}
+/*.pupil-one {
+				background:url(../img/404/eye-p1.png) no-repeat 0 0;
+				height:21px;
+				width:13px;
+				position:absolute;
+			}
+			#left-eye .pupil-one {
+				right:-4px;
+			}
+			#right-eye .pupil-one {
+				left:-4px;
+			}
+			.pupil-two {
+				background:url(../img/404/eye-p3.png) no-repeat 0 0;
+				position:absolute;
+				height:7px;
+				width:7px;
+				top:5px;
+			}
+			#left-eye .pupil-two {
+				left:-1px;
+			}
+			#right-eye .pupil-two {
+				left:-5px;
+			}*/
+#legs {
+  position: relative;
+  display: block;
+  width: 365px;
+  height: 180px;
+  float: left;
+  margin: 0 0 0 156px;
+  z-index: 100;
+}
+.legs-a span {
+  width: 343px;
+  height: 164px;
+  position: absolute;
+  top: -7px;
+  left: 20px;
+  background: url(../img/404/legs_one.png) no-repeat 0 0;
+}
+.legs-b span {
+  width: 334px;
+  height: 169px;
+  position: absolute;
+  top: -5px;
+  right: -15px;
+  background: url(../img/404/legs_two.png) no-repeat 0 0;
+}
+.eror-font {
+  width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  top: -47px;
+}
+.four-four {
+  font-size: 129px;
+  margin: 0 0 8px 0;
+  display: block;
+}
+.info-one, .info-two {
+  font-size: 19px;
+  display: block;
+}
+.info-one {
+  margin: 0 0 9px 0;
+}
+/*Menu*/
+#bottom {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 56px;
+  background: url(../img/404/nav-bg.png) repeat-x 0 0;
+}
+/*	.bot-l {
+		float:left;
+		background:url(../img/404/bottom-l.png) no-repeat right 0;
+		height:64px;
+	}
+	.bot-r {
+		float:right;
+		background:url(../img/404/bottom-r.png) no-repeat 0 0;
+		height:64px;
+	}*/
+#nav {
+  position: absolute;
+}
+#nav ul {
+  margin: 22px auto 0;
+  float: left;
+  height: 31px;
+  padding: 0px 0 0 0;
+}
+#nav ul li {
+  list-style: none;
+  float: left;
+  background: url(../img/404/bullet.png) no-repeat 0 9px;
+  padding: 0px 9px 10px 12px;
+}
+#nav ul li:first-child {
+  background: none;
+  padding: 0px 10px 10px 3px;
+}
+#nav ul li a {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  -o-transition: color 0.3s;
+  -webkit-transition: color 0.3s;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+#nav ul li.act a {
+  color: #808080;
+}
+#nav ul li a:hover {
+  color: #808080;
+}
+/*CSS ANIMATION
+======================*/
+/*@-moz-keyframes rotate-head {
+	0% {
+		-moz-transform: translate(-50px,0px);
+	}
+	8% {
+		-moz-transform: translate(-30px,-10px);
+	}
+	16% {
+		-moz-transform: translate(-15px,-20px);
+	}
+	25% {
+		-moz-transform: translate(0px,-30px);
+	}
+	33% {
+		-moz-transform: translate(15px,-20px);
+	}
+	41% {
+		-moz-transform: translate(30px,-10px);
+	}
+	50% {
+		-moz-transform: translate(50px,0px);
+	}
+	58% {
+		-moz-transform: translate(30px,10px);
+	}
+	66% {
+		-moz-transform: translate(15px,20px);
+	}
+	80% {
+		-moz-transform: translate(0px,30px);
+	}
+	90% {
+		-moz-transform: translate(-15px,20px);
+	}
+	100% {
+		-moz-transform: translate(-30px,10px);
+	}
+
+}*/
+@-moz-keyframes rotate-wing-left {
+  0% {
+    -moz-transform: rotate(-20deg);
+  }
+  100% {
+    -moz-transform: rotate(15deg);
+  }
+}
+@-moz-keyframes rotate-wing-right {
+  0% {
+    -moz-transform: rotate(20deg);
+  }
+  100% {
+    -moz-transform: rotate(-15deg);
+  }
+}
+@-moz-keyframes rotate-eyebrow {
+  0% {
+    -moz-transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    -moz-transform: translate(2px, -2px) rotate(15deg);
+  }
+}
+@-moz-keyframes rotate-eyebrow-right {
+  0% {
+    -moz-transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    -moz-transform: translate(2px, -2px) rotate(-15deg);
+  }
+}
+@-moz-keyframes eye-pupil {
+  0% {
+    -moz-transform: translate(3px, 0px);
+  }
+  100% {
+    -moz-transform: translate(-8px, -2px);
+  }
+}
+@-moz-keyframes eye-pupil-r {
+  0% {
+    -moz-transform: translate(8px, -2px);
+  }
+  100% {
+    -moz-transform: translate(-3px, 0px);
+  }
+}
+@-moz-keyframes leg-a {
+  0% {
+    -moz-transform: translate(3px, 1px) rotate(-1deg);
+  }
+  100% {
+    -moz-transform: translate(-3px, -1px) rotate(1deg);
+  }
+}
+@-moz-keyframes leg-b {
+  0% {
+    -moz-transform: translate(3px, 1px) rotate(1deg);
+  }
+  100% {
+    -moz-transform: translate(-3px, -1px) rotate(-1deg);
+  }
+}
+/*
+#wraper #head {
+	-moz-animation-name: rotate-head;
+	-moz-animation-duration: 4s;
+	-moz-animation-iteration-count: infinite;
+	-moz-transform-origin: 50% 50%;
+ -moz-animation-timing-function: linear;
+
+
+}*/
+#wraper #wing-one span {
+  -moz-transform: rotate(20deg);
+  -moz-transform-origin: 100% 100%;
+  -moz-animation: rotate-wing-left 800ms ease-in-out infinite alternate;
+  z-index: 1;
+}
+#wraper #wing-two span {
+  -moz-transform: rotate(-15deg);
+  -moz-transform-origin: left bottom;
+  -moz-animation: rotate-wing-right 800ms ease-in-out infinite alternate;
+  z-index: 1;
+}
+#left-eye .eyebrow span {
+  -moz-transform: rotate(5deg);
+  -moz-transform-origin: right 50%;
+  -moz-animation: rotate-eyebrow 2s ease-in-out infinite alternate;
+}
+#right-eye .eyebrow span {
+  -moz-transform: rotate(-5deg);
+  /*-moz-animation-name: rotate-eyebrow-right;
+	-moz-animation-duration: 7s;
+	-moz-animation-iteration-count: infinite;*/
+
+  -moz-transform-origin: left 50%;
+  -moz-animation: rotate-eyebrow-right 2s ease-in-out infinite alternate;
+}
+#wraper .eye-pupil {
+  /*-moz-animation-name: eye-pupil;
+	-moz-animation-duration: 7s;
+	-moz-animation-iteration-count: infinite;*/
+
+  -moz-transform-origin: 0 0;
+  -moz-animation: eye-pupil 2s linear infinite alternate;
+}
+#wraper #right-eye .eye-pupil {
+  /*-moz-animation-name: eye-pupil;
+	-moz-animation-duration: 7s;
+	-moz-animation-iteration-count: infinite;*/
+
+  -moz-transform-origin: 0 0;
+  -moz-animation: eye-pupil-r 2s linear infinite alternate;
+}
+#wraper .legs-a {
+  /*	-moz-animation-name: leg-a;
+	-moz-animation-duration: 5s;
+	-moz-animation-iteration-count: infinite;*/
+
+  -moz-transform-origin: 0 0;
+  -moz-transform: translate(5px, 0) rotate(1deg);
+  -moz-animation: leg-a 2s linear infinite alternate;
+}
+#wraper .legs-b {
+  /*-moz-animation-name: leg-b;
+	-moz-animation-duration: 5s;
+	-moz-animation-iteration-count: infinite;*/
+
+  -moz-transform-origin: 0 0;
+  -moz-transform: translate(5px, 0) rotate(-1deg);
+  -moz-animation: leg-b 2s linear infinite alternate;
+}
+#wraper #wing-one span {
+  -o-transform: rotate(20deg);
+  -o-transform-origin: 100% 100%;
+}
+#wraper #wing-two span {
+  -o-transform: rotate(-15deg);
+  -o-transform-origin: left bottom;
+}
+#left-eye .eyebrow span {
+  -o-transform: rotate(5deg);
+  -o-transform-origin: right 50%;
+}
+#right-eye .eyebrow span {
+  -o-transform: rotate(-5deg);
+  -o-transform-origin: left 50%;
+}
+#wraper .eye-pupil {
+  -o-transform: translate(5px, 0);
+  -o-transform-origin: 0 0;
+}
+#wraper .legs-a {
+  -o-transform-origin: 0 0;
+  -o-transform: translate(5px, 0) rotate(1deg);
+}
+#wraper .legs-b {
+  -o-transform-origin: 0 0;
+  -o-transform: translate(5px, 0) rotate(-1deg);
+}

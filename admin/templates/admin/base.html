@@ -7,7 +7,7 @@
     {% if config['DEBUG'] == True %}
       <link rel=stylesheet type=text/css href="{{ url_for('admin.static', filename='css/admin.css') }}">
     {% else %}
-      <link rel=stylesheet type=text/css href="{{ url_for('admin.static', filename='css/admin.min.css') }}">
+      <link rel=stylesheet type=text/css href="{{ config['ADMIN_MIN_CSS'] }}">
     {% endif %}
   </head>
   <body>
@@ -40,7 +40,7 @@
   {% if config['DEBUG'] == True %}
     <script type="text/javascript" src="{{ url_for('admin.static', filename='js/backend.js') }}"></script>
   {% else %}
-    <script type="text/javascript" src="{{ url_for('admin.static', filename='js/backend.min.js') }}"></script>
+    <script type="text/javascript" src="{{ config['ADMIN_MIN_JS'] }}"></script>
     {{ config['ANALYTICS']|safe }}
   {% endif %}
   </body>
