@@ -4,7 +4,7 @@ import re
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
-                            login_user, logout_user, UserMixin)
+                             login_user, logout_user, UserMixin)
 from jinja2 import TemplateNotFound
 
 from model.models import (Diary, Category, Comment, Tag, Photo, StaticPage,
@@ -18,11 +18,14 @@ from utils.helper.re_helper import ReHelper
 admin = Blueprint('admin', __name__, template_folder='templates',
                   static_folder='static')
 
+
 class User(UserMixin):
+
     """ User object for Flasklogin
 
     define name, id, and active for Flasklogin use
     """
+
     def __init__(self, name, id, active=True):
         self.name = name
         self.id = id
@@ -134,7 +137,7 @@ def diary_edit(diary_id=None):
         ''' save simple data for further use'''
         parser = MyHTMLParser()
         parser.feed(html)
-        content = parser.html # the pure content without html tags
+        content = parser.html  # the pure content without html tags
 
         splited_tags = tags.split(',')
 
@@ -344,9 +347,9 @@ def comment_reply():
 
         post = Diary.objects(pk=did)
         commentEm = CommentEm(
-                    author = u'博主回复',
-                    content = content,
-                )
+            author=u'博主回复',
+            content=content,
+        )
         post.update_one(push__comments=commentEm)
 
         ''' Save in Comment model for admin manage'''
@@ -449,9 +452,9 @@ def account_upload_avatar():
         helper = UpYunHelper()
         url = helper.up_to_upyun('account', data, filename)
         if url:
-          return json.dumps({'success': 'true', 'url': url})
+            return json.dumps({'success': 'true', 'url': url})
         else:
-          return json.dumps({'success': 'false'})
+            return json.dumps({'success': 'false'})
 
 
 @admin.route('/diary/add-photo', methods=['POST'])
@@ -477,9 +480,9 @@ def diary_add_photo():
         helper = UpYunHelper()
         url = helper.up_to_upyun('diary', data, filename)
         if url:
-          return json.dumps({'success': 'true', 'url': url})
+            return json.dumps({'success': 'true', 'url': url})
         else:
-          return json.dumps({'success': 'false'})
+            return json.dumps({'success': 'false'})
 
 
 @admin.route('/gallery', methods=['GET', 'POST'])
@@ -592,7 +595,7 @@ def cmspage_edit(page_url):
 
         parser = MyHTMLParser()
         parser.feed(html)
-        content = parser.html # the pure content without html tags
+        content = parser.html  # the pure content without html tags
 
         author = UserModel.objects.first()
 

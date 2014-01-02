@@ -4,7 +4,7 @@ import datetime
 from operator import attrgetter
 import PyRSS2Gen
 from flask import (Blueprint, render_template, redirect, request, url_for,
-                  make_response, abort)
+                   make_response, abort)
 from jinja2 import TemplateNotFound
 from model.models import (User, Diary, Category, CommentEm, Comment, Tag,
                           Photo, StaticPage)
@@ -13,6 +13,7 @@ from tasks.email_tasks import send_email_task
 
 frontend = Blueprint('frontend', __name__, template_folder='templates',
                      static_folder='static')
+
 
 @frontend.route('/')
 def home():
@@ -110,17 +111,18 @@ def diary_prev_or_next(prev_or_next, diary_id):
     if prev_or_next == 'next':
         diary = Diary.objects(pk=diary_id).first()
         next_diary = Diary.objects(publish_time__lt=diary.publish_time
-                                       ).order_by('-publish_time').first()
+                                   ).order_by('-publish_time').first()
     elif prev_or_next == 'prev':
         diary = Diary.objects(pk=diary_id).first()
         next_diary = Diary.objects(publish_time__gt=diary.publish_time
                                    ).first()
 
     try:
-        return redirect(url_for('frontend.diary_detail', diary_id=next_diary.pk,
-                                diary_title=next_diary.title))
+        return redirect(
+            url_for('frontend.diary_detail', diary_id=next_diary.pk,
+                    diary_title=next_diary.title))
     except:
-        abort (404)
+        abort(404)
 
 
 @frontend.route('/diary/list/<page_num>')
@@ -146,8 +148,8 @@ def diary_list(page_num):
     profile = User.objects.first()
     pages = StaticPage.objects.all()
 
-    diaries = Diary.objects.order_by('-publish_time')[(int(page_num) - 1) * 5
-                                                      :int(page_num) * 5]
+    diaries = Diary.objects.order_by('-publish_time')[
+        (int(page_num) - 1) * 5:int(page_num) * 5]
 
     if diary_num > int(page_num) * 5:
         next_page = True
@@ -188,7 +190,6 @@ def category_list(category_id, category_name=None):
                      key=attrgetter('publish_time'),
                      reverse=True)[:5]
 
-
     return render_template('frontend/category/list.html',
                            category=category_name, diaries=diaries,
                            categories=categories, next_page=next_page,
@@ -227,7 +228,7 @@ def category_paging(category_id, page_num, category_name=None):
     pages = StaticPage.objects.all()
     diaries = sorted(Category.objects(pk=category_id)[0].diaries,
                      key=attrgetter('publish_time'),
-                     reverse=True)[(int(page_num) - 1) * 5 :int(page_num) * 5]
+                     reverse=True)[(int(page_num) - 1) * 5:int(page_num) * 5]
 
     return render_template('frontend/category/list.html',
                            category=category_name, diaries=diaries,
@@ -301,7 +302,7 @@ def tag_paging(tag_name, page_num):
     pages = StaticPage.objects.all()
     diaries = sorted(Tag.objects(name=tag_name)[0].diaries,
                      key=attrgetter('publish_time'),
-                     reverse=True)[(int(page_num) - 1) * 5 :int(page_num) * 5]
+                     reverse=True)[(int(page_num) - 1) * 5:int(page_num) * 5]
 
     return render_template('frontend/tag/list.html', diaries=diaries,
                            categories=categories, tag=tag_name,
@@ -334,10 +335,10 @@ def comment_add():
         diary_title = post[0].title
 
         commentEm = CommentEm(
-                    author = name,
-                    content = content,
-                    email = email
-                )
+            author=name,
+            content=content,
+            email=email
+        )
         post.update_one(push__comments=commentEm)
 
         comment = Comment(content=content)
@@ -377,25 +378,25 @@ def rss():
         content = article.html
 
         url = Config.SITE_URL + '/diary/detail/' + str(article.pk) + '/' + \
-              article.title
+            article.title
         items.append(PyRSS2Gen.RSSItem(
-            title = article.title,
-            link = url,
-            description = content,
-            guid = PyRSS2Gen.Guid(url),
-            pubDate = article.publish_time,
+            title=article.title,
+            link=url,
+            description=content,
+            guid=PyRSS2Gen.Guid(url),
+            pubDate=article.publish_time,
         ))
     rss = PyRSS2Gen.RSS2(
-        title = Config.MAIN_TITLE,
-        link = Config.SITE_URL,
-        description = Config.DESCRIPTION,
-        lastBuildDate = datetime.datetime.now(),
-        items = items
+        title=Config.MAIN_TITLE,
+        link=Config.SITE_URL,
+        description=Config.DESCRIPTION,
+        lastBuildDate=datetime.datetime.now(),
+        items=items
     ).to_xml('utf-8')
     return rss
 
 
-@frontend.route('/gallery', methods=['GET','POST'])
+@frontend.route('/gallery', methods=['GET', 'POST'])
 def gallery():
     """GalleryPage.
      list all photo.

@@ -1,35 +1,50 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 import smtplib
+import logging
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.Header import Header
 from config import Config, SmtpConfig
 
+class EncodingFormatter(logging.Formatter):
+
+    def __init__(self, fmt, datefmt=None, encoding=None):
+        logging.Formatter.__init__(self, fmt, datefmt)
+        self.encoding = encoding
+
+    def format(self, record):
+        result = logging.Formatter.format(self, record)
+        if isinstance(result, unicode):
+            result = result.encode(self.encoding or 'utf-8')
+            return result
+
 def send_reply_mail(receiver, title, content, did, username, diary_title):
     sender = SmtpConfig.USER
     password = SmtpConfig.PASSWORD
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = Header(title,"UTF-8")
+    msg['Subject'] = Header(title, "UTF-8")
     msg['From'] = sender
     msg['To'] = receiver
-    content =  generateHtml(content, did, username, diary_title)
+    content = generateHtml(content, did, username, diary_title)
     part = MIMEText(content, 'html', _charset='UTF-8')
     msg.attach(part)
 
     server = smtplib.SMTP(SmtpConfig.SERVER, SmtpConfig.PORT)
     server.starttls()
-    server.login(sender,password)
+    server.login(sender, password)
     server.sendmail(sender, receiver, msg.as_string())
     server.quit()
+
 
 def generateHtml(content, did, username, diary_title):
     avatar = ''
     html = u'<table style="width: 100%;"><thead style=" width: 100%;color: #FFF; height: 75px; background-color: #bdcadf; -webkit-box-shadow: 0 1px 1px rgba(255,255,255,.5), inset 0 1px 3px #183357; -moz-box-shadow: 0 1px 1px rgba(255,255,255,.5), inset 0 1px 3px #183357; box-shadow: 0 1px 1px rgba(255,255,255,.5), inset 0 1px 3px #183357; background-image: -webkit-linear-gradient(bottom, #647792, #8d9baf); background-image: -moz-linear-gradient(bottom, #647792, #8d9baf); background-image: -o-linear-gradient(bottom, #647792, #8d9baf); background-image: -ms-linear-gradient(bottom, #647792, #8d9baf); background-image: linear-gradient(to top, #647792, #8d9baf);"><tr><td colspan="2" style="padding: 5px 0 5px 2%;">'
     html += Config.MAIN_TITLE
     html += u'</td></tr></thead><tbody><tr>'
-    html += u'<td style="width: 25%;padding:10px 0;"><img src="'+ str(avatar) +'"></td><td><b>'
+    html += u'<td style="width: 25%;padding:10px 0;"><img src="' + \
+        str(avatar) + '"></td><td><b>'
     html += username
     html += u'</b>:<br />'
     html += content
@@ -44,18 +59,19 @@ def generateHtml(content, did, username, diary_title):
     html += u'<tfoot><tr><td colspan="2" style="font-size:11px;color:#999;padding-top:20px;">Copyright &copy; 2012-2013 Dev_Blog 博客评论邮件提醒。 Written By Scen(he.kang@dev-engine.com)</td></tr></tfoot></table>'
     return html
 
+
 def send_error_email(title, error_log):
-    sender = conf['smtp_user']
-    password = conf['smtp_password']
+    sender = SmtpConfig.USER
+    password = SmtpConfig.PASSWORD
     msg = MIMEMultipart('alternative')
-    msg['Subject'] = Header(title,"UTF-8")
+    msg['Subject'] = Header(title, "UTF-8")
     msg['From'] = sender
-    msg['To'] = conf['email']
-    part = MIMEText(error_log, 'html', _charset='UTF-8')
+    msg['To'] = Config.EMAIL
+    part = MIMEText(str(error_log), 'html', _charset='UTF-8')
     msg.attach(part)
 
-    server = smtplib.SMTP(conf['smtp_server'], conf['smtp_port'])
+    server = smtplib.SMTP(SmtpConfig.SERVER, SmtpConfig.PORT)
     server.starttls()
-    server.login(sender,password)
-    server.sendmail(sender, conf['email'], msg.as_string())
+    server.login(sender, password)
+    server.sendmail(sender, Config.EMAIL, msg.as_string())
     server.quit()

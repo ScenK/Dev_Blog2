@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from HTMLParser import HTMLParser
 
+
 class MyHTMLParser(HTMLParser):
+
     """MyHTMLParser support functions for feed Html.
 
     This helper will help feed contents from Full html tags content to pure

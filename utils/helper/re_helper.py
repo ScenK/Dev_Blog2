@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import re
 
+
 class ReHelper(object):
+
     """ReHelper support muti re functions.
 
     This helper will support a few muti-used functions for contents that need
@@ -25,4 +27,3 @@ class ReHelper(object):
         s = re.sub(r'^-|-$', '', s)
 
         return s
-
