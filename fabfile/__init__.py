@@ -14,15 +14,18 @@ from redirector import Redirector
 
 connect(Config.MONGODB_SETTINGS.get('DB'))
 
+
 @task
 def deploy():
     execute(lessc)
     execute(compress)
     execute(backup_database)
 
+
 @task
 def test():
     local("python ./runserver.py --port=8000")
+
 
 @task
 def build():
@@ -32,10 +35,12 @@ def build():
     print "Default Admin add Success!"
     execute(deploy)
 
+
 @task
 def compress():
     execute(compress_css)
     execute(compress_all_js)
+
 
 @task
 def compress_all_js():
@@ -43,11 +48,12 @@ def compress_all_js():
     compress_js('static', 'frontend')
     compress_js('static', '404')
 
+
 @task
 def compress_js(folder, debug_files):
     js_files = []
 
-    target  = open(folder + '/js/' + debug_files + '.js', "r")
+    target = open(folder + '/js/' + debug_files + '.js', "r")
     p = re.compile("document.*src=\'/(.*?)\'.*")
     for line in target:
         m = p.match(line)
@@ -63,6 +69,7 @@ def compress_js(folder, debug_files):
             'java -jar yuicompressor.jar --charset utf-8 --type js %s >> %s' %
             (f, compressed_file))
 
+
 @task
 def compress_css():
     css_files = ['frontend', '404']
@@ -72,13 +79,14 @@ def compress_css():
     for f in css_files:
         local(
             'java -jar yuicompressor.jar --charset utf-8 --type css %s >> %s' %
-            ('static/css/'+f+'.css', 'static/css/'+f+'.min.css'))
+            ('static/css/' + f + '.css', 'static/css/' + f + '.min.css'))
 
     local("rm -f admin/static/css/admn.min.css")
 
     local(
         'java -jar yuicompressor.jar --charset utf-8 --type css %s >> %s' %
         ('admin/static/css/admin.css', 'admin/static/css/admin.min.css'))
+
 
 @task
 def lessc():
@@ -91,11 +99,13 @@ def update():
     local("git pull")
     execute(deploy)
 
+
 @task
 def backup_database():
     local("sudo rm -rf ~/mongobak")
     local("mongodump -d %s -o ~/mongobak" % Config.MONGODB_SETTINGS.get('DB'))
-    local("tar -czvPf ~/%s_%s.tar.gz ~/mongobak/*" % (Config.MONGODB_SETTINGS.get('DB'), datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
+    local("tar -czvPf ~/%s_%s.tar.gz ~/mongobak/*" %
+          (Config.MONGODB_SETTINGS.get('DB'), datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
 
 
 @task
@@ -108,7 +118,7 @@ def count_line():
         for root, dirs, files in os.walk(os.getcwd()):
             for f in files:
                 # Check the sub directorys
-                fname = (root + '/'+ f)
+                fname = (root + '/' + f)
                 try:
                     ext = f[f.rindex('.'):]
                 except:
@@ -121,6 +131,7 @@ def count_line():
 
         print '%s ==> has %d files and %d lines' % (i, fcount, count)
 
+
 def read_line_count(fname):
     count = 0
     with open(fname, 'r') as f:
@@ -128,9 +139,11 @@ def read_line_count(fname):
             count += 1
         return count
 
+
 @task
 def dbmove():
     DbMover().main()
+
 
 @task
 def g():

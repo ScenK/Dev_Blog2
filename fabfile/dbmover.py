@@ -9,7 +9,9 @@ from config import *
 
 connect(Config.MONGODB_SETTINGS.get('DB'))
 
+
 class DbMover(object):
+
     """DbMover helper for transmit dev_blog ver1.0 to ver2.0.
 
     This helper will help moving old data to new database.
@@ -19,12 +21,12 @@ class DbMover(object):
         sourse_db: default=dev_blog and you should change it if you used another
                    name.
     """
+
     def __init__(self):
         """Init sourse database.
         You should change it with your real name.
         """
         self.sourse_db = Connection().dev_blog
-
 
     def move_user(self):
         """User data moving function.
@@ -86,7 +88,6 @@ class DbMover(object):
 
         print 'Diary Data moved OK!'
 
-
     def move_comment(self):
         """Comment data moving function.
 
@@ -117,15 +118,14 @@ class DbMover(object):
 
             #save in CommentEm
             commentEm = CommentEm(
-                        author = c.get('user'),
-                        content = c.get('content'),
-                        email = c.get('email'),
-                        publish_time = c.get('publish_time')
-                    )
+                author=c.get('user'),
+                content=c.get('content'),
+                email=c.get('email'),
+                publish_time=c.get('publish_time')
+            )
             diary.update_one(push__comments=commentEm)
 
         print 'Comment Data moved OK!'
-
 
     def move_category(self):
         """Category data moving function.
@@ -150,7 +150,7 @@ class DbMover(object):
                 for d in c.get('diaries'):
                     diary = Diary.objects(old_id=int(d.get('did'))).first()
                     Category.objects(name=c.get('name')).update_one(
-                                                           push__diaries=diary)
+                        push__diaries=diary)
             except:
                 pass
 
@@ -180,17 +180,16 @@ class DbMover(object):
             try:
                 for c in g.get('content'):
                     photo = PhotoEm(
-                            path = c.get('url'),
-                            title = c.get('title'),
-                            publish_time = c.get('publish_time'),
-                          )
+                        path=c.get('url'),
+                        title=c.get('title'),
+                        publish_time=c.get('publish_time'),
+                    )
                     Gallery.objects(title=g.get('title')).update_one(
-                                                           push__content=photo)
+                        push__content=photo)
             except:
                 pass
 
         print 'Gallery Data moved OK!'
-
 
     def move_tag(self):
         """Tag data moving function.
@@ -214,14 +213,15 @@ class DbMover(object):
             try:
                 for d in t.get('diaries'):
                     diary = Diary.objects(old_id=int(d.get('did'))).first()
-                    diaries_list = Tag.objects(name=t.get('name')).first().diaries
+                    diaries_list = Tag.objects(
+                        name=t.get('name')).first().diaries
                     if diary not in diaries_list:
-                        Tag.objects(name=t.get('name')).update_one(push__diaries=diary)
+                        Tag.objects(name=t.get('name')).update_one(
+                            push__diaries=diary)
             except:
                 pass
 
         print 'Tag Data moved OK!'
-
 
     def main(self):
         """Main function in Class Object.

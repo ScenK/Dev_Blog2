@@ -30,18 +30,22 @@ login_manager = LoginManager()
 login_manager.login_view = "admin.login"
 login_manager.login_message = u"Please log in to access this page."
 
+
 @app.route('/robots.txt')
 def static_from_root():
     return send_from_directory(app.static_folder, request.path[1:])
+
 
 @login_manager.user_loader
 def load_user(id):
     user = UserModel.objects.first()
     return User(user.name, user.pk)
 
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('frontend/404.html'), 404
+
 
 @app.errorhandler(500)
 def special_exception_handler(error):
@@ -59,6 +63,7 @@ if USED_CONF == 'config.ProductionConfig':
     env = False
 else:
     env = True
+
 
 def main():
     tornado.web.Application(debug=env)

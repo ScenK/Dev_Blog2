@@ -9,6 +9,7 @@ from utils.helper.re_helper import ReHelper
 
 connect(Config.MONGODB_SETTINGS.get('DB'))
 
+
 class Redirector(object):
 
     def __init__(self):
@@ -16,7 +17,6 @@ class Redirector(object):
         You should change it with your real name.
         """
         pass
-
 
     def main(self):
         try:
@@ -37,15 +37,16 @@ class Redirector(object):
         print 'config file generate done!'
         file_object.close()
 
-
     def generate_single_line(self, diary):
         helper = ReHelper()
         try:
             old_id = diary.old_id
             object_id = diary.pk
-            diary_title = urllib.quote(helper.r_slash(diary.title.encode('utf-8')))
+            diary_title = urllib.quote(
+                helper.r_slash(diary.title.encode('utf-8')))
 
-            record = 'rewrite ^/diary/detail/' + str(old_id) + '$  ' + str(Config.SITE_URL) +'/diary/' + str(object_id) + '/' + diary_title + ' permanent;' + '\n'
+            record = 'rewrite ^/diary/detail/' + str(old_id) + '$  ' + str(
+                Config.SITE_URL) + '/diary/' + str(object_id) + '/' + diary_title + ' permanent;' + '\n'
 
             return record
         except Exception as e:
