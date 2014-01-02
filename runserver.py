@@ -13,6 +13,10 @@ from admin.admin import admin, User
 from model.models import db
 from model.models import User as UserModel
 
+import logging
+from logging.handlers import SMTPHandler
+from utils.email_util import EncodingFormatter
+
 from flask.ext.login import LoginManager
 
 from flask_debugtoolbar import DebugToolbarExtension
@@ -56,6 +60,19 @@ login_manager.init_app(app)
 DebugToolbarExtension(app)
 
 db.init_app(app)
+
+mail_handler = SMTPHandler(
+    secure=(),
+    mailhost=(SmtpConfig.SERVER, SmtpConfig.PORT),
+    fromaddr=SmtpConfig.USER,
+    toaddrs=Config.EMAIL,
+    subject="%s GOT A SERIOUS PROBLEM" % Config.MAIN_TITLE.encode('utf-8'),
+    credentials=(SmtpConfig.USER, SmtpConfig.PASSWORD)
+)
+
+mail_handler.setLevel(logging.ERROR)
+app.logger.addHandler(mail_handler)
+mail_handler.setFormatter(EncodingFormatter('%(message)s', encoding='utf-8'))
 
 define("port", default=8888, help="run on the given port", type=int)
 

@@ -1,12 +1,24 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 import smtplib
+import logging
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.Header import Header
 from config import Config, SmtpConfig
 
+class EncodingFormatter(logging.Formatter):
+
+    def __init__(self, fmt, datefmt=None, encoding=None):
+        logging.Formatter.__init__(self, fmt, datefmt)
+        self.encoding = encoding
+
+    def format(self, record):
+        result = logging.Formatter.format(self, record)
+        if isinstance(result, unicode):
+            result = result.encode(self.encoding or 'utf-8')
+            return result
 
 def send_reply_mail(receiver, title, content, did, username, diary_title):
     sender = SmtpConfig.USER
@@ -49,17 +61,17 @@ def generateHtml(content, did, username, diary_title):
 
 
 def send_error_email(title, error_log):
-    sender = conf['smtp_user']
-    password = conf['smtp_password']
+    sender = SmtpConfig.USER
+    password = SmtpConfig.PASSWORD
     msg = MIMEMultipart('alternative')
     msg['Subject'] = Header(title, "UTF-8")
     msg['From'] = sender
-    msg['To'] = conf['email']
-    part = MIMEText(error_log, 'html', _charset='UTF-8')
+    msg['To'] = Config.EMAIL
+    part = MIMEText(str(error_log), 'html', _charset='UTF-8')
     msg.attach(part)
 
-    server = smtplib.SMTP(conf['smtp_server'], conf['smtp_port'])
+    server = smtplib.SMTP(SmtpConfig.SERVER, SmtpConfig.PORT)
     server.starttls()
     server.login(sender, password)
-    server.sendmail(sender, conf['email'], msg.as_string())
+    server.sendmail(sender, Config.EMAIL, msg.as_string())
     server.quit()
