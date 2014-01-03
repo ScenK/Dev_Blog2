@@ -48,12 +48,12 @@ def load_user(id):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('frontend/404.html'), 404
+    return render_template('frontend/404.html', error_code='404'), 404
 
 
 @app.errorhandler(500)
 def special_exception_handler(error):
-    return render_template('frontend/404.html'), 500
+    return render_template('frontend/404.html', error_code='500'), 500
 
 login_manager.init_app(app)
 
@@ -70,16 +70,17 @@ mail_handler = SMTPHandler(
     credentials=(SmtpConfig.USER, SmtpConfig.PASSWORD)
 )
 
-mail_handler.setLevel(logging.ERROR)
-app.logger.addHandler(mail_handler)
-mail_handler.setFormatter(EncodingFormatter('%(message)s', encoding='utf-8'))
-
 define("port", default=8888, help="run on the given port", type=int)
 
 if USED_CONF == 'config.ProductionConfig':
     env = False
 else:
     env = True
+
+if not env:
+    mail_handler.setLevel(logging.ERROR)
+    app.logger.addHandler(mail_handler)
+    mail_handler.setFormatter(EncodingFormatter('%(message)s', encoding='utf-8'))
 
 
 def main():
