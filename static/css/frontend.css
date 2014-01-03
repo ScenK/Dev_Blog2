@@ -267,7 +267,7 @@ a:active {
   line-height: 25px;
 }
 .post .summary pre, .post .summary code {
-  overflow: scroll;
+  overflow: auto;
 }
 .post a:link {
   color: #3d2d24;
