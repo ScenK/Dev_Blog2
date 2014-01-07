@@ -377,7 +377,7 @@ def rss():
     for article in articles:
         content = article.html
 
-        url = Config.SITE_URL + '/diary/detail/' + str(article.pk) + '/' + \
+        url = Config.SITE_URL + '/diary/' + str(article.pk) + '/' + \
             article.title
         items.append(PyRSS2Gen.RSSItem(
             title=article.title,
