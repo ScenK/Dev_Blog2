@@ -266,6 +266,9 @@ a:active {
 .post .summary {
   line-height: 25px;
 }
+.post .summary ul, .post .summary li {
+  list-style: disc;
+}
 .post .summary pre, .post .summary code {
   overflow: auto;
 }
