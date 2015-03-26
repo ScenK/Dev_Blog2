@@ -11,6 +11,8 @@ from model.models import (User, Diary, Category, CommentEm, Comment, Tag,
 from config import *
 from tasks.email_tasks import send_email_task
 
+from templates import templates
+
 frontend = Blueprint('frontend', __name__, template_folder='templates',
                      static_folder='static')
 
@@ -43,7 +45,8 @@ def home():
     categories = Category.objects.order_by('-publish_time')
     pages = StaticPage.objects.all()
 
-    return render_template('frontend/home.html', diaries=diaries,
+    return render_template(templates['home'],
+                           diaries=diaries,
                            categories=categories, pages=pages, profile=profile,
                            next_page=next_page)
 
@@ -89,7 +92,7 @@ def diary_detail(diary_id, diary_title=None):
     guest_name = request.cookies.get('guest_name')
     guest_email = request.cookies.get('guest_email')
 
-    return render_template('frontend/diary/detail.html', diary=diary,
+    return render_template(templates['diary_detail'], diary=diary,
                            categories=categories, guest_name=guest_name,
                            guest_email=guest_email, pages=pages, profile=profile,
                            prev=prev, next=next)

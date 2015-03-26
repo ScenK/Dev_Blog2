@@ -1,4 +1,4 @@
-{% extends 'frontend/base.html' %}
+{% extends 'frontend/themes/coffee/base.html' %}
 {% block title %}首页{% endblock %}
 {% block content %}
   <div id="content-container">
@@ -19,6 +19,6 @@
   {% if next_page == True %}
   <div id="bottom-paging">
     <a href="/diary/list/2">Older Posts »</a>
-  </div>  
+  </div>
   {% endif %}
 {% endblock %}

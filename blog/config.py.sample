@@ -12,6 +12,8 @@ class Config(object):
     DESCRIPTION = u'并不是所有唯美的故事 都伴有精彩的风景. 我只愿尽我所能 带你看遍整个春夏秋冬.'
     EMAIL = 'he.kang@dev-engine.com'
 
+    THEME = 'coffee'
+
 
 class ProductionConfig(Config):
     SECRET_KEY = ''
@@ -28,16 +30,20 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    DEBUG_TB_PROFILER_ENABLED = True
+    DEBUG_TB_TEMPLATE_EDITOR_ENABLED = True
     DEBUG_TB_PANELS = (
-        'FLASK.EXT.DEBUGTOOLBAR.PANELS.VERSIONS.vERSIONdEBUGpANEL',
-        'FLASK.EXT.DEBUGTOOLBAR.PANELS.TIMER.tIMERdEBUGpANEL',
-        'FLASK.EXT.DEBUGTOOLBAR.PANELS.HEADERS.hEADERdEBUGpANEL',
-        'FLASK.EXT.DEBUGTOOLBAR.PANELS.REQUEST_VARS.rEQUESTvARSdEBUGpANEL',
-        'FLASK.EXT.DEBUGTOOLBAR.PANELS.TEMPLATE.tEMPLATEdEBUGpANEL',
-        'FLASK.EXT.DEBUGTOOLBAR.PANELS.LOGGER.lOGGINGpANEL',
-        'FLASK.EXT.MONGOENGINE.PANELS.mONGOdEBUGpANEL'
+        'flask_debugtoolbar.panels.versions.VersionDebugPanel',
+        'flask_debugtoolbar.panels.timer.TimerDebugPanel',
+        'flask_debugtoolbar.panels.headers.HeaderDebugPanel',
+        'flask_debugtoolbar.panels.request_vars.RequestVarsDebugPanel',
+        'flask_debugtoolbar.panels.config_vars.ConfigVarsDebugPanel',
+        'flask_debugtoolbar.panels.template.TemplateDebugPanel',
+        'flask_debugtoolbar.panels.logger.LoggingPanel',
+        'flask.ext.mongoengine.panels.MongoDebugPanel',
+        'flask_debugtoolbar.panels.profiler.ProfilerDebugPanel'
     )
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
+
     SITE_URL = 'http://vm.tuzii.me'
 
 
