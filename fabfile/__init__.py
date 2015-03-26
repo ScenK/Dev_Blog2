@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import sys
 import os
 import re
-from fabric.api import *
+from fabric.api import task, execute, local
 import datetime
-from config import *
-from mongoengine import *
-from model.models import User
 from werkzeug.security import generate_password_hash
-from dbmover import DbMover
-from redirector import Redirector
+from mongoengine import connect
+from blog.config import Config
+from blog.model.models import User
 
 connect(Config.MONGODB_SETTINGS.get('DB'))
 
@@ -23,8 +20,13 @@ def deploy():
 
 
 @task
+def start():
+    local("python blog/runserver.py --port=8000")
+
+
+@task
 def test():
-    local("python ./runserver.py --port=8000")
+    local("python blog/blog_tests.py")
 
 
 @task
@@ -105,12 +107,12 @@ def backup_database():
     local("sudo rm -rf ~/mongobak")
     local("mongodump -d %s -o ~/mongobak" % Config.MONGODB_SETTINGS.get('DB'))
     local("tar -czvPf ~/%s_%s.tar.gz ~/mongobak/*" %
-          (Config.MONGODB_SETTINGS.get('DB'), datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
+          (Config.MONGODB_SETTINGS.get('DB'),
+           datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
 
 
 @task
 def count_line():
-    all_lines = 0
     exts = ['.py', '.js', '.html', '.css']
     for i in exts:
         count = 0
@@ -138,13 +140,3 @@ def read_line_count(fname):
         for file_line in f:
             count += 1
         return count
-
-
-@task
-def dbmove():
-    DbMover().main()
-
-
-@task
-def g():
-    Redirector().main()
