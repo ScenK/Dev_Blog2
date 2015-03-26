@@ -9,4 +9,5 @@ templates = dict(
     diary_list="frontend/themes/%s/diary/list.html" % root,
     cat_list="frontend/themes/%s/category/list.html" % root,
     page="frontend/themes/%s/page/index.html" % root,
+    not_found="frontend/themes/%s/404.html" % root
 )

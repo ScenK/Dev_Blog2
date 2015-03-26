@@ -6,9 +6,10 @@ from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 import tornado.web
 
-from flask import Flask, render_template, send_from_directory
-from config import *
+from flask import Flask, render_template, send_from_directory, request
+from config import Config, SmtpConfig
 from frontend.frontend import frontend
+from frontend.templates import templates
 from admin.admin import admin, User
 from model.models import db
 from model.models import User as UserModel
@@ -48,12 +49,12 @@ def load_user(id):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('frontend/404.html', error_code='404'), 404
+    return render_template(templates['not_found'], error_code='404'), 404
 
 
 @app.errorhandler(500)
 def special_exception_handler(error):
-    return render_template('frontend/404.html', error_code='500'), 500
+    return render_template(templates['not_found'], error_code='500'), 500
 
 login_manager.init_app(app)
 
