@@ -103,7 +103,7 @@ def diary_prev_or_next(prev_or_next, diary_id):
 
 
 @frontend.route('/diary/list/<int:page_num>')
-@frontend.route('/category/<cat_id>/<cat_name>')
+@frontend.route('/category/<cat_name>')
 @frontend.route('/category/<cat_name>/page/<int:page_num>')
 @frontend.route('/tag/<tag_name>')
 @frontend.route('/tag/<tag_name>/page/<int:page_num>')

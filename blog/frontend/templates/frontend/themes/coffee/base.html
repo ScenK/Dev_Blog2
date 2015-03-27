@@ -39,7 +39,7 @@
         <h2>ARCHIVES</h2>
         <ul id="side-cats">
           {% for c in categories %}
-          <li class="cat-item"><a href="{{ url_for('frontend.diary_list', cat_id=c.id, cat_name=c.name) }}" title="{{ c.name }}">{{ c.name }}({{ c.diaries|count }})</a></li>
+          <li class="cat-item"><a href="{{ url_for('frontend.diary_list', cat_name=c.name) }}" title="{{ c.name }}">{{ c.name }}({{ c.diaries|count }})</a></li>
           {% endfor %}
         </ul>
         <h2>LINKS</h2>

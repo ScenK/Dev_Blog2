@@ -3,7 +3,7 @@
 {% block content %}
 <div id="content-container">
     <div class="post">
-        <h1><a class="post-title" href="/diary/{{ diary.id }}/{{ diary.title }}" title="{{ diary.title }}">{{ diary.title }}</a></h1>
+        <h1><a class="post-title" href="url_for('diary_detail', diary_id=diary.id, diary_title=diary.title)" title="{{ diary.title }}">{{ diary.title }}</a></h1>
         <div class="author"><span>作者: </span> <a>{{ diary.author.name }}</a>&nbsp;<span>日期:</span> {{ diary.publish_time.strftime('%Y-%m-%d %H:%M') }}&nbsp;<span>标签:</span> {% for t in diary.tags %}<a href="/tag/{{ t }}" title="{{ t }}">{{ t }}</a> {% endfor %}</div>
         <p></p>
         <div class="summary">
