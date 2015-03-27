@@ -217,7 +217,7 @@ def rss():
     Return:
         none
     """
-    content = OtherDispatcher.get_rss(12)
+    content = OtherDispatcher().get_rss(12)
 
     return Response(content, mimetype='text/xml')
 
