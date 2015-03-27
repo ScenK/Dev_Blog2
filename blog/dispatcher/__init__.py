@@ -305,17 +305,15 @@ class TagDispatcher(object):
             diaries: diaries list
         """
 
-        # size = end - start
-        # prev = next = False
-        pass
-        # diaries = Diary.objects(category=cat_name).order_by(order)[start:
-        #                                                            end + 1]
-        # if len(diaries) - size > 0:
-        #     next = True
-        # if start != 0:
-        #     prev = True
+        size = end - start
+        prev = next = False
+        diaries = Diary.objects(tags=tag_name).order_by(order)[start: end + 1]
+        if len(diaries) - size > 0:
+            next = True
+        if start != 0:
+            prev = True
 
-        # return prev, next, diaries[start:end]
+        return prev, next, diaries[start:end]
 
     def get_tag_count(self):
         """Return Tags total number."""

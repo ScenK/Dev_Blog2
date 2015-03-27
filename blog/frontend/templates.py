@@ -8,6 +8,7 @@ templates = dict(
     diary_detail="frontend/themes/%s/diary/detail.html" % root,
     diary_list="frontend/themes/%s/diary/list.html" % root,
     cat_list="frontend/themes/%s/category/list.html" % root,
+    tag_list="frontend/themes/%s/tag/list.html" % root,
     page="frontend/themes/%s/page/index.html" % root,
     not_found="frontend/themes/%s/404.html" % root
 )

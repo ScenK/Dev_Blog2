@@ -3,7 +3,7 @@ from flask import (Blueprint, render_template, redirect, request, url_for,
                    abort, Response)
 
 from dispatcher import (UserDispatcher, DiaryDispatcher, CategoryDispatcher,
-                        PageDispatcher, OtherDispatcher)
+                        TagDispatcher, PageDispatcher, OtherDispatcher)
 
 from templates import templates
 
@@ -105,7 +105,7 @@ def diary_prev_or_next(prev_or_next, diary_id):
 @frontend.route('/diary/list/<int:page_num>')
 @frontend.route('/category/<cat_id>/<cat_name>')
 @frontend.route('/category/<cat_name>/page/<int:page_num>')
-@frontend.route('/tag/<tag_id>/<tag_name>')
+@frontend.route('/tag/<tag_name>')
 @frontend.route('/tag/<tag_name>/page/<int:page_num>')
 def diary_list(page_num=None, cat_id=None, cat_name=None, tag_name=None):
     """Diary list page.
@@ -139,7 +139,9 @@ def diary_list(page_num=None, cat_id=None, cat_name=None, tag_name=None):
     end = int(page_num) * page_size
 
     if tag_name:
-        pass
+        prev, next, diaries = TagDispatcher().get_diary_list_with_navi(
+            tag_name, start, end)
+        tpl = 'tag_list'
     elif cat_name:
         prev, next, diaries = CategoryDispatcher().get_diary_list_with_navi(
             cat_name, start, end)
