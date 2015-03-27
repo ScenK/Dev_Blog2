@@ -7,8 +7,8 @@ from werkzeug.security import generate_password_hash
 from mongoengine.errors import NotUniqueError, ValidationError
 
 from config import Config
-from model.models import User, Diary, Category, Page
-# from utils.helper.helpers import site_helpers
+from model.models import User, Diary, Category, Page, Tag
+from utils.helper import SiteHelpers
 
 
 class UserDispatcher(object):
@@ -174,7 +174,7 @@ class DiaryDispatcher(object):
             summary: first 80 characters in pure_content with 3 dots end
             author: current_user_object
         """
-        permalink = site_helpers.secure_filename(permalink)
+        permalink = SiteHelpers().secure_filename(permalink)
 
         diary = Diary.objects(permalink=permalink).first()
 
@@ -192,7 +192,7 @@ class DiaryDispatcher(object):
 
         html = markdown.markdown(content)
 
-        pure_content = site_helpers.strip_html_tags(html)
+        pure_content = SiteHelpers().strip_html_tags(html)
 
         diary.title = title
         diary.content = content
@@ -258,7 +258,7 @@ class CategoryDispatcher(object):
         Return:
             None
         """
-        cat_name = site_helpers.secure_filename(cat_name)
+        cat_name = SiteHelpers().secure_filename(cat_name)
 
         try:
             category = Category(name=cat_name)
@@ -277,6 +277,79 @@ class CategoryDispatcher(object):
             category: category object
         """
         return Category.objects(pk=cat_id).first()
+
+
+class TagDispatcher(object):
+    """Tag dispatcher.
+    Return tag objects
+    """
+    def get_all_tags(self, order='-publish_time'):
+        """Return Total Tags objects."""
+        return Category.objects.order_by(order)
+
+    def get_diary_list_with_navi(self, tag_name, start=0, end=10,
+                                 order='-publish_time'):
+        """Tag Diary list.
+        default query 10 diaries and return if there should be next or prev
+        page.
+
+        Args:
+            tag_name: string
+            start: num defalut 0
+            end: num defalut 10
+            order: str defalut '-publish_time'
+
+        Return:
+            next: boolean
+            prev: boolean
+            diaries: diaries list
+        """
+
+        # size = end - start
+        # prev = next = False
+        pass
+        # diaries = Diary.objects(category=cat_name).order_by(order)[start:
+        #                                                            end + 1]
+        # if len(diaries) - size > 0:
+        #     next = True
+        # if start != 0:
+        #     prev = True
+
+        # return prev, next, diaries[start:end]
+
+    def get_tag_count(self):
+        """Return Tags total number."""
+        return Tag.objects.count()
+
+    def add_new_tag(self, tag_name):
+        """Tag add new.
+        Will check if the cat_name is unique, otherwise will return an error.
+
+        Args:
+            tag_name: string category name.
+
+        Return:
+            None
+        """
+        tag_name = SiteHelpers().secure_filename(tag_name)
+
+        try:
+            category = Tag(name=tag_name)
+            return category.save()
+        except NotUniqueError:
+            return 'tag name not unique'
+
+    def get_tag_detail(self, tag_name):
+        """Tag detail.
+        will return tag detail by tag name.
+
+        Args:
+            tag_name: string tag name.
+
+        Return:
+            tag: tag object
+        """
+        return Tag.objects(name=tag_name).first()
 
 
 class PageDispatcher(object):
@@ -305,7 +378,7 @@ class OtherDispatcher(object):
             success: boolean, True/False
             url: url_link
         """
-        success, url = site_helpers.up_to_upyun(collection, data, filename)
+        success, url = SiteHelpers().up_to_upyun(collection, data, filename)
 
         return success, url
 
