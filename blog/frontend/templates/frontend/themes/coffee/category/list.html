@@ -1,5 +1,5 @@
 {% extends "frontend/themes/coffee/base.html" %}
-{% block title %} {{ category }} {% endblock %}
+{% block title %} {{ cat_name }} {% endblock %}
 {% block content %}
 <div id="content-container">
   {% for i in diaries %}
@@ -17,6 +17,12 @@
   {% endfor %}
 </div>
 <div id="bottom-paging">
-    {% if page_num|int -1 > 0 %}<a href="/category/{{ category_id}}/{{ category }}/page/{{ page_num|int -1 }}">« Newer Posts</a>{% endif %} — {% if next_page == True %}<a href="/category/{{ category_id}}/{{ category }}/page/{{ page_num|int +1 }}">Older Posts »</a>{% endif %}
+    {% if prev_page %}
+      <a href="/category/{{ cat_name }}/page/{{ page_num|int - 1 }}">« Newer Posts</a>
+    {% endif %}
+      —
+    {% if next_page %}
+      <a href="/category/{{ cat_name }}/page/{{ page_num|int + 1 }}">Older Posts »</a>
+    {% endif %}
 </div>
 {% endblock %}

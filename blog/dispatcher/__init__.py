@@ -215,13 +215,14 @@ class CategoryDispatcher(object):
         """Return Total Categories objects."""
         return Category.objects.order_by(order)
 
-    def get_diary_list_with_navi(self, cat_id, start=0, end=10,
-        order='-publish_time'):
+    def get_diary_list_with_navi(self, cat_name, start=0, end=10,
+                                 order='-publish_time'):
         """Category Diary list.
         default query 10 diaries and return if there should be next or prev
         page.
 
         Args:
+            cat_name: string
             start: num defalut 0
             end: num defalut 10
             order: str defalut '-publish_time'
@@ -231,9 +232,11 @@ class CategoryDispatcher(object):
             prev: boolean
             diaries: diaries list
         """
+
         size = end - start
         prev = next = False
-        diaries = Diary.objects(pk=cat_id).order_by(order)[start: end + 1]
+        diaries = Diary.objects(category=cat_name).order_by(order)[start:
+                                                                   end + 1]
         if len(diaries) - size > 0:
             next = True
         if start != 0:

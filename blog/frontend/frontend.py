@@ -141,16 +141,16 @@ def diary_list(page_num=None, cat_id=None, cat_name=None, tag_name=None):
         pass
     elif cat_name:
         prev, next, diaries = CategoryDispatcher().get_diary_list_with_navi(
-            cat_id, start, end)
+            cat_name, start, end)
         tpl = 'cat_list'
     else:
         prev, next, diaries = DiaryDispatcher().get_diary_list(start, end)
         tpl = 'diary_list'
 
     return render_template(templates[tpl], diaries=diaries,
-                           categories=categories, next=next, prev=prev,
-                           page_num=page_num, pages=pages, profile=profile,
-                           cat_name=cat_name, tag_name=tag_name)
+                           categories=categories, next_page=next,
+                           prev_page=prev, page_num=page_num, pages=pages,
+                           profile=profile, cat_name=cat_name, tag_name=tag_name)
 
 
 # @frontend.route('/comment/add', methods=['POST'])
