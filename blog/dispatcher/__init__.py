@@ -32,6 +32,17 @@ class UserDispatcher(object):
         """Delete User"""
         return User.objects().first().delete()
 
+    def get_by_name(self, username):
+        """Get user by username
+
+        Args:
+            username: string
+
+        Return:
+            user: user object
+        """
+        return User.objects(name=username).first()
+
 
 class CommentDispatcher(object):
     """Comment dispatcher.
@@ -241,6 +252,20 @@ class DiaryDispatcher(object):
         diary.status = status
 
         return diary.save()
+
+    def del_diary_by_id(self, diary_id):
+        """Diary delete.
+        Also delete diary link from category collection
+
+        Args:
+            diary_id: objectID
+
+        Return:
+            None
+        """
+        diary = Diary.objects(pk=diary_id)
+        Category.objects(name=diary[0].category).update_one(pull__diaries=diary[0])
+        return diary.delete()
 
 
 class CategoryDispatcher(object):

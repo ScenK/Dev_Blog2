@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
-import json
-import re
+# import json
+# import re
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
                              login_user, logout_user, UserMixin)
+
+from templates import templates
+
+from dispatcher import (UserDispatcher, DiaryDispatcher, CategoryDispatcher,
+                        TagDispatcher, PageDispatcher, CommentDispatcher)
+
+
 # from jinja2 import TemplateNotFound
 
 # from model.models import (Diary, Category, Comment, Tag, Photo, StaticPage,
@@ -35,97 +42,93 @@ class User(UserMixin):
         return self.active
 
 
-# @admin.route('/login', methods=['GET', 'POST'])
-# def login():
-#     """Login page for user to auth.
+@admin.route("/login", methods=["GET", "POST"])
+def login():
+    """Login page for user to auth.
 
-#     use Flasklogin Class login_user() to login user.
+    use Flasklogin Class login_user() to login user.
 
-#     Methods:
-#         GET and POST
+    Methods:
+        GET and POST
 
-#     Args:
-#         GET:
-#             none
-#         POST:
-#             username: string
-#             password: string
+    Args:
+        GET:
+            none
+        POST:
+            username: string
+            password: string
 
-#     Returns:
-#         GET:
-#             none
-#         POST:
-#             none
-#     """
-#     error = None
-#     if request.method == 'POST' and 'username' in request.form:
-#         user = UserModel.objects.first()
-#         username = request.form["username"]
-#         password = request.form["password"]
+    Returns:
+        GET:
+            none
+        POST:
+            none
+    """
+    if request.method == "POST" and "username" in request.form:
+        password = request.form["password"]
+        user = UserDispatcher().get_profile()
 
-#         if username == user.name and check_password_hash(user.password,
-#                                                          password):
-#             if login_user(User(user.name, user.pk)):
-#                 flash("Logged in!")
-#                 return redirect(request.args.get("next") or url_for("index.index"))
-#             else:
-#                 flash("Sorry, but you could not log in.")
-#         else:
-#             flash(u"Invalid username.")
-#     return render_template('admin/login.html', error=error)
+        if user and check_password_hash(user.password, password):
+            login_user(User(user.name, user.pk))
+            return redirect(request.args.get("next") or url_for("admin.index"))
+        else:
+            return redirect(url_for("admin.login"))
+    else:
+        return render_template(templates["login"])
 
 
-# @admin.route("/logout")
-# @login_required
-# def logout():
-#     """Action for logout current_user.
+@admin.route("/logout")
+@login_required
+def logout():
+    """Action for logout current_user.
 
-#     call this method for logout current_user.
-#     """
-#     logout_user()
-#     flash("Logged out.")
-#     return redirect(url_for("admin.index"))
-
-
-# @admin.route('/')
-# @login_required
-# def index():
-#     """Page for dashboard.
-
-#     only display static page.
-#     """
-
-#     return render_template('admin/dashboard.html')
+    call this method for logout current_user.
+    """
+    logout_user()
+    flash("Logged out.")
+    return redirect(url_for("admin.index"))
 
 
-# @admin.route('/diary/edit/<diary_id>', methods=['GET', 'POST'])
-# @login_required
-# def diary_edit(diary_id=None):
-#     """ Edit diary from admin
+@admin.route('/')
+@login_required
+def index():
+    """Page for dashboard.
 
-#     receives title, content(html), tags and cagetory
-#     save title, content(html), pure content(further use), tags and cagetory
-#     also auto save author as current_user.
+    only display static page.
+    """
 
-#     this method will auto save new Category or Tag if not exist otherwise save
-#     in existed none with push only diary_object
+    return render_template(templates["dashboard"])
 
-#     Args:
-#         diary_id: diary_id
-#         title: string
-#         html: string
-#         cagetory: string
-#         tags: list
 
-#     Save:
-#         title: string
-#         html: string
-#         content: string without html tags
-#         category: string
-#         tags: list
-#         summary: first 80 characters in content with 3 dots in the end
-#         author: current_user_object
-#     """
+@admin.route('/diary/edit/<diary_id>', methods=['GET', 'POST'])
+@login_required
+def diary_edit(diary_id=None):
+    """ Edit diary from admin
+
+    receives title, content(html), tags and cagetory
+    save title, content(html), pure content(further use), tags and cagetory
+    also auto save author as current_user.
+
+    this method will auto save new Category or Tag if not exist otherwise save
+    in existed none with push only diary_object
+
+    Args:
+        diary_id: diary_id
+        title: string
+        html: string
+        cagetory: string
+        tags: list
+
+    Save:
+        title: string
+        html: string
+        content: string without html tags
+        category: string
+        tags: list
+        summary: first 80 characters in content with 3 dots in the end
+        author: current_user_object
+    """
+    pass
 #     if request.method == 'POST' and 'title' and 'content' in request.form:
 #         re_helper = ReHelper()
 
@@ -189,46 +192,44 @@ class User(UserMixin):
 #                                categories=categories)
 
 
-# @admin.route('/diary/list')
-# @login_required
-# def diary_list():
-#     """Admin Diary lit page.
+@admin.route('/diary/list')
+@login_required
+def diary_list():
+    """Admin Diary lit page.
 
-#     show all diaries.
+    show all diaries.
 
-#     Methods:
-#         GET
+    Methods:
+        GET
 
-#     Args:
-#         none
+    Args:
+        none
 
-#     Returns:
-#         Diary object
-#     """
-#     diaries = Diary.objects.order_by('-publish_time')
-#     return render_template('admin/diary/list.html', diaries=diaries)
+    Returns:
+        Diary object
+    """
+    diaries = DiaryDispatcher().get_all_diaries()
+    return render_template(templates["diary_list"], diaries=diaries)
 
 
-# @admin.route('/diary/del/<diary_id>')
-# @login_required
-# def diary_del(diary_id):
-#     """Admin Diary Delete Action
+@admin.route('/diary/del/<diary_id>')
+@login_required
+def diary_del(diary_id):
+    """Admin Diary Delete Action
 
-#     Used for delete Diary.Also del reference Tag and Category.
+    Used for delete Diary.Also del reference Tag and Category.
 
-#     Methods:
-#         GET
+    Methods:
+        GET
 
-#     Args:
-#         diary_id: diary ObjectID
+    Args:
+        diary_id: diary ObjectID
 
-#     Returns:
-#         none
-#     """
-#     diary = Diary.objects(pk=diary_id)
-#     Category.objects(name=diary[0].category).update_one(pull__diaries=diary[0])
-#     diary.delete()
-#     return redirect(url_for("admin.diary_list"))
+    Returns:
+        none
+    """
+    DiaryDispatcher().del_diary_by_id(diary_id)
+    return redirect(url_for("admin.diary_list"))
 
 
 # @admin.route('/category/list')
@@ -366,67 +367,67 @@ class User(UserMixin):
 #             return json.dumps({'success': 'false', 'reason': str(e)})
 
 
-# @admin.route('/account/settings', methods=['GET', 'POST'])
-# @login_required
-# def account_settings():
-#     """Account Settings Page.
+@admin.route('/account/settings', methods=['GET', 'POST'])
+@login_required
+def account_settings():
+    """Account Settings Page.
 
-#     allow admin to change profile.
+    allow admin to change profile.
 
-#     Methods:
-#         GET and POST
+    Methods:
+        GET and POST
 
-#     Args:
-#         GET:
-#             none
+    Args:
+        GET:
+            none
 
-#         POST:
-#             username: string
-#             pass1   : password
-#             pass2   : password twice for validate
-#             signature: user profile signature
-#             email   : for get reply email notification
+        POST:
+            username: string
+            pass1   : password
+            pass2   : password twice for validate
+            signature: user profile signature
+            email   : for get reply email notification
 
-#     Returns:
-#         GET:
-#             user object
-#         POST:
-#             none
-#     """
-#     user = UserModel.objects(name=current_user.name).first()
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         pass1 = request.form['pass1']
-#         pass2 = request.form['pass2']
-#         signature = request.form['signature']
-#         email = request.form['email']
-#         avatar = request.form['avatar']
+    Returns:
+        GET:
+            user object
+        POST:
+            none
+    """
+    user = UserDispatcher().get_by_name(username=current_user.name)
+    if request.method == 'POST':
+        username = request.form['username']
+        pass1 = request.form['pass1']
+        pass2 = request.form['pass2']
+        signature = request.form['signature']
+        email = request.form['email']
+        avatar = request.form['avatar']
 
-#         if pass1 and pass2 and pass1 == pass2:
-#             user.password = generate_password_hash(password=pass1)
+        if pass1 and pass2 and pass1 == pass2:
+            user.password = generate_password_hash(password=pass1)
 
-#         if username:
-#             user.name = username
+        if username:
+            user.name = username
 
-#         if signature:
-#             user.signature = signature
+        if signature:
+            user.signature = signature
 
-#         if email:
-#             user.email = email
+        if email:
+            user.email = email
 
-#         if avatar:
-#             user.avatar = avatar
+        if avatar:
+            user.avatar = avatar
 
-#         user.save()
+        user.save()
 
-#         if pass1 or username:
-#             logout_user()
-#             flash(u"请重新登陆")
-#             return redirect(url_for("admin.index"))
+        if pass1 or username:
+            logout_user()
+            flash(u"请重新登陆")
+            return redirect(url_for("admin.index"))
 
-#         return redirect(url_for("admin.account_settings"))
-#     else:
-#         return render_template('admin/account/settings.html', user=user)
+        return redirect(url_for("admin.account_settings"))
+    else:
+        return render_template(templates["settings"], user=user)
 
 
 # @admin.route('/account/settings/upload_avatar', methods=['POST'])
