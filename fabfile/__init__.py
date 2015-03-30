@@ -92,8 +92,8 @@ def compress_css():
 
 @task
 def lessc():
-    local("lessc static/less/frontend.less > static/css/frontend.css")
-    local("lessc static/less/404.less > static/css/404.css")
+    local("lessc blog/static/less/frontend.less > blog/static/css/frontend.css")
+    local("lessc blog/static/less/404.less > blog/static/css/404.css")
 
 
 @task

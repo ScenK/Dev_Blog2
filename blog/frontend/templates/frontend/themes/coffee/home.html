@@ -4,7 +4,7 @@
   <div id="content-container">
     {% for i in diaries %}
     <div class="post">
-      <h1><a class="post-title" href="url_for('diary_detail', diary_id=i.id, diary_title=i.title)" title="{{ i.title }}">{{ i.title }}</a></h1>
+      <h1><a class="post-title" href="{{ url_for('frontend.diary_detail', diary_id=i.id, diary_title=i.title) }}" title="{{ i.title }}">{{ i.title }}</a></h1>
       <div class="author">
         <span>作者:</span> <a>{{ i.author.name }}</a>&nbsp;
         <span>日期:</span> {{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}&nbsp;
@@ -12,10 +12,10 @@
       </div>
 
       <p>{{ i.summary|safe }}</p>
-      <p>详细阅读... <a href="url_for('diary_detail', diary_id=i.id, diary_title=i.title)" class="more-link">(more…)</a></p>
+      <p>详细阅读... <a href="{{ url_for('frontend.diary_detail', diary_id=i.id, diary_title=i.title) }}" class="more-link">(more…)</a></p>
 
       <div class="post-comment-entice">
-        <p><span class="post-comments"><a href="url_for('diary_detail', diary_id=i.id, diary_title=i.title)">{{ i.comments|count }} Comments </a></span></p>
+        <p><span class="post-comments"><a href="{{ url_for('frontend.diary_detail', diary_id=i.id, diary_title=i.title) }}">{{ i.comments|count }} Comments </a></span></p>
       </div>
     </div>
     {% endfor %}

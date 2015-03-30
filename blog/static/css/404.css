@@ -96,7 +96,8 @@ section {
 nav ul {
   list-style: none;
 }
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 blockquote:before,
@@ -130,7 +131,8 @@ mark {
 del {
   text-decoration: line-through;
 }
-abbr[title], dfn[title] {
+abbr[title],
+dfn[title] {
   border-bottom: 1px dotted;
   cursor: help;
 }
@@ -162,7 +164,6 @@ select:focus,
 textarea:focus {
   outline: none;
 }
-@charset "utf-8";
 /* CSS Document */
 /*CSS ANIMATION
 ======================*/
@@ -174,7 +175,6 @@ textarea:focus {
 #wraper .eye-pupil,
 #wraper .legs-a,
 #wraper .legs-b {
-  -webkit-transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
@@ -495,7 +495,8 @@ body {
   margin: 0 0 8px 0;
   display: block;
 }
-.info-one, .info-two {
+.info-one,
+.info-two {
   font-size: 19px;
   display: block;
 }
@@ -545,7 +546,6 @@ body {
   font-weight: bold;
   text-decoration: none;
   -o-transition: color 0.3s;
-  -webkit-transition: color 0.3s;
   -webkit-transition: color 0.3s;
   transition: color 0.3s;
 }

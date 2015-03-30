@@ -3,7 +3,8 @@ from flask import (Blueprint, render_template, redirect, request, url_for,
                    abort, Response)
 
 from dispatcher import (UserDispatcher, DiaryDispatcher, CategoryDispatcher,
-                        TagDispatcher, PageDispatcher, OtherDispatcher)
+                        TagDispatcher, PageDispatcher, OtherDispatcher,
+                        CommentDispatcher)
 
 from templates import templates
 
@@ -156,54 +157,28 @@ def diary_list(page_num=None, cat_id=None, cat_name=None, tag_name=None):
                            profile=profile, cat_name=cat_name, tag_name=tag_name)
 
 
-# @frontend.route('/comment/add', methods=['POST'])
-# def comment_add():
-#     """ Comment Add AJAX Post Action.
+@frontend.route('/comment/add', methods=['POST'])
+def comment_add():
+    """ Comment Add AJAX Post Action.
 
-#     designed for ajax post and send reply email for admin
+    designed for ajax post and send reply email for admin
 
-#     Args:
-#         username: guest_name
-#         did: diary ObjectedId
-#         email: guest_email
-#         content: comment content
+    Args:
+        username: guest_name
+        did: diary ObjectedId
+        email: guest_email
+        content: comment content
 
-#     Return:
-#         email_status: success
-#     """
-#     if request.method == 'POST':
-#         name = request.form['username']
-#         did = request.form['did']
-#         email = request.form['email']
-#         content = request.form['comment']
+    Return:
+        email_status: success
+    """
+    if request.method == 'POST':
+        author = request.form['username']
+        diary_id = request.form['did']
+        email = request.form['email']
+        content = request.form['comment']
 
-#         post = Diary.objects(pk=did)
-#         diary_title = post[0].title
-
-#         commentEm = CommentEm(
-#             author=name,
-#             content=content,
-#             email=email
-#         )
-#         post.update_one(push__comments=commentEm)
-
-#         comment = Comment(content=content)
-#         comment.diary = post[0]
-#         comment.email = email
-#         comment.author = name
-#         comment.save(validate=False)
-
-#         try:
-#             send_email_task(Config.EMAIL,
-#                             Config.MAIN_TITLE + u'收到了新的评论, 请查收',
-#                             content, did, name, diary_title)
-
-#             response = make_response(json.dumps({'success': 'true'}))
-#             response.set_cookie('guest_name', name)
-#             response.set_cookie('guest_email', email)
-#             return response
-#         except Exception as e:
-#             return str(e)
+        return CommentDispatcher().add_comment(author, diary_id, email, content)
 
 
 @frontend.route('/feed')

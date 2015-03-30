@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import json
 import datetime
 import PyRSS2Gen
 import markdown
 from werkzeug.security import generate_password_hash
 from mongoengine.errors import NotUniqueError, ValidationError
+from flask import make_response
+from tasks.email_tasks import send_email_task
 
 from config import Config
-from model.models import User, Diary, Category, Page, Tag
+from model.models import User, Diary, Category, Page, Tag, Comment, CommentEm
 from utils.helper import SiteHelpers
 
 
@@ -28,6 +31,39 @@ class UserDispatcher(object):
     def delete_user(self):
         """Delete User"""
         return User.objects().first().delete()
+
+
+class CommentDispatcher(object):
+    """Comment dispatcher.
+    Retuen comments functons helper.
+    """
+    def add_comment(self, author, diary_id, email, content):
+        diary = Diary.objects(pk=diary_id)
+        diary_title = diary.first().title
+        comment_em = CommentEm(
+            author=author,
+            content=content,
+            email=email
+        )
+        diary.update_one(push__comments=comment_em)
+
+        comment = Comment(content=content)
+        comment.diary = diary.first()
+        comment.email = email
+        comment.author = author
+        comment.save(validate=False)
+
+        try:
+            send_email_task(Config.EMAIL,
+                            Config.MAIN_TITLE + u'收到了新的评论, 请查收',
+                            content, diary_id, author, diary_title)
+
+            response = make_response(json.dumps({'success': 'true'}))
+            response.set_cookie('guest_name', author)
+            response.set_cookie('guest_email', email)
+            return response
+        except Exception as e:
+            return str(e)
 
 
 class DiaryDispatcher(object):
