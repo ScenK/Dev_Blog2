@@ -339,6 +339,18 @@ class CategoryDispatcher(object):
         """
         return Category.objects(pk=cat_id).first()
 
+    def del_category_by_name(self, cat_name):
+        """Category delete by name.
+        Will check if the cat_name is unique, otherwise will return an error.
+
+        Args:
+            cat_name: string category name.
+
+        Return:
+            None
+        """
+        return Category.objects.get_or_404(name=cat_name).delete()
+
 
 class TagDispatcher(object):
     """Tag dispatcher.

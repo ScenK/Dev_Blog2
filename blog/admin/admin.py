@@ -232,44 +232,44 @@ def diary_del(diary_id):
     return redirect(url_for("admin.diary_list"))
 
 
-# @admin.route('/category/list')
-# @login_required
-# def category_list():
-#     """Admin Category lit page.
+@admin.route('/category/list')
+@login_required
+def category_list():
+    """Admin Category lit page.
 
-#     show all categories.
+    show all categories.
 
-#     Methods:
-#         GET
+    Methods:
+        GET
 
-#     Args:
-#         none
+    Args:
+        none
 
-#     Returns:
-#         Category object
-#     """
-#     categories = Category.objects.order_by('-publish_time')
-#     return render_template('admin/category/list.html', categories=categories)
+    Returns:
+        Category object
+    """
+    categories = CategoryDispatcher().get_all_categories()
+    return render_template(templates["category_list"], categories=categories)
 
 
-# @admin.route('/category/del/<category_name>')
-# @login_required
-# def category_del(category_name):
-#     """Admin Category Delete Action
+@admin.route('/category/del/<category_name>')
+@login_required
+def category_del(category_name):
+    """Admin Category Delete Action
 
-#     Used for delete Category.
+    Used for delete Category.
 
-#     Methods:
-#         GET
+    Methods:
+        GET
 
-#     Args:
-#         category_name: string
+    Args:
+        category_name: string
 
-#     Returns:
-#         none
-#     """
-#     Category.objects.get_or_404(name=category_name).delete()
-#     return redirect(url_for("admin.category_list"))
+    Returns:
+        none
+    """
+    CategoryDispatcher().del_category_by_name(category_name)
+    return redirect(url_for("admin.category_list"))
 
 
 # @admin.route('/comment/del/<comment_id>')
