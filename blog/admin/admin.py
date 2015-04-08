@@ -272,51 +272,45 @@ def category_del(category_name):
     return redirect(url_for("admin.category_list"))
 
 
-# @admin.route('/comment/del/<comment_id>')
-# @login_required
-# def comment_del(comment_id):
-#     """Admin Comment Delete Action
+@admin.route('/comment/del/<comment_id>')
+@login_required
+def comment_del(comment_id):
+    """Admin Comment Delete Action
 
-#     Used for delete Comment.Del comment from DiaryCommentEm and CommentDB
+    Used for delete Comment.Del comment from DiaryCommentEm and CommentDB
 
-#     Methods:
-#         GET
+    Methods:
+        GET
 
-#     Args:
-#         comment_id: CommentObjectedID
+    Args:
+        comment_id: CommentObjectedID
 
-#     Returns:
-#         none
-#     """
-#     comment = Comment.objects.get_or_404(pk=comment_id)
+    Returns:
+        none
+    """
+    CommentDispatcher().del_comment_by_id(comment_id)
 
-#     diary = Diary.objects(pk=comment.diary.pk)
-
-#     diary.update_one(pull__comments={'content': comment.content})
-
-#     comment.delete()
-
-#     return redirect(url_for("admin.comment_list"))
+    return redirect(url_for("admin.comment_list"))
 
 
-# @admin.route('/comment/list')
-# @login_required
-# def comment_list():
-#     """Admin Comments list page.
+@admin.route('/comment/list')
+@login_required
+def comment_list():
+    """Admin Comments list page.
 
-#     Used for list all comments.
+    Used for list all comments.
 
-#     Methods:
-#         GET
+    Methods:
+        GET
 
-#     Args:
-#         none
+    Args:
+        none
 
-#     Returns:
-#         comments object
-#     """
-#     comments = Comment.objects.order_by('-publish_time')
-#     return render_template('admin/comment/list.html', comments=comments)
+    Returns:
+        comments object
+    """
+    comments = CommentDispatcher().get_all_comments()
+    return render_template(templates["comment_list"], comments=comments)
 
 
 # @admin.route('/comment/reply', methods=['POST'])
@@ -621,41 +615,41 @@ def account_settings():
 #         return render_template('admin/page/edit.html', page=page)
 
 
-# @admin.route('/cmspage/list', methods=['GET'])
-# @login_required
-# def cmspage_list():
-#     """Admin CmsPage lit page.
+@admin.route('/cmspage/list', methods=['GET'])
+@login_required
+def cmspage_list():
+    """Admin CmsPage lit page.
 
-#     show all staticPages.
+    show all staticPages.
 
-#     Methods:
-#         GET
+    Methods:
+        GET
 
-#     Args:
-#         none
+    Args:
+        none
 
-#     Returns:
-#         StaticPage object
-#     """
-#     pages = StaticPage.objects.order_by('-publish_time')
-#     return render_template('admin/page/list.html', pages=pages)
+    Returns:
+        StaticPage object
+    """
+    pages = PageDispatcher().get_all_static_pages()
+    return render_template(templates["page_list"], pages=pages)
 
 
-# @admin.route('/cmspage/del/<page_url>', methods=['GET'])
-# @login_required
-# def cmspage_del(page_url):
-#     """Admin StaticPage Delete Action
+@admin.route('/cmspage/del/<page_url>', methods=['GET'])
+@login_required
+def cmspage_del(page_url):
+    """Admin StaticPage Delete Action
 
-#     Used for delete Category.
+    Used for delete Category.
 
-#     Methods:
-#         GET
+    Methods:
+        GET
 
-#     Args:
-#         page_url: string
+    Args:
+        page_url: string
 
-#     Returns:
-#         none
-#     """
-#     StaticPage.objects.get_or_404(url=page_url).delete()
-#     return redirect(url_for("admin.cmspage_list"))
+    Returns:
+        none
+    """
+    PageDispatcher().del_cmspage_by_url(page_url)
+    return redirect(url_for("admin.cmspage_list"))

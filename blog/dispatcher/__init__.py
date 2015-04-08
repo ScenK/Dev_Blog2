@@ -10,7 +10,8 @@ from flask import make_response
 from tasks.email_tasks import send_email_task
 
 from config import Config
-from model.models import User, Diary, Category, Page, Tag, Comment, CommentEm
+from model.models import (User, Diary, Category, Page, Tag, Comment,
+                          CommentEm, StaticPage)
 from utils.helper import SiteHelpers
 
 
@@ -75,6 +76,28 @@ class CommentDispatcher(object):
             return response
         except Exception as e:
             return str(e)
+
+    def get_all_comments(self, order='-publish_time'):
+        """Return Total diaries objects."""
+        return Comment.objects.order_by(order)
+
+    def del_comment_by_id(self, comment_id):
+        """Comment delete by id.
+        Also remove comment from diary detail
+
+        Args:
+            comment_id: Object_id.
+
+        Return:
+            None
+        """
+        comment = Comment.objects.get_or_404(pk=comment_id)
+
+        diary = Diary.objects(pk=comment.diary.pk)
+
+        diary.update_one(pull__comments={'content': comment.content})
+
+        return comment.delete()
 
 
 class DiaryDispatcher(object):
@@ -432,6 +455,12 @@ class PageDispatcher(object):
 
     def get_page(self, page_url):
         return Page.objects(url=page_url).first()
+
+    def get_all_static_pages(self, order='-publish_time'):
+        return StaticPage.objects.order_by(order)
+
+    def del_cmspage_by_url(self, page_url):
+        return StaticPage.objects.get_or_404(url=page_url).delete()
 
 
 class OtherDispatcher(object):
