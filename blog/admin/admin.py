@@ -9,18 +9,8 @@ from flask.ext.login import (current_user, login_required,
 from templates import templates
 
 from dispatcher import (UserDispatcher, DiaryDispatcher, CategoryDispatcher,
-                        TagDispatcher, PageDispatcher, CommentDispatcher)
+                        PageDispatcher, CommentDispatcher)
 
-
-# from jinja2 import TemplateNotFound
-
-# from model.models import (Diary, Category, Comment, Tag, Photo, StaticPage,
-#                           CommentEm)
-# from model.models import User as UserModel
-# from tasks.email_tasks import send_email_task
-# from utils.helper.html_helper import MyHTMLParser
-# from utils.helper.upyun_helper import UpYunHelper
-# from utils.helper.re_helper import ReHelper
 
 admin = Blueprint('admin', __name__, template_folder='templates',
                   static_folder='static')
@@ -109,9 +99,6 @@ def diary_edit(diary_id=None):
     save title, content(html), pure content(further use), tags and cagetory
     also auto save author as current_user.
 
-    this method will auto save new Category or Tag if not exist otherwise save
-    in existed none with push only diary_object
-
     Args:
         diary_id: diary_id
         title: string
@@ -119,77 +106,25 @@ def diary_edit(diary_id=None):
         cagetory: string
         tags: list
 
-    Save:
-        title: string
-        html: string
-        content: string without html tags
-        category: string
-        tags: list
-        summary: first 80 characters in content with 3 dots in the end
-        author: current_user_object
+    Return:
+        POST: None
+        GET: empty diary content with categories
     """
-    pass
-#     if request.method == 'POST' and 'title' and 'content' in request.form:
-#         re_helper = ReHelper()
+    if request.method == 'POST' and 'title' and 'content' in request.form:
 
-#         title = re_helper.r_slash(request.form["title"])
-#         html = request.form["content"]
-#         category = re_helper.r_slash(request.form["category"])
-#         tags = request.form["tags"]
+        title = request.form["title"]
+        html = request.form["content"]
+        category = request.form["category"]
+        tags = request.form["tags"]
 
-#         ''' save simple data for further use'''
-#         parser = MyHTMLParser()
-#         parser.feed(html)
-#         content = parser.html  # the pure content without html tags
+        DiaryDispatcher().edit_diary(diary_id, title, html, category, tags)
+        return redirect(url_for("admin.diary_list"))
 
-#         splited_tags = tags.split(',')
+    else:
 
-#         author = UserModel.objects.first()
-
-#         try:
-#             diary = Diary.objects(pk=diary_id).first()
-#         except:
-#             diary = Diary(title=title)
-
-#         old_cat = diary.category
-#         old_tags = diary.tags
-
-#         diary.title = title
-#         diary.content = content
-#         diary.category = category
-#         diary.summary = content[0:80] + '...'
-#         diary.html = html
-#         diary.author = author
-#         diary.tags = splited_tags
-#         diary.save()
-
-#         a, cat = Category.objects.get_or_create(name=category,
-#                                                 defaults={'diaries': [diary]})
-#         if not cat:
-#             Category.objects(name=category).update_one(push__diaries=diary)
-#             if old_cat is not None:
-#                 Category.objects(name=old_cat).update_one(pull__diaries=diary)
-
-#         for t in old_tags:
-#             Tag.objects(name=t).update_one(pull__diaries=diary)
-
-#         for i in splited_tags:
-#             b, tag = Tag.objects.get_or_create(name=i,
-#                                                defaults={'diaries': [diary]})
-#             if not tag:
-#                 Tag.objects(name=i).update_one(push__diaries=diary)
-
-#         return redirect(url_for("admin.diary_list"))
-
-#     else:
-#         try:
-#             diary = Diary.objects(pk=diary_id).first()
-#         except:
-#             diary = None
-#         categories = Category.objects.all()
-
-#         return render_template('admin/diary/edit.html', diary=diary,
-#                                categories=categories)
+        diary, categories = DiaryDispatcher().get_or_create_diary(diary_id)
+        return render_template('admin/diary/edit.html', diary=diary,
+                               categories=categories)
 
 
 @admin.route('/diary/list')
@@ -478,72 +413,6 @@ def account_settings():
 #             return json.dumps({'success': 'true', 'url': url})
 #         else:
 #             return json.dumps({'success': 'false'})
-
-
-# @admin.route('/gallery', methods=['GET', 'POST'])
-# @login_required
-# def gallery():
-#     """Gallery Admin Page.
-
-#     Used for upload new photos to UpYun.
-
-#     Methods:
-#         GET and POST
-
-#     Args:
-#         GET:
-#             none
-
-#         PSOT(*for ajax only):
-#             files: [name: 'Filedata']
-
-#     Returns:
-#         GET:
-#             photos
-
-#         POST:
-#             status: {success: true/false, url: url}
-#     """
-#     if request.method == 'POST':
-#         re_helper = ReHelper()
-#         data = request.files['Filedata']
-#         filename = re_helper.r_slash(data.filename.encode('utf-8'))
-#         helper = UpYunHelper()
-#         url = helper.up_to_upyun('gallery', data, filename)
-
-#         if url:
-#             photo = Photo(url=url)
-#             photo.title = filename
-#             photo.save()
-
-#             return json.dumps({'success': 'true', 'url': url})
-#         else:
-#             return json.dumps({'success': 'false'})
-#     else:
-#         photos = Photo.objects.order_by('-publish_time')
-
-#         return render_template('admin/gallery/detail.html', photos=photos)
-
-
-# @admin.route('/photo/del/<photo_id>')
-# @login_required
-# def photo_del(photo_id):
-#     """Admin Photo Delete Action
-
-#     Used for delete Photo.
-
-#     Methods:
-#         GET
-
-#     Args:
-#         photo_id: photo_id ObjectID
-
-#     Returns:
-#         none
-#     """
-#     Photo.objects(pk=photo_id).delete()
-
-#     return redirect(url_for('admin.gallery'))
 
 
 # @admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])

@@ -3,7 +3,6 @@
 import json
 import datetime
 import PyRSS2Gen
-import markdown
 from werkzeug.security import generate_password_hash
 from mongoengine.errors import NotUniqueError, ValidationError
 from flask import make_response
@@ -216,65 +215,82 @@ class DiaryDispatcher(object):
 
         return prev, next, diaries[start:end]
 
-    def edit_diary(self, permalink, title, content, categories, tags,
-                   status='Published'):
+    def edit_diary(self, diary_id, title, html, category, tags):
         """ Edit diary from admin
 
-        receives title, content(markdown), tags and cagetory
-        save title, content(markdown), pure content(further use), tags and
-        cagetories, also auto save author as current_user.
+        receives title, content(html), tags and cagetory
+        save title, content(html), pure content(further use), tags and cagetory
+        also auto save author as current_user.
+
+        this method will auto save new Category or Tag if not exist otherwise save
+        in existed none with push only diary_object
 
         Args:
-            permalink: string
-            title: string
-            content: markdown string
-            cagetories: list
-            tags: list
-            status: 'Published/Draft', default => 'Published'
-
-        Save:
-            permalink: string
+            diary_id: diary_id
             title: string
             html: string
-            content: markdown string
-            pure_content: pure content
-            categories: list
+            cagetory: string
             tags: list
-            status: 'Published/Draft', default => 'Published'
-            summary: first 80 characters in pure_content with 3 dots end
+
+        Save:
+            title: string
+            html: string
+            content: string without html tags
+            category: string
+            tags: list
+            summary: first 80 characters in content with 3 dots in the end
             author: current_user_object
         """
-        permalink = SiteHelpers().secure_filename(permalink)
+        title = SiteHelpers().secure_filename(title)
+        category = SiteHelpers().secure_filename(category)
+        content = SiteHelpers().strip_html_tags(html)
+        splited_tags = tags.split(',')
 
-        diary = Diary.objects(permalink=permalink).first()
+        author = UserDispatcher().get_profile()
 
-        user = UserDispatcher()
+        try:
+            diary = Diary.objects(pk=diary_id).first()
+        except:
+            diary = Diary(title=title)
 
-        if diary is None:
-            diary = Diary(permalink=permalink)
-        else:
-            for c in diary.categories:
-                Category.objects(name=c).update_one(pull__diaries=diary)
-
-        # update category model
-        for c in categories:
-            Category.objects(name=c).update_one(push__diaries=diary)
-
-        html = markdown.markdown(content)
-
-        pure_content = SiteHelpers().strip_html_tags(html)
+        old_cat = diary.category
+        old_tags = diary.tags
 
         diary.title = title
         diary.content = content
+        diary.category = category
+        diary.summary = content[0:80] + '...'
         diary.html = html
-        diary.summary = pure_content[0:80] + '...'
-        diary.pure_content = pure_content
-        diary.author = user.get_profile()
-        diary.categories = categories
-        diary.tags = tags
-        diary.status = status
+        diary.author = author
+        diary.tags = splited_tags
+        diary.save()
 
-        return diary.save()
+        a, cat = Category.objects.get_or_create(name=category,
+                                                defaults={'diaries': [diary]})
+        if not cat:
+            Category.objects(name=category).update_one(push__diaries=diary)
+            if old_cat is not None:
+                Category.objects(name=old_cat).update_one(pull__diaries=diary)
+
+        for t in old_tags:
+            Tag.objects(name=t).update_one(pull__diaries=diary)
+
+        for i in splited_tags:
+            b, tag = Tag.objects.get_or_create(name=i,
+                                               defaults={'diaries': [diary]})
+            if not tag:
+                Tag.objects(name=i).update_one(push__diaries=diary)
+
+        return
+
+    def get_or_create_diary(self, diary_id):
+        try:
+            diary = Diary.objects(pk=diary_id).first()
+        except:
+            diary = None
+        categories = Category.objects.all()
+
+        return diary, categories
 
     def del_diary_by_id(self, diary_id):
         """Diary delete.
