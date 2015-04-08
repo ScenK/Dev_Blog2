@@ -100,3 +100,26 @@ Thanks to all other open-source projects(may not fully included).
 Changelog
 -------
 
+Thirdly release (Apr 8, 2015): Dev_blog2 (https://github.com/ScenK/Dev_Blog2/releases/tag/v2.0)
+  
+ + Flake 8 coding style
+ + Folders tidy
+ + Static files tidy
+ + Theme support
+ + Plugin support
+ + README ALl English
+ + LICENSE change
+
+Secondly release (Dec 7, 2013): Dev_Blog2 (https://github.com/ScenK/Dev_Blog2/releases/tag/1.0)
+
+ + Flask foundation
+ + MongoEngine ORM
+ + New template and skin
+ + Celery Email Queen
+ + Fabric Auto Development
+ + Powerful Admin
+ + More friendly code and Tones of changes
+
+Firstly release (Jul 19, 2013):  Dev_Blog
+
++ Pure Tornado and Pymongo Version (https://github.com/ScenK/Dev_Blog/releases) 
