@@ -387,73 +387,37 @@ def diary_add_photo():
         return json.dumps({'success': success, 'url': url})
 
 
-# @admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])
-# @login_required
-# def cmspage_edit(page_url):
-#     """CMS page edit or create.
+@admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])
+@login_required
+def cmspage_edit(page_url):
+    """CMS page edit or create.
 
-#     Action for CMS Page.
-#     Receives title, content(html), tags and cagetory
-#     Save title, content(html), pure content(further use), page_url
-#     also auto save author as current_user.
+    Methods:
+        GET and POST
 
-#     Methods:
-#         GET and POST
+    Args:
+        POST:
+            title: page title
+            html: content html
+            url: page url
+        GET:
+            page_url: string
 
-#     Args:
-#         POST:
-#             title: page title
-#             html: content html
-#             url: page url
-#         GET:
-#             page_url: string
+    """
+    if request.method == 'POST':
 
-#     Returns:
-#         POST:
-#             none (for create or save page only)
-#         GET:
-#             page object or none
+        title = request.form["title"]
+        html = request.form["content"]
+        url = request.form["url"]
 
-#     Save:
-#         title: string
-#         html: string
-#         content: string without html tags
-#         url: string page_url
-#         summary: first 80 characters in content with 3 dots in the end
-#         author: current_user_object
-#     """
-#     if request.method == 'POST':
-#         re_helper = ReHelper()
+        PageDispatcher().edit_or_create_page(title, html, url)
 
-#         title = re_helper.r_slash(request.form["title"])
-#         html = request.form["content"]
-#         url = request.form["url"]
+        return redirect(url_for('admin.cmspage_list'))
 
-#         parser = MyHTMLParser()
-#         parser.feed(html)
-#         content = parser.html  # the pure content without html tags
+    else:
+        page = PageDispatcher().get_static_page(page_url=page_url)
 
-#         author = UserModel.objects.first()
-
-#         created = StaticPage.objects(url=url)
-
-#         if created:
-#             page = created[0]
-#         else:
-#             page = StaticPage(title=title, url=re_helper.r_slash(url))
-
-#         page.content = content
-#         page.summary = content[0:80] + '...'
-#         page.html = html
-#         page.author = author
-#         page.save()
-
-#         return redirect(url_for('admin.cmspage_list'))
-
-#     else:
-#         page = StaticPage.objects(url=page_url).first()
-
-#         return render_template('admin/page/edit.html', page=page)
+        return render_template('admin/page/edit.html', page=page)
 
 
 @admin.route('/cmspage/list', methods=['GET'])

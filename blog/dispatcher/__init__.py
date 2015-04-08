@@ -496,11 +496,62 @@ class PageDispatcher(object):
     def get_page(self, page_url):
         return Page.objects(url=page_url).first()
 
+    def get_static_page(self, page_url):
+        return StaticPage.objects(url=page_url).first()
+
     def get_all_static_pages(self, order='-publish_time'):
         return StaticPage.objects.order_by(order)
 
     def del_cmspage_by_url(self, page_url):
         return StaticPage.objects.get_or_404(url=page_url).delete()
+
+    def edit_or_create_page(self, title, html, url):
+        """CMS page edit or create.
+
+        Action for CMS Page.
+        Receives title, content(html), tags and cagetory
+        Save title, content(html), pure content(further use), page_url
+        also auto save author as current_user.
+
+        Args:
+            POST:
+                title: page title
+                html: content html
+                url: page url
+            GET:
+                page_url: string
+
+        Returns:
+            POST:
+                none (for create or save page only)
+            GET:
+                page object or none
+
+        Save:
+            title: string
+            html: string
+            content: string without html tags
+            url: string page_url
+            summary: first 80 characters in content with 3 dots in the end
+            author: current_user_object
+        """
+        title = SiteHelpers().secure_filename(title)
+        content = SiteHelpers().strip_html_tags(html)
+        author = UserDispatcher().get_profile()
+
+        created = StaticPage.objects(url=url)
+
+        if created:
+            page = created.first()
+            page.title = title
+        else:
+            page = StaticPage(title=title, url=SiteHelpers().secure_filename(url))
+
+        page.content = content
+        page.summary = content[0:80] + '...'
+        page.html = html
+        page.author = author
+        return page.save()
 
 
 class OtherDispatcher(object):
