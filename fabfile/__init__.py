@@ -46,9 +46,9 @@ def compress():
 
 @task
 def compress_all_js():
-    compress_js('admin/static', 'backend')
-    compress_js('static', 'frontend')
-    compress_js('static', '404')
+    compress_js('blog/admin/static', 'backend')
+    compress_js('blog/static', 'frontend')
+    compress_js('blog/static', '404')
 
 
 @task
@@ -68,26 +68,26 @@ def compress_js(folder, debug_files):
     compressed_file = "%s/js/%s.min.js" % (folder, debug_files)
     for f in js_files:
         local(
-            'java -jar yuicompressor.jar --charset utf-8 --type js %s >> %s' %
-            (f, compressed_file))
+            'java -jar blog/yuicompressor.jar --charset utf-8 --type js %s >> %s' %
+            ('blog/' + f, compressed_file))
 
 
 @task
 def compress_css():
     css_files = ['frontend', '404']
 
-    local("rm -f static/css/*.min*.css")
+    local("rm -f blog/static/css/*.min*.css")
 
     for f in css_files:
         local(
-            'java -jar yuicompressor.jar --charset utf-8 --type css %s >> %s' %
-            ('static/css/' + f + '.css', 'static/css/' + f + '.min.css'))
+            'java -jar blog/yuicompressor.jar --charset utf-8 --type css %s >> %s' %
+            ('blog/static/css/' + f + '.css', 'blog/static/css/' + f + '.min.css'))
 
-    local("rm -f admin/static/css/admn.min.css")
+    local("rm -f blog/admin/static/css/admn.min.css")
 
     local(
-        'java -jar yuicompressor.jar --charset utf-8 --type css %s >> %s' %
-        ('admin/static/css/admin.css', 'admin/static/css/admin.min.css'))
+        'java -jar blog/yuicompressor.jar --charset utf-8 --type css %s >> %s' %
+        ('blog/admin/static/css/admin.css', 'blog/admin/static/css/admin.min.css'))
 
 
 @task
@@ -117,7 +117,7 @@ def count_line():
     for i in exts:
         count = 0
         fcount = 0
-        for root, dirs, files in os.walk(os.getcwd()):
+        for root, dirs, files in os.walk(os.getcwd() + '/blog'):
             for f in files:
                 # Check the sub directorys
                 fname = (root + '/' + f)
