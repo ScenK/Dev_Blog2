@@ -72,9 +72,33 @@ class CommentDispatcher(object):
             response = make_response(json.dumps({'success': 'true'}))
             response.set_cookie('guest_name', author)
             response.set_cookie('guest_email', email)
+
             return response
         except Exception as e:
             return str(e)
+
+    def reply_comment(self, author, diary_id, email, content):
+        diary = Diary.objects(pk=diary_id)
+        diary_title = diary.first().title
+        comment_em = CommentEm(
+            author=u'博主回复',
+            content=content,
+        )
+        diary.update_one(push__comments=comment_em)
+
+        ''' Save in Comment model for admin manage'''
+        comment = Comment(content=content)
+        comment.diary = diary.first()
+        comment.author = UserDispatcher().get_profile().name
+        comment.save(validate=False)
+
+        try:
+            send_email_task(email, u'您评论的文章《' + diary_title + u'》收到了来自\
+                            博主的回复, 请查收', content, diary_id, author, diary_title)
+
+            return json.dumps({'success': 'true'})
+        except Exception as e:
+            return json.dumps({'success': 'false', 'reason': str(e)})
 
     def get_all_comments(self, order='-publish_time'):
         """Return Total diaries objects."""

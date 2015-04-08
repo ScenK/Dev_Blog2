@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# import json
-# import re
+
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
@@ -248,52 +247,33 @@ def comment_list():
     return render_template(templates["comment_list"], comments=comments)
 
 
-# @admin.route('/comment/reply', methods=['POST'])
-# @login_required
-# def comment_reply():
-#     """Comment Reply Action.
+@admin.route('/comment/reply', methods=['POST'])
+@login_required
+def comment_reply():
+    """Comment Reply Action.
 
-#     Used for reply guests comment and send notification email.
+    Used for reply guests comment and send notification email.
 
-#     Methods:
-#         POST
+    Methods:
+        POST
 
-#     Args:
-#         author: guest_name
-#         did: diaryObjectID
-#         title: diary_title
-#         email: guest_email
-#         content: reply content
+    Args:
+        author: guest_name
+        did: diaryObjectID
+        title: diary_title
+        email: guest_email
+        content: reply content
 
-#     Returns:
-#         status: {success: true/false , reason: Exception}
-#     """
-#     if request.method == 'POST':
-#         author = request.form['author']
-#         did = request.form['did']
-#         title = request.form['title']
-#         email = request.form['email']
-#         content = request.form['content']
+    Returns:
+        status: {success: true/false , reason: Exception}
+    """
+    if request.method == 'POST':
+        author = request.form['author']
+        did = request.form['did']
+        email = request.form['email']
+        content = request.form['content']
 
-#         post = Diary.objects(pk=did)
-#         commentEm = CommentEm(
-#             author=u'博主回复',
-#             content=content,
-#         )
-#         post.update_one(push__comments=commentEm)
-
-#         ''' Save in Comment model for admin manage'''
-#         comment = Comment(content=content)
-#         comment.diary = post[0]
-#         comment.author = current_user.name
-#         comment.save(validate=False)
-
-#         try:
-#             send_email_task(email, u'您评论的文章《' + title + u'》收到了来自\
-#                             博主的回复, 请查收', content, did, author, title)
-#             return json.dumps({'success': 'true'})
-#         except Exception as e:
-#             return json.dumps({'success': 'false', 'reason': str(e)})
+        return CommentDispatcher().reply_comment(author, did, email, content)
 
 
 @admin.route('/account/settings', methods=['GET', 'POST'])
