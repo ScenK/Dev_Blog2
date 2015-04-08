@@ -1,4 +1,12 @@
 *.pyc
 *.DS_Store
 *._*
-config.py
+blog/config.py
+
+blog/static/js/404.min.js
+blog/static/js/frontend.min.js
+blog/admin/static/js/backend.min.js
+
+blog/static/css/404.min.css
+blog/static/css/frontend.min.css
+blog/static/css/admin.min.css
