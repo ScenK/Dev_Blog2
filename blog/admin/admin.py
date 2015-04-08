@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import json
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
@@ -8,7 +8,7 @@ from flask.ext.login import (current_user, login_required,
 from templates import templates
 
 from dispatcher import (UserDispatcher, DiaryDispatcher, CategoryDispatcher,
-                        PageDispatcher, CommentDispatcher)
+                        PageDispatcher, CommentDispatcher, OtherDispatcher)
 
 
 admin = Blueprint('admin', __name__, template_folder='templates',
@@ -339,60 +339,52 @@ def account_settings():
         return render_template(templates["settings"], user=user)
 
 
-# @admin.route('/account/settings/upload_avatar', methods=['POST'])
-# @login_required
-# def account_upload_avatar():
-#     """Admin Account Upload Avatar Action.
+@admin.route('/account/settings/upload_avatar', methods=['POST'])
+@login_required
+def account_upload_avatar():
+    """Admin Account Upload Avatar Action.
 
-#     *for Ajax only.
+    *for Ajax only.
 
-#     Methods:
-#         POST
+    Methods:
+        POST
 
-#     Args:
-#         files: [name: 'userfile']
+    Args:
+        files: [name: 'userfile']
 
-#     Returns:
-#         status: {success: true/false}
-#     """
-#     if request.method == 'POST':
-#         re_helper = ReHelper()
-#         data = request.files['userfile']
-#         filename = re_helper.r_slash(data.filename.encode('utf-8'))
-#         helper = UpYunHelper()
-#         url = helper.up_to_upyun('account', data, filename)
-#         if url:
-#             return json.dumps({'success': 'true', 'url': url})
-#         else:
-#             return json.dumps({'success': 'false'})
+    Returns:
+        status: {success: true/false}
+    """
+    if request.method == 'POST':
+        data = request.files['userfile']
+        filename = data.filename.encode('utf-8')
+        success, url = OtherDispatcher().up_to_upyun('account', data, filename)
+
+        return json.dumps({'success': success, 'url': url})
 
 
-# @admin.route('/diary/add-photo', methods=['POST'])
-# @login_required
-# def diary_add_photo():
-#     """Admin Diary Add Photo Action.
+@admin.route('/diary/add-photo', methods=['POST'])
+@login_required
+def diary_add_photo():
+    """Admin Diary Add Photo Action.
 
-#     *for Ajax only.
+    *for Ajax only.
 
-#     Methods:
-#         POST
+    Methods:
+        POST
 
-#     Args:
-#         files: [name: 'userfile']
+    Args:
+        files: [name: 'userfile']
 
-#     Returns:
-#         status: {success: true/false}
-#     """
-#     if request.method == 'POST':
-#         re_helper = ReHelper()
-#         data = request.files['userfile']
-#         filename = re_helper.r_slash(data.filename.encode('utf-8'))
-#         helper = UpYunHelper()
-#         url = helper.up_to_upyun('diary', data, filename)
-#         if url:
-#             return json.dumps({'success': 'true', 'url': url})
-#         else:
-#             return json.dumps({'success': 'false'})
+    Returns:
+        status: {success: true/false}
+    """
+    if request.method == 'POST':
+        data = request.files['userfile']
+        filename = data.filename.encode('utf-8')
+        success, url = OtherDispatcher().up_img_to_upyun('diary', data, filename)
+
+        return json.dumps({'success': success, 'url': url})
 
 
 # @admin.route('/cmspage/edit/<page_url>', methods=['GET', 'POST'])

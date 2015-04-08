@@ -518,6 +518,7 @@ class OtherDispatcher(object):
             success: boolean, True/False
             url: url_link
         """
+        filename = SiteHelpers().secure_filename(filename)
         success, url = SiteHelpers().up_to_upyun(collection, data, filename)
 
         return success, url
