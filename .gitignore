@@ -9,4 +9,4 @@ blog/admin/static/js/backend.min.js
 
 blog/static/css/404.min.css
 blog/static/css/frontend.min.css
-blog/static/css/admin.min.css
+blog/admin/static/css/admin.min.css
