@@ -100,7 +100,7 @@ Thanks to all other open-source projects(may not fully included).
 Changelog
 -------
 
-Thirdly release (Apr 8, 2015): Dev_blog2 (https://github.com/ScenK/Dev_Blog2/releases/tag/v2.0)
+Thirdly release (Apr 8, 2015): Dev_blog2 (https://github.com/ScenK/Dev_Blog2/releases/tag/v0.2)
   
  + Flake 8 coding style
  + Folders tidy
