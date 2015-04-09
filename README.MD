@@ -107,7 +107,7 @@ Thirdly release (Apr 8, 2015): Dev_blog2 (https://github.com/ScenK/Dev_Blog2/rel
  + Static files tidy
  + Theme support
  + Plugin support
- + README ALl English
+ + README ALL English
  + LICENSE change
 
 Secondly release (Dec 7, 2013): Dev_Blog2 (https://github.com/ScenK/Dev_Blog2/releases/tag/1.0)
