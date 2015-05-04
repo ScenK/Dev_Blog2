@@ -94,7 +94,8 @@ class CommentDispatcher(object):
 
         try:
             send_email_task(email, u'您评论的文章《' + diary_title + u'》收到了来自\
-                            博主的回复, 请查收', content, diary_id, author, diary_title)
+                            博主的回复, 请查收', content, diary_id, author,
+                            diary_title)
 
             return json.dumps({'success': 'true'})
         except Exception as e:
@@ -121,6 +122,31 @@ class CommentDispatcher(object):
         diary.update_one(pull__comments={'content': comment.content})
 
         return comment.delete()
+
+    def get_comment_list(self, start=0, end=20, order='-publish_time'):
+        """Comment list.
+        default query 20 comments and return if there should be next or prev
+        page.
+
+        Args:
+            start: num defalut 0
+            end: num defalut 20
+            order: str defalut '-publish_time'
+
+        Return:
+            next: boolean
+            prev: boolean
+            comments: diaries list
+        """
+        size = end - start
+        prev = next = False
+        comments = Comment.objects.order_by(order)[start:end + 1]
+        if len(comments) - size > 0:
+            next = True
+        if start != 0:
+            prev = True
+
+        return prev, next, comments[start:end]
 
 
 class DiaryDispatcher(object):
@@ -246,8 +272,8 @@ class DiaryDispatcher(object):
         save title, content(html), pure content(further use), tags and cagetory
         also auto save author as current_user.
 
-        this method will auto save new Category or Tag if not exist otherwise save
-        in existed none with push only diary_object
+        this method will auto save new Category or Tag if not exist otherwise
+        save in existed none with push only diary_object
 
         Args:
             diary_id: diary_id
@@ -327,7 +353,8 @@ class DiaryDispatcher(object):
             None
         """
         diary = Diary.objects(pk=diary_id)
-        Category.objects(name=diary[0].category).update_one(pull__diaries=diary[0])
+        Category.objects(name=diary[0].category).update_one(
+            pull__diaries=diary[0])
         return diary.delete()
 
 
@@ -545,7 +572,8 @@ class PageDispatcher(object):
             page = created.first()
             page.title = title
         else:
-            page = StaticPage(title=title, url=SiteHelpers().secure_filename(url))
+            page = StaticPage(title=title,
+                              url=SiteHelpers().secure_filename(url))
 
         page.content = content
         page.summary = content[0:80] + '...'

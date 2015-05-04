@@ -23,10 +23,18 @@
         <td>{{ c.diary.title }}</td>
         <td class="name">{{ c.publish_time.strftime('%Y-%m-%d %H:%M') }}</td>
         <td>{% if c.author != '博主回复' %}<a class="comment_back" href="javascript:void(0);">回复</a>{% endif %}</td>
-        <td class="action"><a href="{{ url_for('admin.comment_del', comment_id = c.id) }}" title="删除评论"><img src="../static/images/del.png" alt="delete"></a></td>
+        <td class="action"><a href="{{ url_for('admin.comment_del', comment_id = c.id) }}" title="删除评论"><img src="{{ url_for('admin.static', filename='images/del.png') }}" alt="delete"></a></td>
     </tr>
     {% endfor %}
 </tbody>
 </table>
+<div class="dataTables_paginate paging_full_numbers" id="example_paginate">
+    {% if prev %}
+    <a href="{{ url_for('admin.comment_list', page_num = page_num|int - 1) }}"><span class="previous paginate_button paginate_button_disabled">Previous</span></a>
+    {% endif %}
+    {% if next %}
+    <a href="{{ url_for('admin.comment_list', page_num = page_num|int + 1) }}"><span class="next paginate_button">Next</span></a>
+    {% endif %}
+</div>
 <!--Table Styling end-->
 {% endblock %}

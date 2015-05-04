@@ -21,10 +21,18 @@
         <td><span class="published">{{ i.comments|count }}</span></td>
         <td>{{ i.summary }}</td>
         <td class="name">{{ i.publish_time.strftime('%Y-%m-%d %H:%M') }}</td>
-        <td class="action"><a href="{{ url_for('admin.diary_del', diary_id = i.id) }}" title="删除日志"><img src="../static/images/del.png" alt="delete"></a></td>
+        <td class="action"><a href="{{ url_for('admin.diary_del', diary_id = i.id) }}" title="删除日志"><img src="{{ url_for('admin.static', filename='images/del.png') }}" alt="delete"></a></td>
     </tr>
     {% endfor %}
 </tbody>
 </table>
+<div class="dataTables_paginate paging_full_numbers" id="example_paginate">
+    {% if prev %}
+    <a href="{{ url_for('admin.diary_list', page_num = page_num|int - 1) }}"><span class="previous paginate_button paginate_button_disabled">Previous</span></a>
+    {% endif %}
+    {% if next %}
+    <a href="{{ url_for('admin.diary_list', page_num = page_num|int + 1) }}"><span class="next paginate_button">Next</span></a>
+    {% endif %}
+</div>
 <!--Table Styling end-->
 {% endblock %}

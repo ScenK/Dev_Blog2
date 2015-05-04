@@ -1,10 +1,6 @@
-  //********************* TABLE (NEWS) *********************//
-  $('#example').dataTable({
-    "sPaginationType": "full_numbers"
-  });
 
   //*********************  FORMS   *********************//
-  $(".chzn-select").chosen(); 
+  $(".chzn-select").chosen();
 
   //*******************  TAGS  *******************//
   if($('input[name="tags"]').length > 0 ){
@@ -72,4 +68,4 @@
       }
     });
   }
-  
+

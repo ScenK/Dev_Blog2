@@ -4,13 +4,13 @@
     <li class="expand">
         <a><span>文章</span></a>
         <ul class="acitem">
-          <li><a href="{{ url_for('admin.diary_list') }}">所有文章</a></li>
+          <li><a href="{{ url_for('admin.diary_list', page_num=1) }}">所有文章</a></li>
           <li><a href="{{ url_for('admin.diary_edit', diary_id='new') }}">写文章</a></li>
         </ul>
       </li>
 
       <li>
-        <a href="{{ url_for('admin.comment_list') }}"><span>评论</span></a>
+        <a href="{{ url_for('admin.comment_list', page_num=1) }}"><span>评论</span></a>
       </li>
 
       <li>

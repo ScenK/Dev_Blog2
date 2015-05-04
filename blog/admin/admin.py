@@ -126,9 +126,9 @@ def diary_edit(diary_id=None):
                                categories=categories)
 
 
-@admin.route('/diary/list')
+@admin.route('/diary/list/<page_num>')
 @login_required
-def diary_list():
+def diary_list(page_num):
     """Admin Diary lit page.
 
     show all diaries.
@@ -137,13 +137,21 @@ def diary_list():
         GET
 
     Args:
-        none
+        page_num: int
 
     Returns:
         Diary object
     """
-    diaries = DiaryDispatcher().get_all_diaries()
-    return render_template(templates["diary_list"], diaries=diaries)
+    page_size = 10
+
+    start = (int(page_num) - 1) * page_size
+
+    end = start + page_size
+
+    prev, next, diaries = DiaryDispatcher().get_diary_list(start, end)
+
+    return render_template(templates["diary_list"], prev=prev, next=next,
+                           diaries=diaries, page_num=page_num)
 
 
 @admin.route('/diary/del/<diary_id>')
@@ -227,9 +235,9 @@ def comment_del(comment_id):
     return redirect(url_for("admin.comment_list"))
 
 
-@admin.route('/comment/list')
+@admin.route('/comment/list/<page_num>')
 @login_required
-def comment_list():
+def comment_list(page_num):
     """Admin Comments list page.
 
     Used for list all comments.
@@ -238,13 +246,21 @@ def comment_list():
         GET
 
     Args:
-        none
+        page_num: int
 
     Returns:
         comments object
     """
-    comments = CommentDispatcher().get_all_comments()
-    return render_template(templates["comment_list"], comments=comments)
+    page_size = 20
+
+    start = (int(page_num) - 1) * page_size
+
+    end = start + page_size
+
+    prev, next, comments = CommentDispatcher().get_comment_list(start, end)
+
+    return render_template(templates["comment_list"], comments=comments,
+                           prev=prev, next=next, page_num=page_num)
 
 
 @admin.route('/comment/reply', methods=['POST'])
@@ -382,7 +398,8 @@ def diary_add_photo():
     if request.method == 'POST':
         data = request.files['userfile']
         filename = data.filename.encode('utf-8')
-        success, url = OtherDispatcher().up_img_to_upyun('diary', data, filename)
+        success, url = OtherDispatcher().up_img_to_upyun('diary', data,
+                                                         filename)
 
         return json.dumps({'success': success, 'url': url})
 
