@@ -16,6 +16,8 @@ Dev_Blog2 is Python based CMS system, mainly for bloggers. It can help users to 
 
 * MondoDB database.
 
+* Notification email. (Comment reply email & Crash error administrator email).
+
 * Easy reading codes and fully in-code docs.
 
 * And much more with continues development…
@@ -65,6 +67,8 @@ Dev_Blog2 is tested and works in:
 * Latest Stable: Firefox, Chrome, Safari
 * iOS 6.x, 7.x
 * Android 4.x
+* window platform
+* linux server platform
 
 Much more detail about ***apperence*** please see ***Docs*** section — ***Custom your theme***
 
@@ -124,6 +128,6 @@ Firstly release (Jul 19, 2013):  Dev_Blog
 
 + Pure Tornado and Pymongo Version (https://github.com/ScenK/Dev_Blog/releases) 
 
-#### More install detail see below:
+#### More installation detail see below:
   + MongoDB installation: http://docs.mongodb.org/manual/installation/
     
