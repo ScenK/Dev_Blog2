@@ -130,4 +130,4 @@ Firstly release (Jul 19, 2013):  Dev_Blog
 
 #### More installation detail see below:
   + MongoDB installation: http://docs.mongodb.org/manual/installation/
-    
+  + Lessc for windows: https://github.com/duncansmart/less.js-windows  
