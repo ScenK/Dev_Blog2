@@ -123,3 +123,7 @@ Secondly release (Dec 7, 2013): Dev_Blog2 (https://github.com/ScenK/Dev_Blog2/re
 Firstly release (Jul 19, 2013):  Dev_Blog
 
 + Pure Tornado and Pymongo Version (https://github.com/ScenK/Dev_Blog/releases) 
+
+#### More install detail see below:
+  + MongoDB installation: http://docs.mongodb.org/manual/installation/
+    
