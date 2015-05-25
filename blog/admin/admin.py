@@ -171,7 +171,7 @@ def diary_del(diary_id):
         none
     """
     DiaryDispatcher().del_diary_by_id(diary_id)
-    return redirect(url_for("admin.diary_list"))
+    return redirect(url_for("admin.diary_list", page_num=1))
 
 
 @admin.route('/category/list')
