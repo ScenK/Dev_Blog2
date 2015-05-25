@@ -117,7 +117,7 @@ def diary_edit(diary_id=None):
         tags = request.form["tags"]
 
         DiaryDispatcher().edit_diary(diary_id, title, html, category, tags)
-        return redirect(url_for("admin.diary_list"))
+        return redirect(url_for("admin.diary_list", page_num=1))
 
     else:
 
