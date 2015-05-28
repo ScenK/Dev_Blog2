@@ -54,6 +54,17 @@ Start the website:
 
     fab start
 
+
+Production config:
+
+    Change the code in 'runserver.py' 
+        "USED_CONF = 'config.DevelopmentConfig'"
+    to
+        "USED_CONF = 'config.ProductionConfig'"
+    and enter more than 15 different random characters in 'config.py'
+        "SECRET_KEY" = 'SomeWordsYouLike12345'
+
+
 Much more detail about ***deploy*** in product environment please see ***Docs*** section — ***Build your site***
 
 
