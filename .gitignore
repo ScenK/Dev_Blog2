@@ -1,6 +1,7 @@
 *.pyc
 *.DS_Store
 *._*
+__pycache__
 blog/config.py
 
 blog/static/js/404.min.js

@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
-import httplib
-import md5 as imd5
+import http
+from hashlib import md5 as imd5
 import base64
 import time
 import re
@@ -11,14 +11,14 @@ DL = '/'
 
 
 def md5(src):
-    m1 = imd5.new()
+    m1 = imd5()
     m1.update(src)
     dest1 = m1.hexdigest()
     return dest1
 
 
 def md5file(fobj):
-    m = imd5.new()
+    m = imd5()
     while True:
         d = fobj.read(8096)
         if not d:
@@ -106,7 +106,7 @@ class UpYun(object):
         resp = self.getList(path + '?usage', headers, metadata)
         try:
             resp = int(resp.read())
-        except Exception, e:
+        except Exception:
             resp = None
         return resp
 
@@ -223,7 +223,7 @@ class UpYun(object):
             return None
 
     def _net_worker(self, method, path, data='', headers={}, metadata={}):
-        connection = httplib.HTTPConnection(self.thehost)
+        connection = http.client.HTTPConnection(self.thehost)
 
         if self.content_md5 != '':
             headers['Content-MD5'] = self.content_md5

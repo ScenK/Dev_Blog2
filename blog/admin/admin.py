@@ -5,8 +5,6 @@ from flask import Blueprint, render_template, url_for, request, redirect, flash
 from flask.ext.login import (current_user, login_required,
                              login_user, logout_user, UserMixin)
 
-from templates import templates
-
 from dispatcher import (UserDispatcher, DiaryDispatcher, CategoryDispatcher,
                         PageDispatcher, CommentDispatcher, OtherDispatcher)
 
@@ -14,6 +12,17 @@ from dispatcher import (UserDispatcher, DiaryDispatcher, CategoryDispatcher,
 admin = Blueprint('admin', __name__, template_folder='templates',
                   static_folder='static')
 
+templates = dict(
+    login="admin/login.html",
+    dashboard="admin/dashboard.html",
+    diary_edit="admin/diary/edit.html",
+    diary_list="admin/diary/list.html",
+    category_list="admin/category/list.html",
+    comment_list="admin/comment/list.html",
+    settings="admin/account/settings.html",
+    page_edit="admin/page/edit.html",
+    page_list="admin/page/list.html"
+)
 
 class User(UserMixin):
 

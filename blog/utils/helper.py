@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import datetime
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 from utils.upyun import UpYun
 from config import UpyunConfig
 

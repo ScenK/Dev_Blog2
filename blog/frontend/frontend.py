@@ -2,15 +2,26 @@
 from flask import (Blueprint, render_template, redirect, request, url_for,
                    abort, Response)
 
+from config import Config
+
 from dispatcher import (UserDispatcher, DiaryDispatcher, CategoryDispatcher,
                         TagDispatcher, PageDispatcher, OtherDispatcher,
                         CommentDispatcher)
 
-from templates import templates
-
 frontend = Blueprint('frontend', __name__, template_folder='templates',
                      static_folder='static')
 
+root = Config.THEME
+
+templates = dict(
+    home="frontend/themes/%s/home.html" % root,
+    diary_detail="frontend/themes/%s/diary/detail.html" % root,
+    diary_list="frontend/themes/%s/diary/list.html" % root,
+    cat_list="frontend/themes/%s/category/list.html" % root,
+    tag_list="frontend/themes/%s/tag/list.html" % root,
+    page="frontend/themes/%s/page/index.html" % root,
+    not_found="frontend/themes/%s/404.html" % root
+)
 
 @frontend.route('/')
 def home():
@@ -99,7 +110,7 @@ def diary_prev_or_next(prev_or_next, diary_id):
             url_for('frontend.diary_detail', diary_id=next_diary.pk,
                     diary_title=next_diary.title))
     except Exception as e:
-        print str(e)
+        print(str(e))
         abort(404)
 
 

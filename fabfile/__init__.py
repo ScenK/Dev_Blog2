@@ -34,7 +34,7 @@ def build():
     user = User(name='admin')
     user.password = generate_password_hash(password='admin')
     user.save()
-    print "Default Admin add Success!"
+    print("Default Admin add Success!")
     execute(deploy)
 
 
@@ -131,7 +131,7 @@ def count_line():
                     c = read_line_count(fname)
                     count += c
 
-        print '%s ==> has %d files and %d lines' % (i, fcount, count)
+        print('%s ==> has %d files and %d lines' % (i, fcount, count))
 
 
 def read_line_count(fname):

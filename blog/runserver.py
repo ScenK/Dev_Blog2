@@ -91,7 +91,7 @@ def main():
     options.parse_command_line()
     http_server.listen(options.port)
     IOLoop.instance().start()
-    print 'Quit the server with CONTROL-C'
+    print('Quit the server with CONTROL-C')
 
 if __name__ == "__main__":
     main()
