@@ -57,7 +57,7 @@ Start the website:
 
 Production config:
 
-    Change the code in 'runserver.py' 
+    Change the code in 'runserver.py'
         "USED_CONF = 'config.DevelopmentConfig'"
     to
         "USED_CONF = 'config.ProductionConfig'"
@@ -114,9 +114,12 @@ Thanks to all other open-source projects(may not fully included).
 
 Changelog
 -------
+Fourthly release (dd mm, 2016): Dev_blog2 (https://github.com/ScenK/Dev_Blog2/releases/tag/0.4)
+
+ + Python3 support
 
 Thirdly release (Apr 8, 2015): Dev_blog2 (https://github.com/ScenK/Dev_Blog2/releases/tag/0.3)
-  
+
  + Flake 8 coding style
  + Folders tidy
  + Static files tidy
@@ -137,8 +140,8 @@ Secondly release (Dec 7, 2013): Dev_Blog2 (https://github.com/ScenK/Dev_Blog2/re
 
 Firstly release (Jul 19, 2013):  Dev_Blog
 
-+ Pure Tornado and Pymongo Version (https://github.com/ScenK/Dev_Blog/releases) 
++ Pure Tornado and Pymongo Version (https://github.com/ScenK/Dev_Blog/releases)
 
 #### More installation detail see below:
   + MongoDB installation: http://docs.mongodb.org/manual/installation/
-  + Lessc for windows: https://github.com/duncansmart/less.js-windows  
+  + Lessc for windows: https://github.com/duncansmart/less.js-windows
