@@ -18,7 +18,7 @@ import logging
 from logging.handlers import SMTPHandler
 from utils.email_util import EncodingFormatter
 
-from flask.ext.login import LoginManager
+from flask_login import LoginManager
 
 from flask_debugtoolbar import DebugToolbarExtension
 
