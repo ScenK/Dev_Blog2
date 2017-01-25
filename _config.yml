@@ -1,0 +1,8 @@
+title: Dev blog2
+description: Python Blog System. Powered by Tornado and MongoDB
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
